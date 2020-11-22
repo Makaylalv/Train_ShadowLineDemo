@@ -7,23 +7,99 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingHorizontal="10dp">
-        <Button
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/search"/>
 
-        <com.example.train_shadowlinedemo.MovieShow.view.ImageBannerFramLayout
-            android:id="@+id/image_group"
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_corner"
-            android:paddingHorizontal="5dp"></com.example.train_shadowlinedemo.MovieShow.view.ImageBannerFramLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab_film"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:onClick="fragmentOnClicked"
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/iv_tab_film"
+                    android:src="@drawable/tab_film"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
+                <TextView
+                    android:id="@+id/tv_tab_film"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电影" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab_city"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:onClick="fragmentOnClicked"
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/iv_tab_city"
+                    android:src="@drawable/tab_city"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
+                <TextView
+                    android:id="@+id/tv_tab_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="城市" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab_share"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:onClick="fragmentOnClicked"
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/iv_tab_share"
+                    android:src="@drawable/tab_share"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
+                <TextView
+                    android:id="@+id/tv_tab_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="动态" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab_mine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:onClick="fragmentOnClicked"
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/iv_tab_mine"
+                    android:src="@drawable/tab_mine"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
+                <TextView
+                    android:id="@+id/tv_tab_mine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/tab_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tabs" />
+    </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
