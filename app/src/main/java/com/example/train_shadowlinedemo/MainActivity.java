@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         currentFragment=filmFragment;
 
 
+
+
     }
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();
