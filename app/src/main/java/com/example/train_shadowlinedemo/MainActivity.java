@@ -48,10 +48,6 @@ public class MainActivity extends AppCompatActivity {
         changeTab(filmFragment);
         changeColor("film");
         currentFragment=filmFragment;
-
-
-
-
     }
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();
@@ -64,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             transaction.show(fragment);
             transaction.commit();
             currentFragment=fragment;
-
         }
 
     }
