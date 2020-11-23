@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.example.train_shadowlinedemo.MovieShow.view.ImageBannerFramLayout
+            <com.example.train_shadowlinedemo.view.MovieShow.ImageBannerFramLayout
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:id="@+id/image_group" />

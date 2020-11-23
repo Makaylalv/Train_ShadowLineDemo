@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo.MovieDetail.view;
+package com.example.train_shadowlinedemo.view.MovieDetail;
 
 
 

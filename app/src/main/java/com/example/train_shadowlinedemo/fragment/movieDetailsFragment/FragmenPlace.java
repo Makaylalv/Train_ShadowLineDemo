@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo.MovieDetailsFragment;
+package com.example.train_shadowlinedemo.fragment.movieDetailsFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +8,10 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.train_shadowlinedemo.MovieDetail.view.PlaceRecyclerViewAdapter;
+
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Place;
+import com.example.train_shadowlinedemo.view.MovieDetail.PlaceRecyclerViewAdapter;
 
 import java.util.ArrayList;
 

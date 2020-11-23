@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo.MovieShow.view;
+package com.example.train_shadowlinedemo.view.MovieShow;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

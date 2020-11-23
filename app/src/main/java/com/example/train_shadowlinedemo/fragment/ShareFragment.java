@@ -1,7 +1,6 @@
-package com.example.train_shadowlinedemo;
+package com.example.train_shadowlinedemo.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.train_shadowlinedemo.SharedFragment.DynamicFragment;
-import com.example.train_shadowlinedemo.SharedFragment.LiveFragment;
+import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.DynamicFragment;
+import com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.LiveFragment;
+
 
 /**
  * 这是动态界面

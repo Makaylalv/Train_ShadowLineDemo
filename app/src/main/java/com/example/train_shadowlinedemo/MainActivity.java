@@ -11,7 +11,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
 import com.example.train_shadowlinedemo.entity.Film;
+import com.example.train_shadowlinedemo.fragment.CityFragment;
+import com.example.train_shadowlinedemo.fragment.FilmFragment;
+import com.example.train_shadowlinedemo.fragment.PersonalFragment;
+import com.example.train_shadowlinedemo.fragment.ShareFragment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         changeTab(filmFragment);
         changeColor("film");
         currentFragment=filmFragment;
-        /*Intent intent=new Intent();
+        Intent intent=new Intent();
         Film film=new Film();
         film.setFilmId(1);
         film.setFilmDirector("曾国祥");
@@ -73,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 .setDateFormat("yyyy-MM-dd")//设置日期输出格式
                 .create();
         intent.putExtra("film", gson.toJson(film));
-        intent.setClass(this,MovieDetailActivity.class);
-        startActivity(intent);*/
+        intent.setClass(this, MovieDetailActivity.class);
+        startActivity(intent);
     }
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();

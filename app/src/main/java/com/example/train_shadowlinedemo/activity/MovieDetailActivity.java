@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo;
+package com.example.train_shadowlinedemo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,11 +17,13 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.train_shadowlinedemo.MovieDetail.view.MovieDetailsViewPager;
-import com.example.train_shadowlinedemo.MovieDetail.view.MovieDetailsViewPagerAdapter;
-import com.example.train_shadowlinedemo.MovieDetailsFragment.FragmenPlace;
-import com.example.train_shadowlinedemo.MovieDetailsFragment.FragmentCity;
+
+import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Film;
+import com.example.train_shadowlinedemo.fragment.movieDetailsFragment.FragmenPlace;
+import com.example.train_shadowlinedemo.fragment.movieDetailsFragment.FragmentCity;
+import com.example.train_shadowlinedemo.view.MovieDetail.MovieDetailsViewPager;
+import com.example.train_shadowlinedemo.view.MovieDetail.MovieDetailsViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -169,7 +170,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     //自定义滑动监听
-    private MovieDetailActivity.ActivityTouchListener touchListener = new MovieDetailActivity.ActivityTouchListener() {
+    private ActivityTouchListener touchListener = new ActivityTouchListener() {
         @Override
         public boolean onTouchEvent(MotionEvent event) {
             switch(event.getAction())

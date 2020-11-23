@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".activity.MovieDetailActivity"
     android:orientation="vertical">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -159,10 +159,12 @@
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <com.example.train_shadowlinedemo.MovieDetail.view.MovieDetailsViewPager
+            <com.example.train_shadowlinedemo.view.MovieDetail.MovieDetailsViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.example.train_shadowlinedemo.MovieDetail.view.MovieDetailsViewPager>
+                android:layout_height="wrap_content">
+
+            </com.example.train_shadowlinedemo.view.MovieDetail.MovieDetailsViewPager>
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

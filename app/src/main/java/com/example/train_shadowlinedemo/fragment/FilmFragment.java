@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo;
+package com.example.train_shadowlinedemo.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,9 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.train_shadowlinedemo.MovieShow.view.ImageBannerFramLayout;
-import com.example.train_shadowlinedemo.MovieShow.view.NewFilmAdapter;
+import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
+import com.example.train_shadowlinedemo.activity.SearchActivity;
 import com.example.train_shadowlinedemo.entity.Film;
+import com.example.train_shadowlinedemo.view.MovieShow.ImageBannerFramLayout;
+import com.example.train_shadowlinedemo.view.MovieShow.NewFilmAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +90,7 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
             switch (view.getId()){
                 case R.id.btn_search:
                     //点击搜索按钮跳转到搜索页面
-                    Intent intent=new Intent(getContext(),SearchActivity.class);
+                    Intent intent=new Intent(getContext(), SearchActivity.class);
                     startActivity(intent);
                     break;
             }
@@ -113,7 +116,7 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
     @Override
     public void chickImageIndex(int pos) {
         //点击轮播图跳转到详情界面
-        Intent intent=new Intent(getContext(),MovieDetailActivity.class);
+        Intent intent=new Intent(getContext(), MovieDetailActivity.class);
 
     }
 }
