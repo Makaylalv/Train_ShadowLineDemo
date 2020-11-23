@@ -56,6 +56,7 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
     //获取轮播图内电影内容
     private void getBannerFilm() {
 
+
     }
 
     //初始化最新更新电影的列表
