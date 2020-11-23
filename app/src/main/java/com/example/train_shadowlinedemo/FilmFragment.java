@@ -13,8 +13,12 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.train_shadowlinedemo.MovieShow.view.ImageBannerFramLayout;
+import com.example.train_shadowlinedemo.MovieShow.view.NewFilmAdapter;
+import com.example.train_shadowlinedemo.entity.Film;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,23 +27,59 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
     private View root;
     private int[] bannerImages;
     private ImageBannerFramLayout mGroup;
+    private RecyclerView rvNewFilmList;
+    private List<Film> bannerList=new ArrayList<>();
+    private List<Film> newFilmList=new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(root==null){
             root=inflater.inflate(R.layout.fragment_film,container,false);
         }
+        Button btnSearch=root.findViewById(R.id.btn_search);
         bannerImages=new int[]{
                 R.drawable.movie_banner_pic1,
                 R.drawable.movie_banner_pic2,
                 R.drawable.movie_banner_pic3,
         };
         autoBannerImages();
-        Button btnSearch=root.findViewById(R.id.btn_search);
+        initNewFilmData();
+        findNewFilmList();
+        getBannerFilm();
+
         MyOnClickListener myListenter=new MyOnClickListener();
         btnSearch.setOnClickListener(myListenter);
         return root;
     }
+
+    //获取轮播图内电影内容
+    private void getBannerFilm() {
+
+    }
+
+    //初始化最新更新电影的列表
+    private void initNewFilmData() {
+
+    }
+
+    //初始化RecyclerView
+    private void findNewFilmList() {
+        rvNewFilmList=root.findViewById(R.id.rv_horizontal_list);
+        LinearLayoutManager linearLayoutManager;
+        NewFilmAdapter adapter;
+        //设置布局管理器，垂直设置LinearLayoutManager.VERTICAL
+        linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        //创建适配器，将数据传递给适配器
+        adapter=new NewFilmAdapter(getContext(),newFilmList,R.layout.item_newfilm);
+        //固定RecycleView大小,当知道adapter内item的改变不会影响RecycleView宽高的时候设置
+        rvNewFilmList.setHasFixedSize(true);
+        //设置布局管理器
+        rvNewFilmList.setLayoutManager(linearLayoutManager);
+        //设置适配器adapter
+        rvNewFilmList.setAdapter(adapter);
+    }
+
     class MyOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -52,6 +92,7 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
             }
         }
     }
+
     //轮播图初始化
     private void autoBannerImages(){
         //计算当前手机宽度
@@ -70,6 +111,8 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
 
     @Override
     public void chickImageIndex(int pos) {
+        //点击轮播图跳转到详情界面
+        Intent intent=new Intent(getContext(),MovieDetailActivity.class);
 
     }
 }

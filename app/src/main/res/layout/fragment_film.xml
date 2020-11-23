@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:paddingHorizontal="10dp"
     android:layout_height="match_parent">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -16,10 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="电影"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:textColor="@color/black"/>
     </androidx.appcompat.widget.Toolbar>
     <ScrollView
+        android:paddingHorizontal="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -30,11 +30,8 @@
             <com.example.train_shadowlinedemo.MovieShow.view.ImageBannerFramLayout
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:id="@+id/image_group"
-                android:layout_marginTop="10dp"/>
+                android:id="@+id/image_group" />
             <HorizontalScrollView
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
@@ -167,15 +164,16 @@
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/black"
                     android:textSize="20sp"/>
-
                 <Button
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/movie_loadmore" />
             </LinearLayout>
-
-            
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rv_horizontal_list"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

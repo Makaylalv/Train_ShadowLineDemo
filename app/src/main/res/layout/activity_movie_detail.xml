@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll"
+                android:background="#fff">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:background="@color/cardview_light_background"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/film_Chinese_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+
+                            android:textSize="30sp" />
+
+                        <TextView
+                            android:id="@+id/film_English_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/film_Chinese_name"
+                            android:layout_centerHorizontal="true"
+
+                            android:textSize="20sp" />
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+
+                        android:background="@color/cardview_light_background"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp">
+                        <ImageView
+                            android:id="@+id/film_img"
+                            android:layout_weight="2"
+                            android:layout_width="400dp"
+                            android:layout_height="match_parent"/>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:layout_weight="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:textSize="17sp"
+                                    android:id="@+id/location"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="片场"/>
+                                <TextView
+                                    android:textSize="34sp"
+                                    android:layout_below="@+id/location"
+                                    android:id="@+id/location_num"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="5"/>
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:paddingTop="30dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <TextView
+                                    android:textSize="@dimen/filmTextSize"
+                                    android:id="@+id/film_type"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:layout_marginTop="@dimen/filmMarginTop"
+                                    android:layout_below="@+id/film_type"
+                                    android:textSize="@dimen/filmTextSize"
+                                    android:id="@+id/film_country"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:layout_marginTop="@dimen/filmMarginTop"
+                                    android:layout_below="@+id/film_country"
+                                    android:textSize="@dimen/filmTextSize"
+                                    android:id="@+id/film_release_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <Button
+                                    android:id="@+id/more"
+                                    android:background="@drawable/movie_detail_btn_shape"
+                                    android:text="更多"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/film_info"
+                        android:background="@color/cardview_light_background"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:id="@+id/film_map_img"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+
+
+            <com.google.android.material.tabs.TabLayout
+
+                android:id="@+id/tab_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabMode="fixed"
+                app:tabBackground="@android:color/transparent"
+                app:tabRippleColor="@android:color/transparent"
+                android:background="#fff">
+            </com.google.android.material.tabs.TabLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <com.example.train_shadowlinedemo.MovieDetail.view.MovieDetailsViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.example.train_shadowlinedemo.MovieDetail.view.MovieDetailsViewPager>
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>
