@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //获取控件
         ivFilm=findViewById(R.id.iv_tab_film);
         ivCity=findViewById(R.id.iv_tab_city);
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         changeTab(filmFragment);
         changeColor("film");
         currentFragment=filmFragment;
+
     }
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();

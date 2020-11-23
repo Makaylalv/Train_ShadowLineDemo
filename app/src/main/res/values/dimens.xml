@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="BtnTextSize">17sp</dimen>
+    <dimen name="filmTextSize">17sp</dimen>
+    <dimen name="filmMarginTop">10dp</dimen>
+</resources>
