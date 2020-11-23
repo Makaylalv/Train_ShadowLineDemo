@@ -23,6 +23,16 @@ public class Film {
     private String filmType;
     //电影位置
     private int filmPosition;
+    //地图照片
+    private String flimMapImg;
+
+    public String getFlimMapImg() {
+        return flimMapImg;
+    }
+
+    public void setFlimMapImg(String flimMapImg) {
+        this.flimMapImg = flimMapImg;
+    }
 
     public int getFilmId() {
         return filmId;

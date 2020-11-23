@@ -14,7 +14,7 @@ import com.example.train_shadowlinedemo.entity.Place;
 
 import java.util.ArrayList;
 
-public class Fragment1 extends androidx.fragment.app.Fragment {
+public class FragmenPlace extends androidx.fragment.app.Fragment {
     ArrayList<Place> places= new ArrayList<>();
     RecyclerView recyclerView;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, android.os.Bundle savedInstanceState) {

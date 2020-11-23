@@ -35,7 +35,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="20dp"
-                            android:text="少年的你"
+
                             android:textSize="30sp" />
 
                         <TextView
@@ -44,7 +44,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/film_Chinese_name"
                             android:layout_centerHorizontal="true"
-                            android:text="Yong You"
+
                             android:textSize="20sp" />
                     </RelativeLayout>
                     <LinearLayout
@@ -56,16 +56,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="300dp">
                         <ImageView
-                            android:layout_weight="1"
-                            android:src="@drawable/false_film"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:id="@+id/film_img"
+                            android:layout_weight="2"
+                            android:layout_width="400dp"
+                            android:layout_height="match_parent"/>
                         <LinearLayout
                             android:orientation="vertical"
                             android:paddingLeft="20dp"
                             android:paddingRight="20dp"
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
+                            android:layout_weight="2"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent">
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -92,13 +92,11 @@
                                 android:layout_height="match_parent">
                                 <TextView
                                     android:textSize="@dimen/filmTextSize"
-                                    android:text="爱情/犯罪/剧情"
                                     android:id="@+id/film_type"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
                                 <TextView
                                     android:layout_marginTop="@dimen/filmMarginTop"
-                                    android:text="中国"
                                     android:layout_below="@+id/film_type"
                                     android:textSize="@dimen/filmTextSize"
                                     android:id="@+id/film_country"
@@ -106,7 +104,6 @@
                                     android:layout_height="wrap_content"/>
                                 <TextView
                                     android:layout_marginTop="@dimen/filmMarginTop"
-                                    android:text="2019"
                                     android:layout_below="@+id/film_country"
                                     android:textSize="@dimen/filmTextSize"
                                     android:id="@+id/film_release_time"
@@ -114,7 +111,7 @@
                                     android:layout_height="wrap_content"/>
                                 <Button
                                     android:id="@+id/more"
-                                    android:background="@drawable/shape_corner"
+                                    android:background="@drawable/movie_detail_btn_shape"
                                     android:text="更多"
                                     android:layout_alignParentBottom="true"
                                     android:layout_width="match_parent"
@@ -125,15 +122,15 @@
                         </LinearLayout>
                     </LinearLayout>
                     <TextView
-
+                        android:id="@+id/film_info"
                         android:background="@color/cardview_light_background"
-                        android:text="    一场高考前夕的校园意外，改变了两个少年的命运。陈念(周冬雨)是学校里的优等生，考上好大学是她唯一的念头。同班同学的意外坠楼牵扯出的故事，陈念也被一点点卷入其中…在她最孤独的时刻，一个叫小北（易烊千玺）的少年闯入了她的世界."
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <ImageView
+                        android:id="@+id/film_map_img"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
-                        android:src="@drawable/false_map"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"/>
 
