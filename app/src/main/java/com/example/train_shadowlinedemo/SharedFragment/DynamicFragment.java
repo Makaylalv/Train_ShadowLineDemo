@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.train_shadowlinedemo.MainActivity;
 import com.example.train_shadowlinedemo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -35,7 +36,8 @@ public class DynamicFragment extends Fragment {
             public void onClick(View view) {
                 //跳转到编辑动态界面
                 Intent intent=new Intent();
-                intent.setClass(getContext(),EditDynamicActivity.class);
+                intent.putExtra("skipdynamic","skipdynamic");
+                intent.setClass(getContext(), EditDynamicActivity.class);
                 startActivity(intent);
             }
         });
