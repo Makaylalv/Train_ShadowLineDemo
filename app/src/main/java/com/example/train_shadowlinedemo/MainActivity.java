@@ -10,6 +10,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.train_shadowlinedemo.fragment.CityFragment;
+import com.example.train_shadowlinedemo.fragment.FilmFragment;
+import com.example.train_shadowlinedemo.fragment.PersonalFragment;
+import com.example.train_shadowlinedemo.fragment.ShareFragment;
+
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
