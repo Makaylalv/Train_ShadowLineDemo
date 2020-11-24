@@ -3,7 +3,8 @@
     <style name="Theme.Train_ShadowLineDemo" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+<!--        更改最上边状态栏-->
+        <item name="colorPrimaryVariant">@color/mainColor</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

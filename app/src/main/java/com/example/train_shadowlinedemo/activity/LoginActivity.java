@@ -1,8 +1,10 @@
-package com.example.train_shadowlinedemo;
+package com.example.train_shadowlinedemo.activity;
+
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import com.example.train_shadowlinedemo.R;
 
 public class LoginActivity extends AppCompatActivity {
 

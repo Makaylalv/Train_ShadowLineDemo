@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo.MovieShow.view;
+package com.example.train_shadowlinedemo.view.MovieShow;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,7 +20,7 @@ import com.example.train_shadowlinedemo.R;
 
 import java.util.List;
 
-public class ImageBannerFramLayout extends FrameLayout implements ImageBarnnerViewGroup.ImageBarnnerViewGroupLisnner,ImageBarnnerViewGroup.ImageBarnnerLister{
+public class ImageBannerFramLayout extends FrameLayout implements ImageBarnnerViewGroup.ImageBarnnerViewGroupLisnner, ImageBarnnerViewGroup.ImageBarnnerLister{
 
     private ImageBarnnerViewGroup imageBarnnerViewGroup;
     private LinearLayout linearLayout;

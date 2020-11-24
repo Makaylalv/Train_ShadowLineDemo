@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo.MovieDetailsFragment;
+package com.example.train_shadowlinedemo.fragment.movieDetailsFragment;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

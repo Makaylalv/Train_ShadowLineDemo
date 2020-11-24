@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo.SharedFragment;
+package com.example.train_shadowlinedemo.fragment.ShareChildrenFragment;
 
 import android.content.Intent;
 import android.os.Bundle;

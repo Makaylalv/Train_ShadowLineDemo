@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo.MovieDetail.view;
+package com.example.train_shadowlinedemo.view.MovieDetail;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +31,7 @@ public class PlaceRecyclerViewAdapter extends RecyclerView.Adapter<PlaceRecycler
             textView_name=view.findViewById(R.id.film_name);
             textView_pos=view.findViewById(R.id.film_pos);
             textView_des=view.findViewById(R.id.film_des);
-            itemView.setOnClickListener(com.example.train_shadowlinedemo.MovieDetail.view.PlaceRecyclerViewAdapter.this);
+            itemView.setOnClickListener(PlaceRecyclerViewAdapter.this);
         }
 
     }

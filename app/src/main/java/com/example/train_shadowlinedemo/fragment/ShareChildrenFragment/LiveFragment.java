@@ -1,4 +1,4 @@
-package com.example.train_shadowlinedemo.SharedFragment;
+package com.example.train_shadowlinedemo.fragment.ShareChildrenFragment;
 
 import androidx.fragment.app.Fragment;
 
