@@ -97,7 +97,7 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
         film1.setFilmReleasetime("2019");
         film1.setFilmProducercountry("中国");
         film1.setFilmType("爱情/犯罪/剧情");
-        film1.setFilmImg("film/filmphoto/img1.jpg");
+        film1.setFilmImg("R.drawable.newfilm_p1");
         film1.setFlimMapImg("film/map/img1.jpg");
 
         Film film2=new Film();
@@ -110,7 +110,7 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
         film2.setFilmReleasetime("2019");
         film2.setFilmProducercountry("中国");
         film2.setFilmType("爱情/犯罪/剧情");
-        film2.setFilmImg("film/filmphoto/img1.jpg");
+        film2.setFilmImg("R.drawable.newfilm_p1");
         film2.setFlimMapImg("film/map/img1.jpg");
 
         Film film3=new Film();
@@ -123,7 +123,7 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
         film3.setFilmReleasetime("2019");
         film3.setFilmProducercountry("中国");
         film3.setFilmType("爱情/犯罪/剧情");
-        film3.setFilmImg("film/filmphoto/img1.jpg");
+        film3.setFilmImg("R.drawable.newfilm_p1");
         film3.setFlimMapImg("film/map/img1.jpg");
 
         Film film4=new Film();
@@ -136,7 +136,7 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
         film4.setFilmReleasetime("2019");
         film4.setFilmProducercountry("中国");
         film4.setFilmType("爱情/犯罪/剧情");
-        film4.setFilmImg("film/filmphoto/img1.jpg");
+        film4.setFilmImg("R.drawable.newfilm_p1");
         film4.setFlimMapImg("film/map/img1.jpg");
 
 

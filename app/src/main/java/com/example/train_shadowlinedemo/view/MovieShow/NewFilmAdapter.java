@@ -31,7 +31,7 @@ public class NewFilmAdapter extends RecyclerView.Adapter<NewFilmAdapter.ItemView
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        //利用反射将item布局加载出来
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_newfilm,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(layoutItemId,parent,false);
         //new一个我们的ViewHolder，findViewById操作都在ItemViewHolder的构造方法中进行
         return new ItemViewHolder(view);
     }
@@ -40,7 +40,8 @@ public class NewFilmAdapter extends RecyclerView.Adapter<NewFilmAdapter.ItemView
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Film film=films.get(position);
-        Glide.with(mContext).load(film.getFilmImg()).into(holder.ivImg);
+        //Glide.with(mContext).load(film.getFilmImg()).into(holder.ivImg);
+        holder.ivImg.setImageResource(Integer.parseInt(film.getFilmImg()));
         holder.tvName.setText(film.getFilmName());
         holder.tvOutTime.setText(film.getFilmReleasetime());
         holder.tvProductFrom.setText(film.getFilmProducercountry());
