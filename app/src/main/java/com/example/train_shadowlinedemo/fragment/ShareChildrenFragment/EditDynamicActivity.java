@@ -1,8 +1,10 @@
-package com.example.train_shadowlinedemo.SharedFragment;
+package com.example.train_shadowlinedemo.fragment.ShareChildrenFragment;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -42,10 +44,13 @@ public class EditDynamicActivity extends AppCompatActivity {
     }
     //初始化布局控件
     public void initView(){
+        dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
         btnBackDynamic=findViewById(R.id.btn_back_dynamic);
         ivAddPicture=findViewById(R.id.iv_add_picture);
-        dm=new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        ivAddImg1=findViewById(R.id.iv_add_img1);
+        ivAddImg2=findViewById(R.id.iv_add_img2);
+        ivAddImg3=findViewById(R.id.iv_add_img3);
         llUserLocation=findViewById(R.id.ll_user_location);
     }
     //为控件设置点击事件
@@ -65,17 +70,20 @@ public class EditDynamicActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ActivityCompat.requestPermissions(EditDynamicActivity.this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA},
+                                10);
                         Matisse.from(EditDynamicActivity.this)
-                        .choose(MimeType.allOf())
+                        .choose(MimeType.ofAll())
                         .countable(true)//是否有序
                         .maxSelectable(3)//最大图片数量
                         .gridExpectedSize(dm.widthPixels/3)
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                         .thumbnailScale(0.85f)
-                        .imageEngine(new GlideEngine())
+                        .imageEngine(new GlideImageEngine())
                         .theme(R.style.Matisse_Zhihu) //主题
                         .capture(true)
-                                .captureStrategy(new CaptureStrategy(true,"com.example.train_shadowlinedemo.SharedFragment.MyFileProvider"))
+                                .captureStrategy(new CaptureStrategy(true,"com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.MyFileProvider"))
                         .forResult(REQUEST_CODE_CHOOSE);
                     }
                 }

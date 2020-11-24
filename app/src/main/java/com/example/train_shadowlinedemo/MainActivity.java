@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         //获取控件
         ivFilm=findViewById(R.id.iv_tab_film);
         ivCity=findViewById(R.id.iv_tab_city);
@@ -160,5 +159,6 @@ public class MainActivity extends AppCompatActivity {
                 ivMine.setImageResource(R.drawable.tab_mine2);
                 break;
         }
+
     }
 }
