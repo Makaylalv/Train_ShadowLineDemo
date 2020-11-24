@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -27,10 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.example.train_shadowlinedemo.view.MovieShow.ImageBannerFramLayout
+            <com.youth.banner.Banner
+                android:id="@+id/movie_banner"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:id="@+id/image_group" />
+                app:banner_indicator_normal_width="7dp"
+                app:banner_indicator_selected_width="10dp"
+                app:banner_indicator_height="10dp"
+                app:banner_indicator_space="10dp"
+                app:banner_indicator_normal_color="#C1BFBF"
+                app:banner_indicator_selected_color="@color/mainColor"/>
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

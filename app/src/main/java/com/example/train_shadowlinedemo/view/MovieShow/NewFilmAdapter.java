@@ -1,6 +1,7 @@
 package com.example.train_shadowlinedemo.view.MovieShow;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
 import com.example.train_shadowlinedemo.entity.Film;
 
 import java.util.List;
@@ -30,9 +32,11 @@ public class NewFilmAdapter extends RecyclerView.Adapter<NewFilmAdapter.ItemView
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       //利用反射将item布局加载出来
+        //利用反射将item布局加载出来
         View view= LayoutInflater.from(parent.getContext()).inflate(layoutItemId,parent,false);
         //new一个我们的ViewHolder，findViewById操作都在ItemViewHolder的构造方法中进行
+        //设置item的宽度
+
         return new ItemViewHolder(view);
     }
 
@@ -41,10 +45,17 @@ public class NewFilmAdapter extends RecyclerView.Adapter<NewFilmAdapter.ItemView
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Film film=films.get(position);
         //Glide.with(mContext).load(film.getFilmImg()).into(holder.ivImg);
-        holder.ivImg.setImageResource(Integer.parseInt(film.getFilmImg()));
+        holder.ivImg.setImageResource(R.drawable.newfilm_p1);
         holder.tvName.setText(film.getFilmName());
         holder.tvOutTime.setText(film.getFilmReleasetime());
         holder.tvProductFrom.setText(film.getFilmProducercountry());
+        holder.ivImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //点击跳转到详情页面
+                Intent intent=new Intent(mContext, MovieDetailActivity.class);
+            }
+        });
     }
 
     @Override
@@ -64,7 +75,6 @@ public class NewFilmAdapter extends RecyclerView.Adapter<NewFilmAdapter.ItemView
             tvName=itemView.findViewById(R.id.tv_newfilm_name);
             tvOutTime=itemView.findViewById(R.id.tv_newfilm_outtime);
             tvProductFrom=itemView.findViewById(R.id.tv_newfilm_productfrom);
-
         }
     }
 }

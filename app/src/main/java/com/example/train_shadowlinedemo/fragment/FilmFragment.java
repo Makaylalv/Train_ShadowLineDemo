@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,21 +18,28 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
 import com.example.train_shadowlinedemo.activity.MovieTypeActivity;
 import com.example.train_shadowlinedemo.activity.SearchActivity;
 import com.example.train_shadowlinedemo.entity.Film;
-import com.example.train_shadowlinedemo.view.MovieShow.ImageBannerFramLayout;
+import com.example.train_shadowlinedemo.view.MovieShow.ImageAdapter;
 import com.example.train_shadowlinedemo.view.MovieShow.NewFilmAdapter;
+import com.youth.banner.Banner;
+import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.listener.OnBannerListener;
+import com.youth.banner.transformer.ScaleInTransformer;
+import com.youth.banner.util.BannerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilmFragment  extends Fragment implements ImageBannerFramLayout.FramLayoutLisenner{
+public class FilmFragment  extends Fragment {
     private View root;
-    private int[] bannerImages;
-    private ImageBannerFramLayout mGroup;
+    private Banner banner;
     private RecyclerView rvNewFilmList;
     private List<Film> bannerList=new ArrayList<>();
     private List<Film> newFilmList=new ArrayList<>();
@@ -42,25 +50,20 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
         if(root==null){
             root=inflater.inflate(R.layout.fragment_film,container,false);
         }
-        Button btnSearch=root.findViewById(R.id.btn_search);
-        bannerImages=new int[]{
-                R.drawable.movie_banner_pic1,
-                R.drawable.movie_banner_pic2,
-                R.drawable.movie_banner_pic3,
-        };
-        autoBannerImages();
+        findView();//获取控件
+        //初始化轮播图
+        InitBanner();
         initNewFilmData();
         findNewFilmList();
         getBannerFilm();
 
-        findView();//获取控件
-        MyOnClickListener myListenter=new MyOnClickListener();
-        btnSearch.setOnClickListener(myListenter);
         return root;
     }
 
     //获取控件
     private void findView() {
+        Button btnSearch=root.findViewById(R.id.btn_search);
+        banner=root.findViewById(R.id.movie_banner);
         LinearLayout linearType1=root.findViewById(R.id.linear_type1);
         LinearLayout linearType2=root.findViewById(R.id.linear_type2);
         LinearLayout linearType3=root.findViewById(R.id.linear_type3);
@@ -76,17 +79,18 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
         linearType5.setOnClickListener(listener);
         linearType6.setOnClickListener(listener);
         linearType7.setOnClickListener(listener);
+        btnSearch.setOnClickListener(listener);
 
     }
 
     //获取轮播图内电影内容
     private void getBannerFilm() {
 
-
     }
 
     //初始化最新更新电影的列表
     private void initNewFilmData() {
+
         Film film1=new Film();
         film1.setFilmId(1);
         film1.setFilmDirector("曾国祥");
@@ -139,8 +143,10 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
         film4.setFilmImg("R.drawable.newfilm_p1");
         film4.setFlimMapImg("film/map/img1.jpg");
 
-
-
+        newFilmList.add(film1);
+        newFilmList.add(film2);
+        newFilmList.add(film3);
+        newFilmList.add(film4);
 
     }
 
@@ -210,25 +216,27 @@ public class FilmFragment  extends Fragment implements ImageBannerFramLayout.Fra
     }
 
     //轮播图初始化
-    private void autoBannerImages(){
-        //计算当前手机宽度
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        //getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-        mGroup = root.findViewById(R.id.image_group);
-        mGroup.setLisenner(this);
-        List<Bitmap> list = new ArrayList<>();
-        for (int i = 0; i < bannerImages.length; i++) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),bannerImages[i]);
-            list.add(bitmap);
-        }
-        mGroup.addBitmaps(list);
-    }
+    private void InitBanner(){
+       banner.setAdapter(new ImageAdapter(bannerList)
+           /*@Override
+           public void onBindView(BannerViewHolder holder, Film data, int position, int size) {
+               super.onBindView(holder, data, position, size);
+               Glide.with(holder.itemView)
+                       .load(R.drawable.movie_banner_pic1)
+                       .apply(RequestOptions.bitmapTransform(new RoundedCorners(30)))
+                       .into(holder.imageView);
 
-    @Override
-    public void chickImageIndex(int pos) {
-        //点击轮播图跳转到详情界面
-        Intent intent=new Intent(getContext(), MovieDetailActivity.class);
-
+           }*/
+       )
+               .addBannerLifecycleObserver(this)//添加生命周期观察者
+               .setIndicator(new CircleIndicator(getContext()))
+               .setBannerRound(BannerUtils.dp2px(2))//圆角
+               .setPageTransformer(new ScaleInTransformer())
+               .setOnBannerListener(new OnBannerListener() {
+                   @Override
+                   public void OnBannerClick(Object data, int position) {
+                       Log.e("banner","点击第"+position+"个");
+                   }
+               });
     }
 }
