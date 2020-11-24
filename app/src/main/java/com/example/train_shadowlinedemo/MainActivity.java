@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
+import com.example.train_shadowlinedemo.activity.MovieTypeActivity;
 import com.example.train_shadowlinedemo.entity.Film;
 import com.example.train_shadowlinedemo.fragment.CityFragment;
 import com.example.train_shadowlinedemo.fragment.FilmFragment;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         changeTab(filmFragment);
         changeColor("film");
         currentFragment=filmFragment;
-        Intent intent=new Intent();
+        /*Intent intent=new Intent();
         Film film=new Film();
         film.setFilmId(1);
         film.setFilmDirector("曾国祥");
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 .create();
         intent.putExtra("film", gson.toJson(film));
         intent.setClass(this, MovieDetailActivity.class);
-        startActivity(intent);
+        startActivity(intent);*/
     }
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 changeTab(personalFragment);
                 changeColor("mine");
                 break;
+
         }
     }
 

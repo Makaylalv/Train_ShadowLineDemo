@@ -40,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <LinearLayout
+                        android:id="@+id/linear_type1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -56,6 +57,7 @@
                             android:textColor="@color/mainColor"/>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_type2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -72,6 +74,7 @@
                             android:textColor="@color/mainColor"/>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_type3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -88,6 +91,7 @@
                             android:textColor="@color/mainColor"/>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_type4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -104,6 +108,7 @@
                             android:textColor="@color/mainColor"/>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_type5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -120,6 +125,7 @@
                             android:textColor="@color/mainColor"/>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_type6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -136,6 +142,8 @@
                             android:textColor="@color/mainColor"/>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_type7"
+                        android:onClick="fragmentOnClicked"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
