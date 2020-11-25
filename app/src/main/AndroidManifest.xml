@@ -49,6 +49,8 @@
         </activity>
         <activity android:name=".activity.MovieDetailActivity"
             android:theme="@style/AppTheme"/>
+        <activity android:name=".activity.DetailMapActivity"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".activity.SearchActivity"/>
         <activity android:name=".activity.RegisterActivity"/>
         <activity android:name=".activity.LoginActivity"/>

@@ -58,27 +58,27 @@ public class MainActivity extends AppCompatActivity {
         changeTab(filmFragment);
         changeColor("film");
         currentFragment=filmFragment;
-//        Intent intent=new Intent();
-//        Film film=new Film();
-//        film.setFilmId(1);
-//        film.setFilmDirector("曾国祥");
-//        film.setFilmEnglishname("Young you");
-//        film.setFilmName("少年的你");
-//        film.setFilmInfo("一场高考前夕的校园意外，改变了两个少年的命运。陈念(周冬雨)是学校里的优等生，考上好大学是她唯一的念头。同班同学的意外坠楼牵扯出的故事，陈念也被一点点卷入其中…在她最孤独的时刻，一个叫小北（易烊千玺）的少年闯入了她的世界。");
-//        film.setFilmTostar("周冬雨&易烊千玺");
-//        film.setFilmReleasetime("2019");
-//        film.setFilmProducercountry("中国");
-//        film.setFilmType("爱情/犯罪/剧情");
-//        film.setFilmImg("film/filmphoto/img1.jpg");
-//        film.setFlimMapImg("film/map/img1.jpg");
-//        Gson gson = new GsonBuilder()
-//                .serializeNulls()//允许序列化空值
-//                .setPrettyPrinting()//格式化输出
-//                .setDateFormat("yyyy-MM-dd")//设置日期输出格式
-//                .create();
-//        intent.putExtra("film", gson.toJson(film));
-//        intent.setClass(this, MovieDetailActivity.class);
-//        startActivity(intent);
+        Intent intent=new Intent();
+        Film film=new Film();
+        film.setFilmId(1);
+        film.setFilmDirector("曾国祥");
+        film.setFilmEnglishname("Young you");
+        film.setFilmName("少年的你");
+        film.setFilmInfo("一场高考前夕的校园意外，改变了两个少年的命运。陈念(周冬雨)是学校里的优等生，考上好大学是她唯一的念头。同班同学的意外坠楼牵扯出的故事，陈念也被一点点卷入其中…在她最孤独的时刻，一个叫小北（易烊千玺）的少年闯入了她的世界。");
+        film.setFilmTostar("周冬雨&易烊千玺");
+        film.setFilmReleasetime("2019");
+        film.setFilmProducercountry("中国");
+        film.setFilmType("爱情/犯罪/剧情");
+        film.setFilmImg("film/filmphoto/img1.jpg");
+        film.setFlimMapImg("film/map/img1.jpg");
+        Gson gson = new GsonBuilder()
+                .serializeNulls()//允许序列化空值
+                .setPrettyPrinting()//格式化输出
+                .setDateFormat("yyyy-MM-dd")//设置日期输出格式
+                .create();
+        intent.putExtra("film", gson.toJson(film));
+        intent.setClass(this, MovieDetailActivity.class);
+        startActivity(intent);
     }
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();

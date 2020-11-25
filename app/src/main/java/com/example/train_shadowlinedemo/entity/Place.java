@@ -14,7 +14,7 @@ public class Place {
     private String placePosition;
     private String placeTime;
     private String placeType;
-    public int getPlaceId(int i) {
+    public int getPlaceId() {
         return placeId;
     }
 
@@ -117,4 +117,6 @@ public class Place {
     public void setPlaceType(String placeType) {
         this.placeType = placeType;
     }
+
+
 }
