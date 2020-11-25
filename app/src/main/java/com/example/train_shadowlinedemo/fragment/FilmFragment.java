@@ -148,6 +148,8 @@ public class FilmFragment  extends Fragment {
         newFilmList.add(film3);
         newFilmList.add(film4);
 
+
+
     }
 
     //初始化RecyclerView
@@ -217,7 +219,7 @@ public class FilmFragment  extends Fragment {
 
     //轮播图初始化
     private void InitBanner(){
-       banner.setAdapter(new ImageAdapter(bannerList)
+       banner.setAdapter(new ImageAdapter(newFilmList)
            /*@Override
            public void onBindView(BannerViewHolder holder, Film data, int position, int size) {
                super.onBindView(holder, data, position, size);
@@ -229,8 +231,8 @@ public class FilmFragment  extends Fragment {
            }*/
        )
                .addBannerLifecycleObserver(this)//添加生命周期观察者
-               .setIndicator(new CircleIndicator(getContext()))
-               .setBannerRound(BannerUtils.dp2px(2))//圆角
+               .setIndicator(new CircleIndicator(getContext()),true)
+               .setBannerRound(BannerUtils.dp2px(5))//圆角
                .setPageTransformer(new ScaleInTransformer())
                .setOnBannerListener(new OnBannerListener() {
                    @Override
