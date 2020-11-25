@@ -49,6 +49,7 @@ dependencies {
     //获取图片框架
     implementation'com.zhihu.android:matisse:0.4.3'
     implementation'com.zhihu.android:matisse:0.5.3-beta3'
-
+    //EventBus
+    implementation 'org.greenrobot:eventbus:3.1.1'
 
 }
