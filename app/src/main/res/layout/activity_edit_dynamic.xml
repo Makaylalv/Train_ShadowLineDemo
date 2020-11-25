@@ -43,14 +43,17 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/iv_add_img1"
+                android:layout_columnWeight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageView
                 android:id="@+id/iv_add_img2"
+                android:layout_columnWeight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageView
                 android:id="@+id/iv_add_img3"
+                android:layout_columnWeight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </GridLayout>
@@ -150,6 +153,16 @@
                 android:layout_marginLeft="200dp"
                 android:src="@drawable/share_youjiantou"/>
         </LinearLayout>
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/btn_share_confirm_publish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/mainColor"
+
+            android:text="确定发布">
+
+        </Button>
 
     </LinearLayout>
 </LinearLayout>

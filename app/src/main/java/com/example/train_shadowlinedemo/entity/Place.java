@@ -7,14 +7,14 @@ public class Place {
     private double placeLongitude;
     private double placeLatitude;
     private String placePhone;
-    private int placeReallyImg;
-    private int placeFalseImg;
+    private String placeReallyImg;
+    private String placeFalseImg;
     private String placeDescribe;
     private String placeFilmDescribe;
     private String placePosition;
     private String placeTime;
     private String placeType;
-    public int getPlaceId(int i) {
+    public int getPlaceId() {
         return placeId;
     }
 
@@ -62,19 +62,19 @@ public class Place {
         this.placePhone = placePhone;
     }
 
-    public int getPlaceReallyImg() {
+    public String getPlaceReallyImg() {
         return placeReallyImg;
     }
 
-    public void setPlaceReallyImg(int placeReallyImg) {
+    public void setPlaceReallyImg(String placeReallyImg) {
         this.placeReallyImg = placeReallyImg;
     }
 
-    public int getPlaceFalseImg() {
+    public String getPlaceFalseImg() {
         return placeFalseImg;
     }
 
-    public void setPlaceFalseImg(int placeFalseImg) {
+    public void setPlaceFalseImg(String placeFalseImg) {
         this.placeFalseImg = placeFalseImg;
     }
 
@@ -117,4 +117,6 @@ public class Place {
     public void setPlaceType(String placeType) {
         this.placeType = placeType;
     }
+
+
 }

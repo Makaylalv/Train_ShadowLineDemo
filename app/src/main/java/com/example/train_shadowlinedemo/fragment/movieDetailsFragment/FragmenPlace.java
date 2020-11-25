@@ -1,10 +1,14 @@
 package com.example.train_shadowlinedemo.fragment.movieDetailsFragment;
 
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,45 +16,49 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Place;
 import com.example.train_shadowlinedemo.view.MovieDetail.PlaceRecyclerViewAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+
+import java.util.logging.LogRecord;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class FragmenPlace extends androidx.fragment.app.Fragment {
-    ArrayList<Place> places= new ArrayList<>();
-    RecyclerView recyclerView;
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, android.os.Bundle savedInstanceState) {
-        View view = null;
-        view = inflater.inflate(R.layout.fragment_place, container, false);
-        recyclerView = view.findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        initData();
-        PlaceRecyclerViewAdapter myAdapter =new PlaceRecyclerViewAdapter(places);
-        myAdapter.setOnItemClickListener(onItemClickListener);
-        recyclerView.setAdapter(myAdapter);
-        return view;
-    }
+    private ArrayList<Place> places= new ArrayList<>();
+    View view;
+    private RecyclerView recyclerView;
 
-    private void initData() {
-        Place place1=new Place();
-        Place place2=new Place();
-        place1.setPlaceName("重庆德普外国语学校");
-        place2.setPlaceName("白象居");
-        place1.setPlaceFalseImg(R.drawable.false_place_img1);
-        place2.setPlaceFalseImg(R.drawable.flase_place_img2);
-        place1.setPlacePosition("中国重庆市");
-        place2.setPlacePosition("中国重庆市");
-        place1.setPlaceFilmDescribe("陈念教英语的学校");
-        place2.setPlaceFilmDescribe("陈念上学的路");
-        place1.setPlaceTime("02:00");
-        place2.setPlaceTime("06:58");
-        places.add(place1);
-        places.add(place2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, android.os.Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_place, container, false);
+        return view;
     }
 
     @Override
     public void onCreate(@androidx.annotation.Nullable android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
+
+    public void setData(ArrayList<Place> places){
+        this.places=places;
+        recyclerView = view.findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        PlaceRecyclerViewAdapter myAdapter =new PlaceRecyclerViewAdapter(places,getContext());
+        myAdapter.setOnItemClickListener(onItemClickListener);
+        recyclerView.setAdapter(myAdapter);
+    }
+
 
 
     PlaceRecyclerViewAdapter.OnItemClickListener onItemClickListener=new PlaceRecyclerViewAdapter.OnItemClickListener() {
@@ -67,7 +75,6 @@ public class FragmenPlace extends androidx.fragment.app.Fragment {
 
         @Override
         public void onItemLongClick(View v) {
-
         }
     };
 
