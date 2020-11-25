@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra("film", gson.toJson(film));
 //        intent.setClass(this, MovieDetailActivity.class);
 //        startActivity(intent);
+        onclickReceive();
     }
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();
@@ -158,6 +159,19 @@ public class MainActivity extends AppCompatActivity {
                 ivShare.setImageResource(R.drawable.tab_share);
                 ivMine.setImageResource(R.drawable.tab_mine2);
                 break;
+        }
+
+    }
+    //处理点击返回事件
+    public void onclickReceive(){
+        Intent intent=getIntent();
+        if(intent!=null){
+            String skipDynamic=intent.getStringExtra("skipDynamic");
+            if(skipDynamic!="skipDynamic"){
+                changeTab(shareFragment);
+                changeColor("share");
+                currentFragment=shareFragment;
+            }
         }
 
     }
