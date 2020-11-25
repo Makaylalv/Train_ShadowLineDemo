@@ -1,10 +1,14 @@
 package com.example.train_shadowlinedemo.fragment.movieDetailsFragment;
 
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,40 +16,88 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Place;
 import com.example.train_shadowlinedemo.view.MovieDetail.PlaceRecyclerViewAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+
+import java.util.logging.LogRecord;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class FragmenPlace extends androidx.fragment.app.Fragment {
-    ArrayList<Place> places= new ArrayList<>();
-    RecyclerView recyclerView;
+    private ArrayList<Place> places= new ArrayList<>();
+    private OkHttpClient okHttpClient;
+    private RecyclerView recyclerView;
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what){
+                case 0:
+                    PlaceRecyclerViewAdapter myAdapter =new PlaceRecyclerViewAdapter(places,getContext());
+                    myAdapter.setOnItemClickListener(onItemClickListener);
+                    recyclerView.setAdapter(myAdapter);
+                    break;
+            }
+        }
+    };
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, android.os.Bundle savedInstanceState) {
         View view = null;
         view = inflater.inflate(R.layout.fragment_place, container, false);
         recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        initData();
-        PlaceRecyclerViewAdapter myAdapter =new PlaceRecyclerViewAdapter(places);
-        myAdapter.setOnItemClickListener(onItemClickListener);
-        recyclerView.setAdapter(myAdapter);
+        okHttpClient=new OkHttpClient();
+        getAllPlace();
         return view;
     }
 
-    private void initData() {
-        Place place1=new Place();
-        Place place2=new Place();
-        place1.setPlaceName("重庆德普外国语学校");
-        place2.setPlaceName("白象居");
-        place1.setPlaceFalseImg(R.drawable.false_place_img1);
-        place2.setPlaceFalseImg(R.drawable.flase_place_img2);
-        place1.setPlacePosition("中国重庆市");
-        place2.setPlacePosition("中国重庆市");
-        place1.setPlaceFilmDescribe("陈念教英语的学校");
-        place2.setPlaceFilmDescribe("陈念上学的路");
-        place1.setPlaceTime("02:00");
-        place2.setPlaceTime("06:58");
-        places.add(place1);
-        places.add(place2);
+    private void getAllPlace() {
+        //2.创建RequestBody（请求体）对象
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),"获取地点信息");
+        //3.创建请求对象
+        Request request = new Request.Builder()
+                .post(requestBody)//请求方式为POST
+                .url("http://192.168.43.128:8080/ShadowLine/GetAllPlaceServlet")
+                .build();
+        //4.创建Call对象，发送请求，并接受响应
+        final Call call = okHttpClient.newCall(request);
+        //异步网络请求（不需要创建子线程）
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //请求成功时回调
+                Gson gson=new Gson();
+                Type type = new TypeToken<ArrayList<Place>>(){}.getType();
+                places = gson.fromJson(response.body().string(),type);
+                Message message=new Message();
+                message.what=0;
+                handler.sendMessage(message);
+                //打印测试
+                for(Place i:places){
+                    System.out.println(i.getPlaceName());
+                }
+            }
+        });
     }
+
 
     @Override
     public void onCreate(@androidx.annotation.Nullable android.os.Bundle savedInstanceState) {
@@ -67,7 +119,6 @@ public class FragmenPlace extends androidx.fragment.app.Fragment {
 
         @Override
         public void onItemLongClick(View v) {
-
         }
     };
 

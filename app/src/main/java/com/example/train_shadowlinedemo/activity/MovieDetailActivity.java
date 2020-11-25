@@ -77,7 +77,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                         }
                     };
                     timer = new Timer();
-                    barTextView.setText("少年的你");
+                    barTextView.setText(film.getFilmName());
                     barTextView.setAlpha(0);
                     timer.schedule(task1, 0, 30);
                     break;
@@ -147,7 +147,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         listTitle.add("片场");//标题
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(new MovieDetailsViewPagerAdapter(getSupportFragmentManager(),fragments,listTitle));
-
         //赋值
         filmChinesehNametextView.setText(film.getFilmName());
         filmEnglishNametextView.setText(film.getFilmEnglishname());
@@ -160,11 +159,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                 .error(R.drawable.glide_error)//请求失败时显示
                 .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
         Glide.with(this)
-                .load("http://192.168.116.1:8080/ShadowLine/imgs/"+film.getFilmImg())
+                .load("http://192.168.43.128:8080/ShadowLine/imgs/"+film.getFilmImg())
                 .apply(options)//应用请求选项
                 .into(filmImgView);
         Glide.with(this)
-                .load("http://192.168.116.1:8080/ShadowLine/imgs/"+film.getFlimMapImg())
+                .load("http://192.168.43.128:8080/ShadowLine/imgs/"+film.getFlimMapImg())
                 .apply(options)//应用请求选项
                 .into(filmMapImgView);
     }

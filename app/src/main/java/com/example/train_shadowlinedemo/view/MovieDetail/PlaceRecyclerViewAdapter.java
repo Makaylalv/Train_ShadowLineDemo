@@ -1,5 +1,6 @@
 package com.example.train_shadowlinedemo.view.MovieDetail;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Place;
 
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 public class PlaceRecyclerViewAdapter extends RecyclerView.Adapter<PlaceRecyclerViewAdapter.ViewHolder> implements View.OnClickListener{
 
     private ArrayList<Place> places;
+    private Context context;
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView textView_time;
         TextView textView_name;
@@ -35,8 +39,9 @@ public class PlaceRecyclerViewAdapter extends RecyclerView.Adapter<PlaceRecycler
         }
 
     }
-    public PlaceRecyclerViewAdapter(ArrayList<Place> list){
+    public PlaceRecyclerViewAdapter(ArrayList<Place> list,Context context){
         places = list;
+        this.context=context;
     }
     @Override
 
@@ -54,7 +59,14 @@ public class PlaceRecyclerViewAdapter extends RecyclerView.Adapter<PlaceRecycler
         holder.textView_pos.setText(place.getPlacePosition());
         holder.textView_des.setText(place.getPlaceFilmDescribe());
         holder.textView_name.setText(place.getPlaceName());
-        holder.imageView.setImageResource(place.getPlaceFalseImg());
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.glide_loading)//加载图片的过程中显示
+                .error(R.drawable.glide_error)//请求失败时显示
+                .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
+        Glide.with(context)
+                .load("http://192.168.43.128:8080/ShadowLine/"+place.getPlaceFalseImg())
+                .apply(options)//应用请求选项
+                .into(holder.imageView);
         holder.itemView.setTag(position);
     }
 
