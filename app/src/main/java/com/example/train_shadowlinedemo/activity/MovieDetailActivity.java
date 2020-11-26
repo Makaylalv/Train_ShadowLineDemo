@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Film;
 import com.example.train_shadowlinedemo.entity.Place;
@@ -155,7 +156,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         //3.创建请求对象
         Request request = new Request.Builder()
                 .post(requestBody)//请求方式为POST
-                .url("http://192.168.43.128:8080/ShadowLine/GetAllPlaceServlet")
+                .url(ConfigUtil.SERVER_ADDR+"GetAllPlaceServlet")
                 .build();
         //4.创建Call对象，发送请求，并接受响应
         final Call call = okHttpClient.newCall(request);
@@ -233,11 +234,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                 .error(R.drawable.glide_error)//请求失败时显示
                 .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
         Glide.with(this)
-                .load("http://192.168.43.128:8080/ShadowLine/imgs/"+film.getFilmImg())
+                .load(ConfigUtil.SERVER_ADDR+"imgs/"+film.getFilmImg())
                 .apply(options)//应用请求选项
                 .into(filmImgView);
         Glide.with(this)
-                .load("http://192.168.43.128:8080/ShadowLine/imgs/"+film.getFlimMapImg())
+                .load(ConfigUtil.SERVER_ADDR+"imgs/"+film.getFlimMapImg())
                 .apply(options)//应用请求选项
                 .into(filmMapImgView);
         filmMapImgView.setOnClickListener(new View.OnClickListener() {
@@ -246,7 +247,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 Intent intent1=new Intent();
                 Gson gson=new Gson();
                 String str=gson.toJson(places);
-                intent1.putExtra("places",places);
+                intent1.putExtra("places",str);
                 intent1.setClass(MovieDetailActivity.this,DetailMapActivity.class);
                 startActivity(intent1);
             }

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <ImageView
+        android:id="@+id/iv_dynamic_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/shared_background"/>
+
+        android:src="@drawable/shared_background" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:src="@drawable/add_dynamic"
@@ -14,7 +18,14 @@
         android:layout_marginTop="150dp"
         android:layout_marginLeft="320dp"
         app:fabSize="mini"
-
         android:layout_height="wrap_content"/>
+
+    <ListView
+        android:padding="20dp"
+        android:id="@+id/lv_dynamics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_dynamic_background"
+         />
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.train_shadowlinedemo">
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,6 +20,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
+        android:networkSecurityConfig="@xml/network_security_config"
         android:name=".ShadowLineApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -34,7 +36,8 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote">
+            android:process=":remote"
+            >
             <intent-filter>
                 <action android:name="com.baidu.location.service_v5.0.0"/>
             </intent-filter>
