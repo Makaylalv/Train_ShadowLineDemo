@@ -1,11 +1,14 @@
 package com.example.train_shadowlinedemo.view.MovieShow;
 
+import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Film;
 import com.youth.banner.adapter.BannerAdapter;
@@ -17,9 +20,11 @@ import java.util.List;
  */
 public class ImageAdapter extends BannerAdapter<Film, ImageAdapter.BannerViewHolder> {
 
-    public ImageAdapter(List<Film> mDatas) {
+    private Context mContext;
+    public ImageAdapter(List<Film> mDatas, Context mContext) {
         //设置数据，也可以调用banner提供的方法,或者自己在adapter中实现
         super(mDatas);
+        this.mContext=mContext;
     }
 
     //创建ViewHolder，可以用viewType这个字段来区分不同的ViewHolder
@@ -33,10 +38,11 @@ public class ImageAdapter extends BannerAdapter<Film, ImageAdapter.BannerViewHol
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return new BannerViewHolder(imageView);
     }
-
     @Override
     public void onBindView(BannerViewHolder holder, Film data, int position, int size) {
-        holder.imageView.setImageResource(R.drawable.movie_banner_pic1);
+        Glide.with(mContext)
+                .load(ConfigUtil.SERVER_ADDR+data.getFilmImg())
+                .into(holder.imageView);
     }
 
     public class BannerViewHolder extends RecyclerView.ViewHolder {

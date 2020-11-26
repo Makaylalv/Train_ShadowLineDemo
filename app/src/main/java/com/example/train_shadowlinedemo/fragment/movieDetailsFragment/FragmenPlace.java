@@ -36,73 +36,29 @@ import okhttp3.Response;
 
 public class FragmenPlace extends androidx.fragment.app.Fragment {
     private ArrayList<Place> places= new ArrayList<>();
-    private OkHttpClient okHttpClient;
+    View view;
     private RecyclerView recyclerView;
-    private Handler handler=new Handler(){
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            switch (msg.what){
-                case 0:
-                    PlaceRecyclerViewAdapter myAdapter =new PlaceRecyclerViewAdapter(places,getContext());
-                    myAdapter.setOnItemClickListener(onItemClickListener);
-                    recyclerView.setAdapter(myAdapter);
-                    break;
-            }
-        }
-    };
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, android.os.Bundle savedInstanceState) {
-        View view = null;
         view = inflater.inflate(R.layout.fragment_place, container, false);
-        recyclerView = view.findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        okHttpClient=new OkHttpClient();
-        getAllPlace();
         return view;
     }
-
-    private void getAllPlace() {
-        //2.创建RequestBody（请求体）对象
-        RequestBody requestBody = RequestBody.create(MediaType.parse(
-                "text/plain;charset=utf-8"),"获取地点信息");
-        //3.创建请求对象
-        Request request = new Request.Builder()
-                .post(requestBody)//请求方式为POST
-                .url("http://192.168.43.128:8080/ShadowLine/GetAllPlaceServlet")
-                .build();
-        //4.创建Call对象，发送请求，并接受响应
-        final Call call = okHttpClient.newCall(request);
-        //异步网络请求（不需要创建子线程）
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                //请求失败时回调
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //请求成功时回调
-                Gson gson=new Gson();
-                Type type = new TypeToken<ArrayList<Place>>(){}.getType();
-                places = gson.fromJson(response.body().string(),type);
-                Message message=new Message();
-                message.what=0;
-                handler.sendMessage(message);
-                //打印测试
-                for(Place i:places){
-                    System.out.println(i.getPlaceName());
-                }
-            }
-        });
-    }
-
 
     @Override
     public void onCreate(@androidx.annotation.Nullable android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
+
+    public void setData(ArrayList<Place> places){
+        this.places=places;
+        recyclerView = view.findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        PlaceRecyclerViewAdapter myAdapter =new PlaceRecyclerViewAdapter(places,getContext());
+        myAdapter.setOnItemClickListener(onItemClickListener);
+        recyclerView.setAdapter(myAdapter);
+    }
+
 
 
     PlaceRecyclerViewAdapter.OnItemClickListener onItemClickListener=new PlaceRecyclerViewAdapter.OnItemClickListener() {

@@ -59,5 +59,7 @@ dependencies {
     implementation files('libs\\BaiduLBS_Android.jar')
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
+    //EventBus
+    implementation 'org.greenrobot:eventbus:3.1.1'
 
 }
