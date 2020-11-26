@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra("film", gson.toJson(film));
 //        intent.setClass(this, MovieDetailActivity.class);
 //        startActivity(intent);
-        onclickReceive();
+       onclickReceive();
     }
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();
@@ -167,11 +167,14 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=getIntent();
         if(intent!=null){
             String skipDynamic=intent.getStringExtra("skipDynamic");
-            if(skipDynamic!="skipDynamic"){
-                changeTab(shareFragment);
-                changeColor("share");
-                currentFragment=shareFragment;
+            if(skipDynamic!=null){
+                if(skipDynamic.equals("skipDynamic")){
+                    changeTab(shareFragment);
+                    changeColor("share");
+
+                }
             }
+
         }
 
     }
