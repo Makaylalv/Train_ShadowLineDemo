@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Place;
 
@@ -64,7 +65,7 @@ public class PlaceRecyclerViewAdapter extends RecyclerView.Adapter<PlaceRecycler
                 .error(R.drawable.glide_error)//请求失败时显示
                 .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
         Glide.with(context)
-                .load("http://192.168.43.128:8080/ShadowLine/"+place.getPlaceFalseImg())
+                .load(ConfigUtil.SERVER_ADDR +place.getPlaceFalseImg())
                 .apply(options)//应用请求选项
                 .into(holder.imageView);
         holder.itemView.setTag(position);

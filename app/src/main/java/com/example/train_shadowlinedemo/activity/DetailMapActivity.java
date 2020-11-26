@@ -23,6 +23,7 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Place;
 import com.google.gson.Gson;
@@ -80,6 +81,7 @@ public class DetailMapActivity extends AppCompatActivity {
         markerList=new ArrayList<>();
         mapView=findViewById(R.id.map);
         baiduMap=mapView.getMap();
+        overlayOptionsList=new ArrayList<>();
 
         Intent intent=getIntent();
         String jsonStr=intent.getStringExtra("places");
@@ -93,7 +95,7 @@ public class DetailMapActivity extends AppCompatActivity {
         //移动地图界面
         baiduMap.animateMapStatus(update);
         descriptorNormal= BitmapDescriptorFactory.fromResource(R.drawable.marker_normal);
-        descriptorSelect= BitmapDescriptorFactory.fromResource(R.drawable.marker_normal);
+        descriptorSelect= BitmapDescriptorFactory.fromResource(R.drawable.marker_select);
         for(int i=0;i<places.size();i++){
             double longitude=places.get(i).getPlaceLongitude();
             double latitude=places.get(i).getPlaceLatitude();
@@ -123,9 +125,10 @@ public class DetailMapActivity extends AppCompatActivity {
                     LatLng point=new LatLng(latitude,longitude);
                     int latitude2=new Double(places.get(i).getPlaceLatitude()*10000).intValue();
                     int longitude2=new Double(places.get(i).getPlaceLongitude()*10000).intValue();
+
                     if((Math.abs(latitude1-latitude2)<=1&&Math.abs(longitude1-longitude2)<=1)){
                         optionsSelect=new MarkerOptions().position(point).icon(descriptorSelect);
-                        Marker markerNew= (Marker) baiduMap.addOverlay(optionsNormal);
+                        Marker markerNew= (Marker) baiduMap.addOverlay(optionsSelect);
                         markerNew.setExtraInfo(bundle);
                     }else {
                         //在当前位置添加标注覆盖物
@@ -145,7 +148,7 @@ public class DetailMapActivity extends AppCompatActivity {
                         .error(R.drawable.glide_error)//请求失败时显示
                         .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
                 Glide.with(DetailMapActivity.this)
-                        .load("http://192.168.43.128:8080/ShadowLine/"+place.getPlaceFalseImg())
+                        .load(ConfigUtil.SERVER_ADDR+place.getPlaceFalseImg())
                         .apply(options)//应用请求选项
                         .into(placeImgIV);
                 return false;
