@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_dynamic_userimg"
+            android:layout_width="80dp"
+            android:layout_height="80dp">
+        </ImageView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_dynamic_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/mainColor"
+                android:textSize="15sp"
+                android:text="超级无敌可爱马">
+            </TextView>
+            <TextView
+                android:id="@+id/tv_dynamic_dynamictime"
+                android:layout_width="wrap_content"
+                android:text="今天18:37"
+                android:textSize="15sp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_dynamic_dynamiccontent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="今天有点小难过。
+">
+
+    </TextView>
+    <GridView
+        android:id="@+id/gv_dynamic_dynamicimgs"
+        android:layout_width="match_parent"
+        android:numColumns="3"
+        android:layout_height="200dp">
+    </GridView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="right"
+        android:layout_marginTop="15dp"
+        android:layout_height="wrap_content">
+        <Button
+            android:background="@drawable/dynamic_like"
+            android:id="@+id/btn_dynamic_like"
+            android:layout_width="30dp"
+            android:layout_height="30dp">
+
+        </Button>
+        <Button
+            android:background="@drawable/dynamic_comment"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/btn_dynamic_comment"
+            android:layout_width="30dp"
+            android:layout_height="30dp">
+
+        </Button>
+        <Button
+            android:layout_marginLeft="15dp"
+            android:id="@+id/btn_dynamic_forward"
+            android:background="@drawable/dynamic_forward"
+            android:layout_width="30dp"
+            android:layout_height="30dp">
+
+        </Button>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30dp"
+            android:src="@drawable/dynamic_like"
+            android:layout_height="30dp">
+
+        </ImageView>
+        <TextView
+            android:id="@+id/tv_dynamic_likeusers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:text="懒羊羊、喜羊羊、美羊羊觉得很赞">
+
+        </TextView>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/lv_dynamic_comments"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+    </ListView>
+
+</LinearLayout>

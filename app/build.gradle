@@ -37,6 +37,7 @@ dependencies {
 //轮播
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'com.youth.banner:banner:2.1.0'
+    implementation files('libs\\BaiduLBS_Android.jar')
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
@@ -58,5 +59,7 @@ dependencies {
     implementation files('libs\\BaiduLBS_Android.jar')
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
+    //EventBus
+    implementation 'org.greenrobot:eventbus:3.1.1'
 
 }
