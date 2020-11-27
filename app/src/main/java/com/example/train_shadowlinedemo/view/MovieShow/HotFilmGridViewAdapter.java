@@ -1,6 +1,7 @@
 package com.example.train_shadowlinedemo.view.MovieShow;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Film;
 
@@ -16,21 +19,19 @@ import java.util.List;
 
 public class HotFilmGridViewAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Film> films=new ArrayList<>();
+    private List<Film> films;
     private int layoutItemId;
 
     public HotFilmGridViewAdapter(Context mContext, List<Film> films, int layoutItemId) {
         this.mContext = mContext;
         this.films = films;
         this.layoutItemId = layoutItemId;
+        Log.e("HotFilmGridViewAdapter",films.size()+"");
     }
 
     @Override
     public int getCount() {
-        if (null!=films){
-            return  films.size();
-        }
-        return 0;
+        return  films.size();
     }
 
     @Override
@@ -48,6 +49,7 @@ public class HotFilmGridViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+
         ViewHolder holder=null;
         if(view==null){
             holder=new ViewHolder();
@@ -58,8 +60,12 @@ public class HotFilmGridViewAdapter extends BaseAdapter {
         }else{
             holder=(ViewHolder)view.getTag();
         }
+
         Film film=films.get(i);
-        holder.ivNewFilmImg.setImageResource(R.drawable.newfilm_p1);
+        Glide.with(mContext)
+                .load(ConfigUtil.SERVER_ADDR+film.getFilmImg())
+                .fitCenter()
+                .into(holder.ivNewFilmImg);
         holder.tvNewFilmName.setText(film.getFilmName());
         return view;
     }

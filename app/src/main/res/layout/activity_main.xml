@@ -13,6 +13,18 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/tabs"
+            android:orientation="horizontal">
+            <FrameLayout
+                android:id="@+id/tab_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/tabs" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,10 +122,6 @@
 
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/tab_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/tabs" />
+
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

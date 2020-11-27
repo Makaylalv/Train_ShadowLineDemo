@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
@@ -30,6 +31,7 @@ import com.example.train_shadowlinedemo.entity.Film;
 import com.example.train_shadowlinedemo.view.MovieShow.HotFilmGridViewAdapter;
 import com.example.train_shadowlinedemo.view.MovieShow.HotFilmListViewAdapter;
 import com.example.train_shadowlinedemo.view.MovieShow.ImageAdapter;
+import com.example.train_shadowlinedemo.view.MovieShow.ListViewForScrollView;
 import com.example.train_shadowlinedemo.view.MovieShow.NewFilmAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -63,6 +65,8 @@ public class FilmFragment  extends Fragment {
     private List<Film> bannerList=new ArrayList<>();//轮播图
     private List<Film> newFilmList=new ArrayList<>();//最新电影
     private List<Film> hotFilmList=new ArrayList<>();//热门电影
+    private List<Film> gvHotFilmList=new ArrayList<>();
+    private List<Film> lvHotFilmList=new ArrayList<>();
     private ImageView ivHotMovie;
     private TextView tvHotMovieName;
     private TextView tvHotMovieFromCountry;
@@ -70,7 +74,7 @@ public class FilmFragment  extends Fragment {
     private TextView tvHotMovieType;
 
     private GridView gvHotFilm;
-    private ListView lvHotFilm;
+    private ListViewForScrollView lvHotFilm;
 
     private OkHttpClient okHttpClient;
     private NewFilmAdapter newFilmAdapter;
@@ -91,12 +95,13 @@ public class FilmFragment  extends Fragment {
         ScrollView scrollView=root.findViewById(R.id.scrollView);
         scrollView.smoothScrollTo(0,0);//将ScrollView滚动到最顶端
         findView();//获取控件
-        getBannerFilm();//获取轮播图电影的数据
+        findHotFilmList();//获取热门电影的数据
+        findBannerFilm();//获取轮播图电影的数据
         findNewFilmList();//获取最新电影数据
-       /// findHotFilmList();//获取热门电影的数据
-        InitBanner();//初始化轮播图
-        initNewFilmData();//初始化最新电影数据
+        initBanner();//初始化轮播图
         initHotMovie();//初始化热门电影
+        initNewFilmData();//初始化最新电影数据
+
 
         //点击跳转
         gvHotFilm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -134,6 +139,26 @@ public class FilmFragment  extends Fragment {
     public void updateUI(String msg){
         if (msg.equals("update")){
             //刷新adapter
+            //初始化第一个
+            if(hotFilmList.size()>0){
+                Film film=hotFilmList.get(0);
+                Glide.with(getContext())
+                        .load(ConfigUtil.SERVER_ADDR+film.getFilmImg())
+                        .fitCenter()
+                        .into(ivHotMovie);
+                tvHotMovieName.setText(film.getFilmName());
+                tvHotMovieFromCountry.setText(film.getFilmProducercountry());
+                tvHotMovieType.setText(film.getFilmType());
+                tvHotMovieoutTime.setText(film.getFilmReleasetime());
+
+
+            }
+
+            if (hotFilmList.size()>5 && gvHotFilmList.size()==0 && lvHotFilmList.size()==0){
+                Log.e("update",hotFilmList.size()+"");
+                gvHotFilmList.addAll(hotFilmList.subList(1,5));
+                lvHotFilmList.addAll(hotFilmList.subList(5,hotFilmList.size()));
+            }
             newFilmAdapter.notifyDataSetChanged();
             gridViewAdapter.notifyDataSetChanged();
             listViewAdapter.notifyDataSetChanged();
@@ -145,7 +170,7 @@ public class FilmFragment  extends Fragment {
     //从数据库获取热门电影数据
     private void findHotFilmList() {
         Request request=new Request.Builder()
-                .url(ConfigUtil.SERVER_ADDR+"")
+                .url(ConfigUtil.SERVER_ADDR+"ClientGetHotFilms")
                 .build();
         Call call=okHttpClient.newCall(request);
         call.enqueue(new Callback() {
@@ -172,17 +197,11 @@ public class FilmFragment  extends Fragment {
 
     //初始化热门电影
     private void initHotMovie() {
-        //初始化第一个
-        ivHotMovie.setImageResource(R.drawable.newfilm_p1);
-        tvHotMovieName.setText("少年的你");
-        tvHotMovieFromCountry.setText("中国大陆");
-        tvHotMovieType.setText("爱情/喜剧");
-        tvHotMovieoutTime.setText("2020");
-
-        gridViewAdapter=new HotFilmGridViewAdapter(getContext(),newFilmList,R.layout.item_gv_hotfilm);
-        listViewAdapter=new HotFilmListViewAdapter(getContext(),newFilmList,R.layout.item_left_hotfilm,R.layout.item_right_hotfilm);
+        gridViewAdapter=new HotFilmGridViewAdapter(getContext(),gvHotFilmList,R.layout.item_gv_hotfilm);
+        listViewAdapter=new HotFilmListViewAdapter(getContext(),lvHotFilmList,R.layout.item_left_hotfilm,R.layout.item_right_hotfilm);
         gvHotFilm.setAdapter(gridViewAdapter);
         lvHotFilm.setAdapter(listViewAdapter);
+        Log.e("intiHotMovie",gvHotFilmList.size()+"");
     }
 
     //获取控件
@@ -217,7 +236,7 @@ public class FilmFragment  extends Fragment {
     }
 
     //获取轮播图内电影内容
-    private void getBannerFilm() {
+    private void findBannerFilm() {
         RequestBody requestBody = RequestBody.create(MediaType.parse(
                 "text/plain;charset=utf-8"),"requestBannerFilm");
         Request request=new Request.Builder()
@@ -247,63 +266,29 @@ public class FilmFragment  extends Fragment {
 
     //获取最新更新电影的列表
     private void findNewFilmList() {
+        Request request=new Request.Builder()
+                .url(ConfigUtil.SERVER_ADDR+"ClientGetNewFilms")
+                .build();
+        Call call=okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("onFailure","banner发生错误");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //获取轮播图列表数据
+                String filmJson=response.body().string();
+                Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
+                List<Film> filmList1=new Gson().fromJson(filmJson,type);
+                //修改数据源
+                newFilmList.addAll(filmList1);
+                //使用EventBus 发布事件更新adapter
+                EventBus.getDefault().post("update");
+            }
+        });
 
-        Film film1=new Film();
-        film1.setFilmId(1);
-        film1.setFilmDirector("曾国祥");
-        film1.setFilmEnglishname("Young you");
-        film1.setFilmName("少年的你1");
-        film1.setFilmInfo("一场高考前夕的校园意外，改变了两个少年的命运。陈念(周冬雨)是学校里的优等生，考上好大学是她唯一的念头。同班同学的意外坠楼牵扯出的故事，陈念也被一点点卷入其中…在她最孤独的时刻，一个叫小北（易烊千玺）的少年闯入了她的世界。");
-        film1.setFilmTostar("周冬雨&易烊千玺");
-        film1.setFilmReleasetime("2019");
-        film1.setFilmProducercountry("中国");
-        film1.setFilmType("爱情/犯罪/剧情");
-        film1.setFilmImg("R.drawable.newfilm_p1");
-        film1.setFlimMapImg("film/map/img1.jpg");
 
-        Film film2=new Film();
-        film2.setFilmId(1);
-        film2.setFilmDirector("曾国祥");
-        film2.setFilmEnglishname("Young you");
-        film2.setFilmName("少年的你2");
-        film2.setFilmInfo("一场高考前夕的校园意外，改变了两个少年的命运。陈念(周冬雨)是学校里的优等生，考上好大学是她唯一的念头。同班同学的意外坠楼牵扯出的故事，陈念也被一点点卷入其中…在她最孤独的时刻，一个叫小北（易烊千玺）的少年闯入了她的世界。");
-        film2.setFilmTostar("周冬雨&易烊千玺");
-        film2.setFilmReleasetime("2019");
-        film2.setFilmProducercountry("中国");
-        film2.setFilmType("爱情/犯罪/剧情");
-        film2.setFilmImg("R.drawable.newfilm_p1");
-        film2.setFlimMapImg("film/map/img1.jpg");
-
-        Film film3=new Film();
-        film3.setFilmId(1);
-        film3.setFilmDirector("曾国祥");
-        film3.setFilmEnglishname("Young you");
-        film3.setFilmName("少年的你3");
-        film3.setFilmInfo("一场高考前夕的校园意外，改变了两个少年的命运。陈念(周冬雨)是学校里的优等生，考上好大学是她唯一的念头。同班同学的意外坠楼牵扯出的故事，陈念也被一点点卷入其中…在她最孤独的时刻，一个叫小北（易烊千玺）的少年闯入了她的世界。");
-        film3.setFilmTostar("周冬雨&易烊千玺");
-        film3.setFilmReleasetime("2019");
-        film3.setFilmProducercountry("中国");
-        film3.setFilmType("爱情/犯罪/剧情");
-        film3.setFilmImg("R.drawable.newfilm_p1");
-        film3.setFlimMapImg("film/map/img1.jpg");
-
-        Film film4=new Film();
-        film4.setFilmId(1);
-        film4.setFilmDirector("曾国祥");
-        film4.setFilmEnglishname("Young you");
-        film4.setFilmName("少年的你4");
-        film4.setFilmInfo("一场高考前夕的校园意外，改变了两个少年的命运。陈念(周冬雨)是学校里的优等生，考上好大学是她唯一的念头。同班同学的意外坠楼牵扯出的故事，陈念也被一点点卷入其中…在她最孤独的时刻，一个叫小北（易烊千玺）的少年闯入了她的世界。");
-        film4.setFilmTostar("周冬雨&易烊千玺");
-        film4.setFilmReleasetime("2019");
-        film4.setFilmProducercountry("中国");
-        film4.setFilmType("爱情/犯罪/剧情");
-        film4.setFilmImg("R.drawable.newfilm_p1");
-        film4.setFlimMapImg("film/map/img1.jpg");
-
-        newFilmList.add(film1);
-        newFilmList.add(film2);
-        newFilmList.add(film3);
-        newFilmList.add(film4);
 
     }
 
@@ -372,7 +357,7 @@ public class FilmFragment  extends Fragment {
     }
 
     //轮播图初始化
-    private void InitBanner() {
+    private void initBanner() {
         imageAdapter = new ImageAdapter(bannerList,getContext());
         banner.setAdapter(imageAdapter)
                 .addBannerLifecycleObserver(this)//添加生命周期观察者

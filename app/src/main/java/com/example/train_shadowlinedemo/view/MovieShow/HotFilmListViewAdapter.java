@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Film;
 
@@ -61,6 +63,7 @@ public class HotFilmListViewAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.ivImg = view.findViewById(R.id.iv_img);
             holder.tvName = view.findViewById(R.id.tv_name);
+            holder.tvInfo=view.findViewById(R.id.tv_filminfo);
             //缓存ViewHolder对象
             view.setTag(holder);
         } else {
@@ -68,13 +71,18 @@ public class HotFilmListViewAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         Film film = films.get(position);
-        //给左边的布局赋值
-        holder.ivImg.setImageResource(R.drawable.movie_lv_p1);
+        //给布局赋值
+        Glide.with(mContext)
+                .load(ConfigUtil.SERVER_ADDR+film.getFilmImg())
+                .centerCrop()
+                .into(holder.ivImg);
         holder.tvName.setText(film.getFilmName());
+        holder.tvInfo.setText(film.getFilmInfo());
         return view;
     }
     private class ViewHolder{
         ImageView ivImg;
         TextView tvName;
+        TextView tvInfo;
     }
 }
