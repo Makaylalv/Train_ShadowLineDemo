@@ -84,7 +84,6 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
         //设置adapter
         customSearchView.setTipsHintAdapter(hintAdapter);
         customSearchView.setAutoCompleteAdapter(autoCompleteAdapter);
-
         lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -153,7 +152,17 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
         if (autoCompleteAdapter == null) {
             autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteData);
         } else {
+
+//            autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteData);
+//            customSearchView.setAutoCompleteAdapter(autoCompleteAdapter);
+            autoCompleteAdapter.clear();
+            autoCompleteAdapter.addAll(autoCompleteData);
             autoCompleteAdapter.notifyDataSetChanged();
+            Log.e("数据",autoCompleteAdapter.getCount()+"");
+            for(int i=0;i<autoCompleteAdapter.getCount();i++){
+                Log.e("数据",autoCompleteAdapter.getItem(i));
+            }
+
         }
     }
 
@@ -171,7 +180,7 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
         for (int i = 0; i < size; i++) {
             SearchResult result=new SearchResult();
             result.setImgUrl("fef");
-            result.setName("花木兰"+i);
+            result.setName("hua木兰"+i);
             result.setEnglishName("Mulan");
             result.setInfo("2020/美国/动作/奇幻");
             dbData.add(result);

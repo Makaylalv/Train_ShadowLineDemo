@@ -112,7 +112,11 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
      * 设置自动补全adapter
      */
     public void setAutoCompleteAdapter(ArrayAdapter<String> adapter) {
+
         this.mAutoCompleteAdapter = adapter;
+        for (int i=0;i<mAutoCompleteAdapter.getCount();i++){
+            Log.e("adapter中的数据",adapter.getItem(i));
+        }
     }
 
     private class EditChangedListener implements TextWatcher {
