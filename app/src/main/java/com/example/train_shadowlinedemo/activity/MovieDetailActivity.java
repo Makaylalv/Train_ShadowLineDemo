@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -120,7 +121,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         //给activity注册滑动事件
         (this).registerFragmentTouchListener(touchListener);
 
-
     }
 
     @Override
@@ -179,7 +179,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 handler.sendMessage(message);
                 //打印测试
                 for(Place i:places){
-                    System.out.println(i.getPlaceName());
+                    System.out.println(i.getPlaceMapImg());
                 }
             }
         });
@@ -211,7 +211,14 @@ public class MovieDetailActivity extends AppCompatActivity {
         filmTypeTV=findViewById(R.id.film_type);
         tabLayout = findViewById(R.id.tab_main);
         viewPager = findViewById(R.id.viewpager);
-        button=findViewById(R.id.more);
+        button=findViewById(R.id.collection);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collectionFilm();
+            }
+        });
+
 
         listTitle.add("片场"); //标题
         listTitle.add("片场");//标题
@@ -244,6 +251,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         filmMapImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("11111111111","11111111");
                 Intent intent1=new Intent();
                 Gson gson=new Gson();
                 String str=gson.toJson(places);
@@ -252,6 +260,34 @@ public class MovieDetailActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
+    }
+
+    private void collectionFilm() {
+        //2.创建RequestBody（请求体）对象
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),film.getFilmId()+"&"+"1");
+        //3.创建请求对象
+        Request request = new Request.Builder()
+                .post(requestBody)//请求方式为POST
+                .url(ConfigUtil.SERVER_ADDR+"CollectionFilmServlet")
+                .build();
+        //4.创建Call对象，发送请求，并接受响应
+        final Call call = okHttpClient.newCall(request);
+        //异步网络请求（不需要创建子线程）
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
+                Log.e("请求成功",response.body().string());
+            }
+        });
+
     }
 
     //自定义滑动监听

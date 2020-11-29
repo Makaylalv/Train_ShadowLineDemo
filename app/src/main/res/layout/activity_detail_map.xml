@@ -1,69 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:orientation="vertical"
+<RelativeLayout android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.baidu.mapapi.map.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <RelativeLayout
-        android:background="#72FFFFFF"
-        android:layout_alignParentBottom="true"
+    <com.example.train_shadowlinedemo.view.SlideView.SlideBottomLayout
+
+        android:id="@+id/slideLayout"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="200dp"
+        app:handler_height="180dp">
         <LinearLayout
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
+            android:background="#C8FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E3E1E1" />
-
-        <LinearLayout
-
-            android:padding="10dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_weight="5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/place_name"
-                    android:textSize="20sp"
-                    android:gravity="center_vertical"
-
-                    android:layout_weight="6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/place_position"
-                    android:gravity="center_vertical"
-
-                    android:layout_weight="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:textColor="#B8B6B6"
-                    android:id="@+id/place_film_describe"
-                    android:gravity="center_vertical"
-                    android:layout_weight="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/go_up"/>
+                <LinearLayout
+                    android:background="#DFDEDE"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></LinearLayout>
             </LinearLayout>
-            <ImageView
-                android:id="@+id/place_img"
-                android:layout_width="150dp"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
+            <!--            &lt;!&ndash;<TextView-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="40dp"-->
+            <!--                android:background="#F8D58A"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="handle"-->
+            <!--                android:textColor="@android:color/white"-->
+            <!--                android:textSize="16sp" />&ndash;&gt;-->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="450dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:id="@+id/layout_bottom"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp">
+                        <LinearLayout
 
-    </RelativeLayout>
+
+                            android:orientation="vertical"
+                            android:layout_weight="5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <TextView
+
+                                android:id="@+id/place_name"
+                                android:textSize="20sp"
+                                android:gravity="center_vertical"
+                                android:layout_weight="6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/place_position"
+                                android:gravity="center_vertical"
+                                android:layout_weight="2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/place_phone"
+                                android:gravity="center_vertical"
+                                android:layout_weight="2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/place_img"
+                            android:layout_width="150dp"
+                            android:layout_height="match_parent"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/layout_top"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_margin="10dp"
+                                android:id="@+id/place_top_name"
+                                android:textSize="25sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <ImageView
+                                android:id="@+id/isCollection"
+                                android:layout_marginRight="15dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </ImageView>
+                        </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/place_big_img"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"/>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/place_big_position"
+                                android:paddingLeft="5dp"
+                                android:textSize="15sp"
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                            <LinearLayout
+                                android:paddingLeft="5dp"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_gravity="center_vertical"
+                                    android:src="@drawable/place_type"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:layout_gravity="center_vertical"
+                                    android:textSize="15sp"
+                                    android:id="@+id/place_type"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:paddingLeft="5dp"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_gravity="center_vertical"
+                                    android:src="@drawable/place_phone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/place_big_phone"
+                                    android:layout_gravity="center_vertical"
+                                    android:textSize="15sp"
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                            <TextView
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/place_dec"
+                                android:padding="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                            <LinearLayout
+                                android:background="#CFCFCF"
+                                android:layout_margin="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"/>
+                            <ImageView
+                                android:id="@+id/place_big_map"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="20dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </FrameLayout>
+            </ScrollView>
+        </LinearLayout>a
+    </com.example.train_shadowlinedemo.view.SlideView.SlideBottomLayout>
 
 </RelativeLayout>

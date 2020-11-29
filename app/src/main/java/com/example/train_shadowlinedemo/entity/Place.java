@@ -2,19 +2,47 @@ package com.example.train_shadowlinedemo.entity;
 
 public class Place {
     private int placeId;
+
     private String placeName;
+
     private String placeEnglishname;
+
     private double placeLongitude;
+
     private double placeLatitude;
+
     private String placePhone;
+
     private String placeReallyImg;
+
     private String placeFalseImg;
+
     private String placeDescribe;
+
     private String placeFilmDescribe;
+
     private String placePosition;
+
     private String placeTime;
+
     private String placeType;
+
+    private String placeMapImg;
+
+    public String getPlaceMapImg() {
+
+        return placeMapImg;
+
+    }
+
+    public void setPlaceMapImg(String placeMapImg) {
+
+        this.placeMapImg = placeMapImg;
+
+    }
+
     public int getPlaceId() {
+
         return placeId;
     }
 
@@ -117,6 +145,5 @@ public class Place {
     public void setPlaceType(String placeType) {
         this.placeType = placeType;
     }
-
 
 }
