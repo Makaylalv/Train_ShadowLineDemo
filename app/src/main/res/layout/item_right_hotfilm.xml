@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="10dp">
+    android:paddingVertical="20dp">
 
     <ImageView
         android:id="@+id/iv_img"
@@ -16,9 +16,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_img"
-        android:layout_marginTop="-64dp"
+        android:layout_marginTop="-37dp"
         android:text="泰坦尼克号"
         android:textColor="@color/black"
-        android:textSize="20dp" />
+        android:textSize="18sp" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_filminfo"
+        android:layout_below="@id/iv_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="As long as we both shall live.\n死生契阔，与子成悦。" />
+
 </RelativeLayout>
 

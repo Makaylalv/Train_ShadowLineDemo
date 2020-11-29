@@ -15,9 +15,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_img"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="-64dp"
-        android:layout_marginRight="2dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="-37dp"
+        android:layout_marginRight="0dp"
         android:text="泰坦尼克号"
         android:textColor="@color/black"
-        android:textSize="20dp" />
+        android:textSize="18sp" />
+    <TextView
+
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_filminfo"
+        android:layout_below="@id/iv_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:text="As long as we both shall live.\n死生契阔，与子成悦。" />
+
 </RelativeLayout>

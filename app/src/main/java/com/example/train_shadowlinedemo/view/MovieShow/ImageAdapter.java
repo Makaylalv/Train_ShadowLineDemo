@@ -42,6 +42,7 @@ public class ImageAdapter extends BannerAdapter<Film, ImageAdapter.BannerViewHol
     public void onBindView(BannerViewHolder holder, Film data, int position, int size) {
         Glide.with(mContext)
                 .load(ConfigUtil.SERVER_ADDR+data.getFilmImg())
+                .fitCenter()
                 .into(holder.imageView);
     }
 

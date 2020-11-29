@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private CityFragment cityFragment;
     private ShareFragment shareFragment;
     private PersonalFragment personalFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         changeTab(filmFragment);
         changeColor("film");
         currentFragment=filmFragment;
-        Intent intent=new Intent();
+       /* Intent intent=new Intent();
         Film film=new Film();
         film.setFilmId(1);
         film.setFilmDirector("曾国祥");
@@ -79,10 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 .create();
         intent.putExtra("film", gson.toJson(film));
         intent.setClass(this, MovieDetailActivity.class);
-        startActivity(intent);
-       onclickReceive();
+        startActivity(intent);*/
     }
-
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();
         FragmentTransaction transaction=manager.beginTransaction();
@@ -118,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
     private void changeColor(String str) {
         switch (str){
@@ -162,24 +158,6 @@ public class MainActivity extends AppCompatActivity {
                 ivShare.setImageResource(R.drawable.tab_share);
                 ivMine.setImageResource(R.drawable.tab_mine2);
                 break;
-        }
-
-    }
-
-
-    //处理点击返回事件
-    public void onclickReceive(){
-        Intent intent=getIntent();
-        if(intent!=null){
-            String skipDynamic=intent.getStringExtra("skipDynamic");
-            if(skipDynamic!=null){
-                if(skipDynamic.equals("skipDynamic")){
-                    changeTab(shareFragment);
-                    changeColor("share");
-
-                }
-            }
-
         }
 
     }
