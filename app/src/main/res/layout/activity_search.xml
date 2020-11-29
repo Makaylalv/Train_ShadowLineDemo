@@ -2,6 +2,7 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/bgcolor"
     android:paddingHorizontal="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
@@ -13,14 +14,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:entries="@array/spinnerdate"/>
-        <androidx.appcompat.widget.SearchView
+        <com.example.train_shadowlinedemo.view.MovieShow.CustomSearchView
             android:layout_toRightOf="@id/spinner_search"
-            android:id="@+id/sv_search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/custom_searchview">
+
+        </com.example.train_shadowlinedemo.view.MovieShow.CustomSearchView>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_results"
+            android:visibility="gone"/>
 
     </RelativeLayout>
     <RelativeLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -29,14 +39,18 @@
             android:layout_height="wrap_content"
             android:text="历史记录"/>
         <Button
+            android:id="@+id/btn_delete_history"
             android:layout_alignParentRight="true"
             android:layout_width="40dp"
             android:layout_height="25dp"
             android:background="@drawable/search_history_delete"/>
     </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
+    <com.example.train_shadowlinedemo.view.MovieShow.SearchFlowLayout
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rv_history_list"/>
+        android:id="@+id/flowlayout">
+
+    </com.example.train_shadowlinedemo.view.MovieShow.SearchFlowLayout>
+
 </LinearLayout>
