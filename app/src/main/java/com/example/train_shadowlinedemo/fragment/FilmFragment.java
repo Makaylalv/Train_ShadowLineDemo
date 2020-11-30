@@ -169,32 +169,39 @@ public class FilmFragment  extends Fragment {
 
     //从数据库获取热门电影数据
     private void findHotFilmList() {
-        Request request=new Request.Builder()
-                .url(ConfigUtil.SERVER_ADDR+"ClientGetHotFilms")
-                .build();
-        Call call=okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("onFailure","hotFilm发生错误");
-            }
+        if (hotFilmList.size()==0){
+            Request request=new Request.Builder()
+                    .url(ConfigUtil.SERVER_ADDR+"ClientGetHotFilms")
+                    .build();
+            Call call=okHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("onFailure","hotFilm发生错误");
+                }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //获取轮播图列表数据
-                String filmJson=response.body().string();
-                Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
-                List<Film> filmList=new Gson().fromJson(filmJson,type);
-                //修改数据源
-                hotFilmList.addAll(filmList);
-                //使用EventBus 发布事件更新adapter
-                EventBus.getDefault().post("update");
-            }
-        });
-
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //获取轮播图列表数据
+                    String filmJson=response.body().string();
+                    Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
+                    List<Film> filmList=fromToJson(filmJson,type);
+                    //修改数据源
+                    hotFilmList.addAll(filmList);
+                    //使用EventBus 发布事件更新adapter
+                    EventBus.getDefault().post("update");
+                }
+            });
+        }
 
     }
-
+    //根据泛型返回解析制定的类型
+    public  <T> T fromToJson(String json,Type listType){
+        Gson gson = new Gson();
+        T t = null;
+        t = gson.fromJson(json,listType);
+        return t;
+    }
     //初始化热门电影
     private void initHotMovie() {
         gridViewAdapter=new HotFilmGridViewAdapter(getContext(),gvHotFilmList,R.layout.item_gv_hotfilm);
@@ -237,59 +244,59 @@ public class FilmFragment  extends Fragment {
 
     //获取轮播图内电影内容
     private void findBannerFilm() {
-        RequestBody requestBody = RequestBody.create(MediaType.parse(
-                "text/plain;charset=utf-8"),"requestBannerFilm");
-        Request request=new Request.Builder()
-                .post(requestBody)
-                .url(ConfigUtil.SERVER_ADDR+"ClientGetBannerFilms")
-                .build();
-        Call call=okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("onFailure","banner发生错误");
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //获取轮播图列表数据
-                String filmJson=response.body().string();
-                Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
-                List<Film> filmList=new Gson().fromJson(filmJson,type);
-                //修改数据源
-                bannerList.addAll(filmList);
-                //使用EventBus 发布事件更新adapter
-                EventBus.getDefault().post("update");
-            }
-        });
-
+        if(bannerList.size()==0){
+            RequestBody requestBody = RequestBody.create(MediaType.parse(
+                    "text/plain;charset=utf-8"),"requestBannerFilm");
+            Request request=new Request.Builder()
+                    .post(requestBody)
+                    .url(ConfigUtil.SERVER_ADDR+"ClientGetBannerFilms")
+                    .build();
+            Call call=okHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("onFailure","banner发生错误");
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //获取轮播图列表数据
+                    String filmJson=response.body().string();
+                    Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
+                    List<Film> filmList=fromToJson(filmJson,type);
+                    //修改数据源
+                    bannerList.addAll(filmList);
+                    //使用EventBus 发布事件更新adapter
+                    EventBus.getDefault().post("update");
+                }
+            });
+        }
     }
 
     //获取最新更新电影的列表
     private void findNewFilmList() {
-        Request request=new Request.Builder()
-                .url(ConfigUtil.SERVER_ADDR+"ClientGetNewFilms")
-                .build();
-        Call call=okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("onFailure","banner发生错误");
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //获取轮播图列表数据
-                String filmJson=response.body().string();
-                Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
-                List<Film> filmList1=new Gson().fromJson(filmJson,type);
-                //修改数据源
-                newFilmList.addAll(filmList1);
-                //使用EventBus 发布事件更新adapter
-                EventBus.getDefault().post("update");
-            }
-        });
-
-
-
+        if(newFilmList.size()==0){
+            Request request=new Request.Builder()
+                    .url(ConfigUtil.SERVER_ADDR+"ClientGetNewFilms")
+                    .build();
+            Call call=okHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("onFailure","banner发生错误");
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //获取轮播图列表数据
+                    String filmJson=response.body().string();
+                    Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
+                    List<Film> filmList1=fromToJson(filmJson,type);
+                    //修改数据源
+                    newFilmList.addAll(filmList1);
+                    //使用EventBus 发布事件更新adapter
+                    EventBus.getDefault().post("update");
+                }
+            });
+        }
     }
 
     //初始化RecyclerView 最新电影

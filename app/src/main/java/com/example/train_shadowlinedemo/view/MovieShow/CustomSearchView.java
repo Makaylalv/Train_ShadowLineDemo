@@ -30,6 +30,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
     private ListView lvTips;//弹出列表
     private ArrayAdapter<String> mHintAdapter;//提示adapter
     private ArrayAdapter<String> mAutoCompleteAdapter;//自动补全
+    private SearchAdapter mResultAdapter;//搜索结果的adapter
     /**
      * 搜索回调接口
      */
@@ -61,7 +62,6 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
 
                 //set edit text
                 String text = lvTips.getAdapter().getItem(i).toString();
-                Log.e("1111",text);
                 etInput.setText(text);
                 etInput.setSelection(text.length());
                 //提示列表消失
@@ -108,26 +108,30 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
         }
     }
 
+    //设置搜索结果adapter
+    public void setmResultAdapter(SearchAdapter adapter){
+        this.mResultAdapter=adapter;
+        if(mResultAdapter!=null){
+            ivDelete.setVisibility(VISIBLE);
+        }
+
+    }
     /**
      * 设置自动补全adapter
      */
     public void setAutoCompleteAdapter(ArrayAdapter<String> adapter) {
 
         this.mAutoCompleteAdapter = adapter;
-        for (int i=0;i<mAutoCompleteAdapter.getCount();i++){
-            Log.e("adapter中的数据",adapter.getItem(i));
-        }
     }
 
     private class EditChangedListener implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            if (!"".equals(charSequence.toString())) {
+            if (!"".equals(charSequence.toString())) {//输入不为空
                 ivDelete.setVisibility(VISIBLE);
                 lvTips.setVisibility(VISIBLE);
                 if (mAutoCompleteAdapter != null && lvTips.getAdapter() != mAutoCompleteAdapter) {
@@ -137,12 +141,15 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
                 if (mListener != null) {
                     mListener.onRefreshAutoComplete(charSequence.toString());
                 }
-            } else {
+            } else {//输入框为空时
                 ivDelete.setVisibility(GONE);
                 if (mHintAdapter != null) {
                     lvTips.setAdapter(mHintAdapter);
                 }
                 lvTips.setVisibility(GONE);
+                if (mResultAdapter!=null){
+                    mListener.onSearchAgain(charSequence.toString());
+                }
 
             }
         }
@@ -180,14 +187,13 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
 
         /**
          * 开始搜索
-         *
          * @param text 传入输入框的文本
          */
         void onSearch(String text);
 
 //        /**
-//         * 提示列表项点击时回调方法 (提示/自动补全)
+//         * 显示搜索结果，输入框重新为空时，回调此方法
 //         */
-//        void onTipsItemClick(String text);
+        void onSearchAgain(String text);
     }
 }
