@@ -40,8 +40,6 @@ public class FragmenPlace extends androidx.fragment.app.Fragment {
         recyclerView.setAdapter(myAdapter);
     }
 
-
-
     PlaceRecyclerViewAdapter.OnItemClickListener onItemClickListener=new PlaceRecyclerViewAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View v, PlaceRecyclerViewAdapter.ViewName viewName, int position) {

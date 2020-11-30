@@ -83,12 +83,12 @@ public class DetailMapActivity extends AppCompatActivity {
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what){
                 case 1:
-                    isCollection=false;
-                    placeIsCollectionIV.setImageResource(R.drawable.star_normal);
-                    break;
-                case 2:
                     isCollection=true;
                     placeIsCollectionIV.setImageResource(R.drawable.star_select);
+                    break;
+                case 2:
+                    isCollection=false;
+                    placeIsCollectionIV.setImageResource(R.drawable.star_normal);
                     break;
             }
         }
@@ -311,6 +311,7 @@ public class DetailMapActivity extends AppCompatActivity {
                 .url(ConfigUtil.SERVER_ADDR+"IsCollectionPlaceServlet")
                 .build();
         //4.创建Call对象，发送请求，并接受响应
+        OkHttpClient okHttpClient=new OkHttpClient();
         final Call call = okHttpClient.newCall(request);
         //异步网络请求（不需要创建子线程）
         call.enqueue(new Callback() {
@@ -322,8 +323,9 @@ public class DetailMapActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
                 String str=response.body().string();
+                Log.e("1111111111",str);
                 Message message=new Message();
                 if(str.equals("已收藏")){
                     message.what=1;
@@ -350,6 +352,7 @@ public class DetailMapActivity extends AppCompatActivity {
                     .url(ConfigUtil.SERVER_ADDR+"AddCollectionPlaceServlet")
                     .build();
             //4.创建Call对象，发送请求，并接受响应
+            OkHttpClient okHttpClient=new OkHttpClient();
             final Call call = okHttpClient.newCall(request);
             //异步网络请求（不需要创建子线程）
             call.enqueue(new Callback() {
@@ -361,11 +364,13 @@ public class DetailMapActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
+                    Message message=new Message();
+                    message.what=1;
+                    handler.sendMessage(message);
                 }
             });
         }else {
-            Toast.makeText(getApplicationContext(),"已收藏此片场",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"已收藏此片场",Toast.LENGTH_SHORT).show();
         }
     }
 

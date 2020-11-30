@@ -41,24 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //获取控件
-        ivFilm=findViewById(R.id.iv_tab_film);
-        ivCity=findViewById(R.id.iv_tab_city);
-        ivShare=findViewById(R.id.iv_tab_share);
-        ivMine=findViewById(R.id.iv_tab_mine);
-        tvFilm=findViewById(R.id.tv_tab_film);
-        tvCity=findViewById(R.id.tv_tab_city);
-        tvShare=findViewById(R.id.tv_tab_share);
-        tvMine=findViewById(R.id.tv_tab_mine);
-        //选择电影列表为主界面
-        filmFragment=new FilmFragment();
-        cityFragment=new CityFragment();
-        shareFragment=new ShareFragment();
-        personalFragment=new PersonalFragment();
-        changeTab(filmFragment);
-        changeColor("film");
-        currentFragment=filmFragment;
-       /* Intent intent=new Intent();
+        Intent intent=new Intent();
         Film film=new Film();
         film.setFilmId(1);
         film.setFilmDirector("曾国祥");
@@ -78,7 +61,26 @@ public class MainActivity extends AppCompatActivity {
                 .create();
         intent.putExtra("film", gson.toJson(film));
         intent.setClass(this, MovieDetailActivity.class);
-        startActivity(intent);*/
+        startActivity(intent);
+        finish();
+        //获取控件
+        ivFilm=findViewById(R.id.iv_tab_film);
+        ivCity=findViewById(R.id.iv_tab_city);
+        ivShare=findViewById(R.id.iv_tab_share);
+        ivMine=findViewById(R.id.iv_tab_mine);
+        tvFilm=findViewById(R.id.tv_tab_film);
+        tvCity=findViewById(R.id.tv_tab_city);
+        tvShare=findViewById(R.id.tv_tab_share);
+        tvMine=findViewById(R.id.tv_tab_mine);
+        //选择电影列表为主界面
+        filmFragment=new FilmFragment();
+        cityFragment=new CityFragment();
+        shareFragment=new ShareFragment();
+        personalFragment=new PersonalFragment();
+        changeTab(filmFragment);
+        changeColor("film");
+        currentFragment=filmFragment;
+
     }
     private void changeTab(Fragment fragment) {
         FragmentManager manager=getSupportFragmentManager();

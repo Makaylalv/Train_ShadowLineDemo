@@ -102,9 +102,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                     timer.schedule(task1, 0, 30);
                     break;
                 case 3:
-                    fragmenPlace.setData(places);
 
+                    fragmenPlace.setData(places);
                     break;
+                case 4:
+                    Toast.makeText(MovieDetailActivity.this,(String)msg.obj,Toast.LENGTH_SHORT).show();
+                    break;
+
             }
 
         }
@@ -228,7 +232,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         fragments.add(fragmentCity);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(new MovieDetailsViewPagerAdapter(getSupportFragmentManager(),fragments,listTitle));
-        getAllPlace();
+
         //赋值
         filmChinesehNametextView.setText(film.getFilmName());
         filmEnglishNametextView.setText(film.getFilmEnglishname());
@@ -248,6 +252,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 .load(ConfigUtil.SERVER_ADDR+"imgs/"+film.getFlimMapImg())
                 .apply(options)//应用请求选项
                 .into(filmMapImgView);
+
         filmMapImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,9 +265,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
+        getAllPlace();
     }
 
     private void collectionFilm() {
+
         //2.创建RequestBody（请求体）对象
         RequestBody requestBody = RequestBody.create(MediaType.parse(
                 "text/plain;charset=utf-8"),film.getFilmId()+"&"+"1");
@@ -277,14 +284,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                //请求失败时回调
+                Log.e("1111111111","111111111");
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
-                Log.e("请求成功",response.body().string());
+                String str=response.body().string();
+                Message message=new Message();
+                message.what=4;
+                message.obj=str;
+                handler.sendMessage(message);
             }
         });
 
