@@ -51,16 +51,30 @@
     </GridView>
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/share_user_location"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_user_location">
+
+        </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:gravity="right"
         android:layout_marginTop="15dp"
         android:layout_height="wrap_content">
-        <Button
-            android:background="@drawable/dynamic_like"
+        <ImageView
+            android:background="@drawable/share_like_false"
             android:id="@+id/btn_dynamic_like"
             android:layout_width="30dp"
             android:layout_height="30dp">
 
-        </Button>
+        </ImageView>
         <Button
             android:background="@drawable/dynamic_comment"
             android:layout_marginLeft="15dp"
@@ -78,13 +92,14 @@
 
         </Button>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:gravity="center_vertical"
         android:layout_height="wrap_content">
         <ImageView
             android:layout_width="30dp"
-            android:src="@drawable/dynamic_like"
+            android:src="@drawable/share_like_false"
             android:layout_height="30dp">
 
         </ImageView>
@@ -95,7 +110,6 @@
             android:textSize="20sp"
             android:textColor="#000000"
             android:text="懒羊羊、喜羊羊、美羊羊觉得很赞">
-
         </TextView>
     </LinearLayout>
     <ListView

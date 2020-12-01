@@ -4,6 +4,7 @@ public class Comment {
     private int commentId;//评论id
     private int dynamicId;//动态id
     private int userId;//用户id
+    private String username;
     private String commentContent;//评论内容
 
     public int getCommentId() {
@@ -30,6 +31,14 @@ public class Comment {
         this.userId = userId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getCommentContent() {
         return commentContent;
     }
@@ -44,6 +53,7 @@ public class Comment {
                 "commentId=" + commentId +
                 ", dynamicId=" + dynamicId +
                 ", userId=" + userId +
+                ", username='" + username + '\'' +
                 ", commentContent='" + commentContent + '\'' +
                 '}';
     }

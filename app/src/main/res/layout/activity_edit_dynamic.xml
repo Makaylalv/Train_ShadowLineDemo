@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android">
         <LinearLayout
             android:layout_width="match_parent"
             android:background="@color/mainColor"
@@ -39,28 +42,27 @@
                 android:id="@+id/et_share_text"
                 android:hint="分享新鲜事..."
                 />
-            <GridLayout
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:orientation="horizontal"
+
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/iv_add_img1"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
                     android:layout_width="wrap_content"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"/>
                 <ImageView
                     android:id="@+id/iv_add_img2"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <ImageView
                     android:id="@+id/iv_add_img3"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-            </GridLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="150dp"
@@ -90,19 +92,21 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:id="@+id/ll_user_location"
+
                 android:padding="10dp"
                 android:layout_height="wrap_content">
                 <ImageView
 
-                    android:layout_width="45dp"
+                    android:layout_width="30dp"
+                    android:id="@+id/ll_user_location"
                     android:src="@drawable/share_location"
-                    android:layout_height="45dp"/>
+                    android:layout_height="30dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:textSize="25dp"
+                    android:textSize="15dp"
+                    android:id="@+id/tv_personal_location"
                     android:textColor="@color/mainColor"
                     android:text="你在哪里?"/>
                 <ImageView
@@ -118,13 +122,13 @@
                 android:padding="10dp"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:layout_width="45dp"
+                    android:layout_width="30dp"
                     android:src="@drawable/share_look"
-                    android:layout_height="45dp"/>
+                    android:layout_height="30dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="25dp"
+                    android:textSize="15dp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/mainColor"
                     android:text="谁可以看?"/>
@@ -141,13 +145,13 @@
                 android:padding="10dp"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:layout_width="45dp"
+                    android:layout_width="30dp"
                     android:src="@drawable/share_it"
-                    android:layout_height="45dp"/>
+                    android:layout_height="30dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="25dp"
+                    android:textSize="15dp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/mainColor"
                     android:text="提醒谁看?"/>
@@ -172,4 +176,6 @@
 
 
 
-</LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

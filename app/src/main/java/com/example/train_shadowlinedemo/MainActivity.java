@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
             String skipDynamic=intent.getStringExtra("skipDynamic");
             if(skipDynamic!=null){
                 if(skipDynamic.equals("skipDynamic")){
+                    shareFragment=new ShareFragment();
                     changeTab(shareFragment);
                     changeColor("share");
 

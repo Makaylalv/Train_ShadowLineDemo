@@ -1,6 +1,7 @@
 package com.example.train_shadowlinedemo.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 
 import java.util.ArrayList;
@@ -80,7 +82,8 @@ public class CustomerDynamicImgAdapter extends BaseAdapter {
         }else{
             dynamicImgViewHolder= (DynamicImgViewHolder) view.getTag();
         }
-        Glide.with(mContext).load(imgs.get(i)).into(dynamicImgViewHolder.ivDynamicImg);
+        Glide.with(mContext).load(ConfigUtil.SERVER_ADDR +"imgs/dynamic/dynamicImgs/"+imgs.get(i)+".jpg").into(dynamicImgViewHolder.ivDynamicImg);
+        Log.e("图片的地址是",ConfigUtil.SERVER_ADDR +"imgs/dynamic/dynamicImgs/"+imgs.get(i)+".jpg"+imgs.get(i)+".jpg");
         return view;
     }
     static class  DynamicImgViewHolder{
