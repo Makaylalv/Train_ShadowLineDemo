@@ -107,22 +107,19 @@ public class FilmFragment  extends Fragment {
         gvHotFilm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(getContext(), MovieDetailActivity.class);
-                startActivity(intent);
+                jumpToDetail(hotFilmList.get(i+1));
             }
         });
         lvHotFilm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(getContext(),MovieDetailActivity.class);
-                startActivity(intent);
+                jumpToDetail(hotFilmList.get(5+i));
             }
         });
         ivHotMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getContext(),MovieDetailActivity.class);
-                startActivity(intent);
+                jumpToDetail(hotFilmList.get(0));
             }
         });
         return root;
@@ -208,7 +205,6 @@ public class FilmFragment  extends Fragment {
         listViewAdapter=new HotFilmListViewAdapter(getContext(),lvHotFilmList,R.layout.item_left_hotfilm,R.layout.item_right_hotfilm);
         gvHotFilm.setAdapter(gridViewAdapter);
         lvHotFilm.setAdapter(listViewAdapter);
-        Log.e("intiHotMovie",gvHotFilmList.size()+"");
     }
 
     //获取控件
@@ -374,8 +370,13 @@ public class FilmFragment  extends Fragment {
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(Object data, int position) {
-                        Log.e("banner", "点击第" + position + "个");
+                        jumpToDetail(bannerList.get(position));
                     }
                 });
+    }
+    private void jumpToDetail(Film film){
+        Intent intent=new Intent(getContext(),MovieDetailActivity.class);
+        intent.putExtra("film",new Gson().toJson(film));
+        startActivity(intent);
     }
 }

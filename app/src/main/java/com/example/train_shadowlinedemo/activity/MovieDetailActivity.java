@@ -245,11 +245,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                 .error(R.drawable.glide_error)//请求失败时显示
                 .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
         Glide.with(this)
-                .load(ConfigUtil.SERVER_ADDR+"imgs/"+film.getFilmImg())
+                .load(ConfigUtil.SERVER_ADDR+film.getFilmImg())
                 .apply(options)//应用请求选项
                 .into(filmImgView);
         Glide.with(this)
-                .load(ConfigUtil.SERVER_ADDR+"imgs/"+film.getFlimMapImg())
+                .load(ConfigUtil.SERVER_ADDR+film.getFlimMapImg())
                 .apply(options)//应用请求选项
                 .into(filmMapImgView);
 
