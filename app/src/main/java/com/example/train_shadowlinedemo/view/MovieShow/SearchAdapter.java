@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.SearchResult;
 
@@ -56,12 +58,15 @@ public class SearchAdapter extends BaseAdapter {
             holder.tvName=view.findViewById(R.id.tv_item_name);
             holder.tvEnglishName=view.findViewById(R.id.tv_item_englishname);
             holder.tvInfo=view.findViewById(R.id.tv_item_info);
-            view.setTag(view);
+            view.setTag(holder);
         }else {
             holder= (ViewHolder) view.getTag();
         }
         SearchResult result=results.get(i);
-        holder.ivImg.setImageResource(R.drawable.newfilm_p1);
+        Glide.with(mContext)
+                .load(ConfigUtil.SERVER_ADDR+result.getImgUrl())
+                .into(holder.ivImg);
+
         holder.tvName.setText(result.getName());
         holder.tvEnglishName.setText(result.getEnglishName());
         holder.tvInfo.setText(result.getInfo());
