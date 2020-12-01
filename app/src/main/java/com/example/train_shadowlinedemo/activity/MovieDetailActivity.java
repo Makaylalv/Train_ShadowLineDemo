@@ -258,11 +258,13 @@ public class MovieDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("11111111111","11111111");
                 Intent intent1=new Intent();
-                Gson gson=new Gson();
-                String str=gson.toJson(places);
-                intent1.putExtra("places",str);
-                intent1.setClass(MovieDetailActivity.this,DetailMapActivity.class);
-                startActivity(intent1);
+                if(places.size()!=0&&places!=null) {
+                    Gson gson = new Gson();
+                    String str = gson.toJson(places);
+                    intent1.putExtra("places", str);
+                    intent1.setClass(MovieDetailActivity.this, DetailMapActivity.class);
+                    startActivity(intent1);
+                }
             }
         });
         getAllPlace();
