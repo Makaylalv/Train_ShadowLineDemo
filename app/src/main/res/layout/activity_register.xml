@@ -1,9 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.RegisterActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".RegisterActivity"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/login_input_phone_et"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="107dp"
+        android:ems="10"
+        android:hint="请输入手机号"
+        android:inputType="phone" />
+
+    <requestFocus /><!--//获取焦点-->
+
+    <EditText
+        android:id="@+id/login_input_code_et"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/login_input_phone_et"
+        android:layout_below="@+id/login_input_phone_et"
+        android:layout_marginTop="44dp"
+        android:hint="请输入验证码"
+        android:inputType="phone"  >
+    </EditText>
+
+    <Button
+        android:id="@+id/login_request_code_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/login_input_phone_et"
+        android:layout_alignTop="@+id/login_input_code_et"
+        android:text="获取验证码" />
+
+    <EditText
+        android:id="@+id/login_input_name_et"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="270dp"
+        android:ems="10"
+        android:hint="请输入用户名" />
+
+    <EditText
+        android:id="@+id/login_input_password_et"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="340dp"
+        android:ems="10"
+        android:hint="请输入密码"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/login_commit_btn"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/login_input_code_et"
+        android:layout_below="@+id/login_input_code_et"
+        android:layout_marginTop="160dp"
+        android:text="注册" />
+
+</RelativeLayout>
