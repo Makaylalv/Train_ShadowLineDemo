@@ -120,6 +120,7 @@ public class FilmFragment  extends Fragment {
             @Override
             public void onClick(View view) {
                 jumpToDetail(hotFilmList.get(0));
+
             }
         });
         return root;
@@ -134,7 +135,7 @@ public class FilmFragment  extends Fragment {
     //处理事件的方法 强制要求在主线程执行
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateUI(String msg){
-        if (msg.equals("update")){
+        if (msg.equals("hotfilmupdate")){
             //刷新adapter
             //初始化第一个
             if(hotFilmList.size()>0){
@@ -148,18 +149,21 @@ public class FilmFragment  extends Fragment {
                 tvHotMovieType.setText(film.getFilmType());
                 tvHotMovieoutTime.setText(film.getFilmReleasetime());
 
-
+                if (hotFilmList.size()>5 && gvHotFilmList.size()==0 && lvHotFilmList.size()==0){
+                    Log.e("update",hotFilmList.size()+"");
+                    gvHotFilmList.addAll(hotFilmList.subList(1,5));
+                    lvHotFilmList.addAll(hotFilmList.subList(5,hotFilmList.size()));
+                }
+                gridViewAdapter.notifyDataSetChanged();
+                listViewAdapter.notifyDataSetChanged();
             }
 
-            if (hotFilmList.size()>5 && gvHotFilmList.size()==0 && lvHotFilmList.size()==0){
-                Log.e("update",hotFilmList.size()+"");
-                gvHotFilmList.addAll(hotFilmList.subList(1,5));
-                lvHotFilmList.addAll(hotFilmList.subList(5,hotFilmList.size()));
+            if(msg.equals("newfilmupdate")){
+                newFilmAdapter.notifyDataSetChanged();
             }
-            newFilmAdapter.notifyDataSetChanged();
-            gridViewAdapter.notifyDataSetChanged();
-            listViewAdapter.notifyDataSetChanged();
-            imageAdapter.notifyDataSetChanged();
+           if (msg.equals("bannerupdate")){
+               imageAdapter.notifyDataSetChanged();
+           }
 
         }
     }
@@ -185,8 +189,9 @@ public class FilmFragment  extends Fragment {
                     List<Film> filmList=fromToJson(filmJson,type);
                     //修改数据源
                     hotFilmList.addAll(filmList);
+
                     //使用EventBus 发布事件更新adapter
-                    EventBus.getDefault().post("update");
+                    EventBus.getDefault().post("hotfilmupdate");
                 }
             });
         }
@@ -262,7 +267,7 @@ public class FilmFragment  extends Fragment {
                     //修改数据源
                     bannerList.addAll(filmList);
                     //使用EventBus 发布事件更新adapter
-                    EventBus.getDefault().post("update");
+                    EventBus.getDefault().post("bannerupdate");
                 }
             });
         }
@@ -289,7 +294,7 @@ public class FilmFragment  extends Fragment {
                     //修改数据源
                     newFilmList.addAll(filmList1);
                     //使用EventBus 发布事件更新adapter
-                    EventBus.getDefault().post("update");
+                    EventBus.getDefault().post("newfilmupdate");
                 }
             });
         }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +18,11 @@ import java.util.ArrayList;
 
 public class FragmenPlace extends androidx.fragment.app.Fragment {
     private ArrayList<Place> places= new ArrayList<>();
-    View view;
+    private View view;
     private RecyclerView recyclerView;
 
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, android.os.Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_place, container, false);
         return view;

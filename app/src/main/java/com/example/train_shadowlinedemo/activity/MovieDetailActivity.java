@@ -102,7 +102,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                     timer.schedule(task1, 0, 30);
                     break;
                 case 3:
-
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     fragmenPlace.setData(places);
                     break;
                 case 4:
@@ -174,16 +178,19 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //请求成功时回调
-                Gson gson=new Gson();
-                Type type = new TypeToken<ArrayList<Place>>(){}.getType();
-                places = gson.fromJson(response.body().string(),type);
-                Message message=new Message();
-                message.what=3;
-                handler.sendMessage(message);
-                //打印测试
-                for(Place i:places){
-                    System.out.println(i.getPlaceMapImg());
+                String str=response.body().string();
+                if(!str.equals("[]")&&str!=null&&!str.equals("")) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<ArrayList<Place>>() {
+                    }.getType();
+                    places = gson.fromJson(str, type);
+                    Message message = new Message();
+                    message.what = 3;
+                    handler.sendMessage(message);
+                    //打印测试
+                    for (Place i : places) {
+                        System.out.println(i.getPlaceMapImg());
+                    }
                 }
             }
         });
@@ -197,6 +204,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         okHttpClient=new OkHttpClient();
         Intent intent=getIntent();
         String filmJsonStr=intent.getStringExtra("film");
+        Log.e("eeeeee",filmJsonStr);
         Gson gson = new GsonBuilder()
                 .serializeNulls()//允许序列化空值
                 .setPrettyPrinting()//格式化输出
@@ -249,20 +257,22 @@ public class MovieDetailActivity extends AppCompatActivity {
                 .apply(options)//应用请求选项
                 .into(filmImgView);
         Glide.with(this)
-                .load(ConfigUtil.SERVER_ADDR+film.getFlimMapImg())
+                .load(ConfigUtil.SERVER_ADDR+film.getFilmMapImg())
                 .apply(options)//应用请求选项
                 .into(filmMapImgView);
 
         filmMapImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("11111111111","11111111");
+
                 Intent intent1=new Intent();
-                Gson gson=new Gson();
-                String str=gson.toJson(places);
-                intent1.putExtra("places",str);
-                intent1.setClass(MovieDetailActivity.this,DetailMapActivity.class);
-                startActivity(intent1);
+                if(places.size()!=0&&places!=null) {
+                    Gson gson = new Gson();
+                    String str = gson.toJson(places);
+                    intent1.putExtra("places", str);
+                    intent1.setClass(MovieDetailActivity.this, DetailMapActivity.class);
+                    startActivity(intent1);
+                }
             }
         });
         getAllPlace();
