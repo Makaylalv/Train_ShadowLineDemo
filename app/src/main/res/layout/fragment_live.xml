@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:layout_width="match_parent"
+            app:srlEnableFooterFollowWhenLoadFinished="true"
+            app:srlEnableScrollContentWhenLoaded="true"
+            android:layout_height="match_parent"
+            android:id="@+id/srl">
+            <!--设置刷新头部-->
+            <com.scwang.smartrefresh.layout.header.TwoLevelHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </LinearLayout>
+    <Button
+        android:id="@+id/start_living_button"
+        android:text="开播"
+        android:textSize="20sp"
+        android:background="@drawable/button_circle_shape"
+        android:layout_marginBottom="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+</RelativeLayout>
