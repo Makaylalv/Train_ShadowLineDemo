@@ -14,12 +14,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tv_dynamic_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/mainColor"
+
                 android:textSize="15sp"
                 android:text="超级无敌可爱马">
             </TextView>
@@ -39,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
+        android:textColor="#000000"
         android:text="今天有点小难过。
 ">
 
@@ -51,51 +54,66 @@
     </GridView>
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/share_user_location"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_user_location">
+
+        </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:gravity="right"
         android:layout_marginTop="15dp"
         android:layout_height="wrap_content">
-        <Button
-            android:background="@drawable/dynamic_like"
+        <ImageView
+            android:background="@drawable/share_like_false"
             android:id="@+id/btn_dynamic_like"
-            android:layout_width="30dp"
-            android:layout_height="30dp">
+            android:layout_width="20dp"
+            android:layout_height="20dp">
 
-        </Button>
+        </ImageView>
         <Button
             android:background="@drawable/dynamic_comment"
             android:layout_marginLeft="15dp"
             android:id="@+id/btn_dynamic_comment"
-            android:layout_width="30dp"
-            android:layout_height="30dp">
+            android:layout_width="20dp"
+            android:layout_height="20dp">
 
         </Button>
         <Button
             android:layout_marginLeft="15dp"
             android:id="@+id/btn_dynamic_forward"
             android:background="@drawable/dynamic_forward"
-            android:layout_width="30dp"
-            android:layout_height="30dp">
+            android:layout_width="20dp"
+            android:layout_height="20dp">
 
         </Button>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:gravity="center_vertical"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="30dp"
-            android:src="@drawable/dynamic_like"
-            android:layout_height="30dp">
+            android:layout_width="20dp"
+            android:src="@drawable/share_like_false"
+            android:layout_height="20dp">
 
         </ImageView>
         <TextView
             android:id="@+id/tv_dynamic_likeusers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="#000000"
             android:text="懒羊羊、喜羊羊、美羊羊觉得很赞">
-
         </TextView>
     </LinearLayout>
     <ListView

@@ -9,8 +9,9 @@ public class Dynamic {
     private String userImg;//用户头像
     private String dynamicTime;//发布动态时间
     private String dynamicContent;//发布动态内容
+    private String dynamicPlace;//发布动态地点
     private List<String> dynamicImgs;//发布动态的图片
-    private List<String> likeUser;//动态点赞的人
+    private List<String> likeUsers;//动态点赞的人
     private List<Comment> comments;//动态图的评论
 
     public int getDynamicId() {
@@ -19,6 +20,14 @@ public class Dynamic {
 
     public void setDynamicId(int dynamicId) {
         this.dynamicId = dynamicId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -53,6 +62,14 @@ public class Dynamic {
         this.dynamicContent = dynamicContent;
     }
 
+    public String getDynamicPlace() {
+        return dynamicPlace;
+    }
+
+    public void setDynamicPlace(String dynamicPlace) {
+        this.dynamicPlace = dynamicPlace;
+    }
+
     public List<String> getDynamicImgs() {
         return dynamicImgs;
     }
@@ -62,11 +79,11 @@ public class Dynamic {
     }
 
     public List<String> getLikeUser() {
-        return likeUser;
+        return likeUsers;
     }
 
     public void setLikeUser(List<String> likeUser) {
-        this.likeUser = likeUser;
+        this.likeUsers = likeUser;
     }
 
     public List<Comment> getComments() {
@@ -81,12 +98,14 @@ public class Dynamic {
     public String toString() {
         return "Dynamic{" +
                 "dynamicId=" + dynamicId +
+                ", userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", userImg='" + userImg + '\'' +
                 ", dynamicTime='" + dynamicTime + '\'' +
                 ", dynamicContent='" + dynamicContent + '\'' +
+                ", dynamicPlace='" + dynamicPlace + '\'' +
                 ", dynamicImgs=" + dynamicImgs +
-                ", likeUser=" + likeUser +
+                ", likeUser=" + likeUsers +
                 ", comments=" + comments +
                 '}';
     }
