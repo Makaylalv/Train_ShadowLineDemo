@@ -95,12 +95,12 @@ public class FilmFragment  extends Fragment {
         ScrollView scrollView=root.findViewById(R.id.scrollView);
         scrollView.smoothScrollTo(0,0);//将ScrollView滚动到最顶端
         findView();//获取控件
-        findHotFilmList();//获取热门电影的数据
-        findBannerFilm();//获取轮播图电影的数据
-        findNewFilmList();//获取最新电影数据
-        initBanner();//初始化轮播图
-        initHotMovie();//初始化热门电影
-        initNewFilmData();//初始化最新电影数据
+//        findHotFilmList();//获取热门电影的数据
+//        findBannerFilm();//获取轮播图电影的数据
+//        findNewFilmList();//获取最新电影数据
+//        initBanner();//初始化轮播图
+//        initHotMovie();//初始化热门电影
+//        initNewFilmData();//初始化最新电影数据
 
 
         //点击跳转

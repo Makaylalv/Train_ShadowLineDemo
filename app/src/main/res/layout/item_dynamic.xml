@@ -72,11 +72,14 @@
         android:gravity="right"
         android:layout_marginTop="15dp"
         android:layout_height="wrap_content">
+
         <ImageView
-            android:background="@drawable/share_like_false"
             android:id="@+id/btn_dynamic_like"
-            android:layout_width="20dp"
-            android:layout_height="20dp">
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/share_like_false"
+            android:gravity="center_vertical"
+            >
 
         </ImageView>
         <Button

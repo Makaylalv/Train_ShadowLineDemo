@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         changeTab(filmFragment);
         changeColor("film");
         currentFragment=filmFragment;
+        onclickReceive();
 
     }
     private void changeTab(Fragment fragment) {
@@ -160,6 +161,22 @@ public class MainActivity extends AppCompatActivity {
                 ivShare.setImageResource(R.drawable.tab_share);
                 ivMine.setImageResource(R.drawable.tab_mine2);
                 break;
+        }
+
+    }
+    public void onclickReceive(){
+        Intent intent=getIntent();
+        if(intent!=null){
+            String skipDynamic=intent.getStringExtra("skipDynamic");
+            if(skipDynamic!=null){
+                if(skipDynamic.equals("skipDynamic")){
+                    shareFragment=new ShareFragment();
+                    changeTab(shareFragment);
+                    changeColor("share");
+
+                }
+            }
+
         }
 
     }

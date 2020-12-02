@@ -92,7 +92,7 @@ public class EditDynamicActivity extends AppCompatActivity {
     private ImageView ivAddImg1;
     private ImageView ivAddImg2;
     private ImageView ivAddImg3;
-    private ImageView llUserLocation;
+    private LinearLayout llUserLocation;
     private Button btnConfirmPublish;
     private OkHttpClient okHttpClient;
     private List<String> imagePaths=new ArrayList<>();
@@ -132,6 +132,7 @@ public class EditDynamicActivity extends AppCompatActivity {
         } else {
             location();
         }
+
     }
     public void location(){
         LocationClientOption locationClientOption = new LocationClientOption();
@@ -237,10 +238,11 @@ public class EditDynamicActivity extends AppCompatActivity {
             List<Uri> selected = Matisse.obtainResult(data);
             ContentResolver contentResolver = getContentResolver();
             if(selected.size() == 1) {
+                ContentResolver contentResolver1 = getContentResolver();
                 imagePaths.clear();
                 setnull();
                 Glide.with(this).load(selected.get(0)).into(ivAddImg1);
-                Cursor cursor = contentResolver.query(selected.get(0),null,
+                Cursor cursor = contentResolver1.query(selected.get(0),null,
                         null,null,null);
                 if (cursor.moveToFirst()){
                     String imagePath = cursor.getString(cursor.getColumnIndex("_data"));
@@ -252,18 +254,23 @@ public class EditDynamicActivity extends AppCompatActivity {
             else if(selected.size() == 2) {
                 imagePaths.clear();
                 setnull();
+                ContentResolver contentResolver1 = getContentResolver();
+                ContentResolver contentResolver2 = getContentResolver();
                 Glide.with(this).load(selected.get(0)).into(ivAddImg1);
                 Glide.with(this).load(selected.get(1)).into(ivAddImg2);
-                Cursor cursor = contentResolver.query(selected.get(0),null,
+                Cursor cursor = contentResolver1.query(selected.get(0),null,
                         null,null,null);
+               
                 if (cursor.moveToFirst()){
                     String imagePath = cursor.getString(cursor.getColumnIndex("_data"));
                     imagePaths.add(imagePath);
+
                 }
-                Cursor cursor2 = contentResolver.query(selected.get(1),null,
+                Cursor cursor2 = contentResolver2.query(selected.get(1),null,
                         null,null,null);
-                if (cursor.moveToFirst()){
-                    String imagePath = cursor.getString(cursor2.getColumnIndex("_data"));
+                if (cursor2.moveToFirst()){
+
+                    String imagePath = cursor2.getString(cursor2.getColumnIndex("_data"));
                     imagePaths.add(imagePath);
                 }
 
@@ -289,7 +296,7 @@ public class EditDynamicActivity extends AppCompatActivity {
                 Cursor cursor2 = contentResolver.query(selected.get(2),null,
                         null,null,null);
                 if (cursor2.moveToFirst()){
-                    String imagePath = cursor1.getString(cursor2.getColumnIndex("_data"));
+                    String imagePath = cursor2.getString(cursor2.getColumnIndex("_data"));
                     imagePaths.add(imagePath);
                 }
             }
@@ -326,6 +333,7 @@ public class EditDynamicActivity extends AppCompatActivity {
             imgs.add(time+"img2");
             uploadFile(imagePaths.get(0),imgs.get(0));
             uploadFile(imagePaths.get(1),imgs.get(1));
+            Log.e("图片的路径为",imagePaths.toString());
         }else if(imagePaths.size()==3){
             imgs.add(time+"img1");
             imgs.add(time+"img2");

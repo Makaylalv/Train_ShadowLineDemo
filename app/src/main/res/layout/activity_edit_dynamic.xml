@@ -92,13 +92,13 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-
+                android:id="@+id/ll_user_location"
                 android:padding="10dp"
                 android:layout_height="wrap_content">
                 <ImageView
 
                     android:layout_width="30dp"
-                    android:id="@+id/ll_user_location"
+
                     android:src="@drawable/share_location"
                     android:layout_height="30dp"/>
                 <TextView
