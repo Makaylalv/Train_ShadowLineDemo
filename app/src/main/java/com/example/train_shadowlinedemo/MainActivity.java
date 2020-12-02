@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent=new Intent();
+        /*Intent intent=new Intent();
         Film film=new Film();
         film.setFilmId(1);
         film.setFilmDirector("曾国祥");
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("film", gson.toJson(film));
         intent.setClass(this, MovieDetailActivity.class);
         startActivity(intent);
-        finish();
+        finish();*/
         //获取控件
         ivFilm=findViewById(R.id.iv_tab_film);
         ivCity=findViewById(R.id.iv_tab_city);

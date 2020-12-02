@@ -8,8 +8,8 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/btn_search"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/search"/>
         <TextView
             android:gravity="center"
@@ -35,7 +35,7 @@
             <com.youth.banner.Banner
                 android:id="@+id/movie_banner"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="220dp"
                 app:banner_indicator_height="10dp"
                 app:banner_indicator_normal_color="#C1BFBF"
                 app:banner_indicator_normal_width="7dp"
@@ -296,8 +296,9 @@
             <View
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#A9A9A9"/>
+                android:layout_height="2dp"
+                android:background="@drawable/horizontal_dotted_line"
+                android:layerType="software"/>
 
             <com.example.train_shadowlinedemo.view.MovieShow.ListViewForScrollView
                 android:scrollbars="none"
