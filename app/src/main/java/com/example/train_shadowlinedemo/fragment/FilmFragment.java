@@ -135,7 +135,9 @@ public class FilmFragment  extends Fragment {
     //处理事件的方法 强制要求在主线程执行
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateUI(String msg){
-        if (msg.equals("hotfilmupdate")){
+        if (msg.equals("bannerupdate")){
+            imageAdapter.notifyDataSetChanged();
+        } else if (msg.equals("hotfilmupdate")){
             //刷新adapter
             //初始化第一个
             if(hotFilmList.size()>0){
@@ -156,14 +158,9 @@ public class FilmFragment  extends Fragment {
                 }
                 gridViewAdapter.notifyDataSetChanged();
                 listViewAdapter.notifyDataSetChanged();
-            }
-
-            if(msg.equals("newfilmupdate")){
+            } else if(msg.equals("newfilmupdate")){
                 newFilmAdapter.notifyDataSetChanged();
             }
-           if (msg.equals("bannerupdate")){
-               imageAdapter.notifyDataSetChanged();
-           }
 
         }
     }
