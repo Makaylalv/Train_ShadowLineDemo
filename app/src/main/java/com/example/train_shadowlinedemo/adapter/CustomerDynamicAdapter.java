@@ -3,6 +3,7 @@ package com.example.train_shadowlinedemo.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
             holder.tvDynamicLikeUsers=view.findViewById(R.id.tv_dynamic_likeusers);
             holder.lvDynamicComments=view.findViewById(R.id.lv_dynamic_comments);
             holder.tvUserLocation=view.findViewById(R.id.tv_user_location);
+
             view.setTag(holder);
         }else{
             holder= (DynamicViewHolder) view.getTag();
@@ -106,25 +108,16 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
         holder.tvDynamicLikeUsers.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
         holder.tvUserLocation.setText(dynamics.get(i).getDynamicPlace()+" ");
         holder.btnDynamicLike.setImageResource(R.drawable.share_like_true);
+        Glide.with(mContext).load("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1528689441,659647338&fm=26&gp=0.jpg").circleCrop().into(holder.ivDynamicUserImg);
         CustomerDynamicImgAdapter customerDynamicImgAdapter=new CustomerDynamicImgAdapter(mContext,dynamics.get(i).getDynamicImgs(),R.layout.item_dynamic_img);
         holder.gvDynamicDynamicImgs.setAdapter(customerDynamicImgAdapter);
         //为点赞按钮设置点击事件
         final int[] likeflag = {0};
-
-
         holder.btnDynamicLike.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View view) {
-                //设置点赞事件
-                if(likeflag[0] ==0){
-                   btn[0].setImageResource(R.drawable.share_like_true);
-                    likeflag[0] =1;
-                }else if(likeflag[0] ==1){ //设置取消点赞事件
-                    holder.btnDynamicLike.setImageResource(R.drawable.share_like_false);
-                    btn[0].setImageResource(R.drawable.share_like_false);
-                    likeflag[0]=0;
-                }
+                holder.btnDynamicLike.setImageResource(R.drawable.share_like_false);
+                Log.e("position",i+"");
             }
         });
 
