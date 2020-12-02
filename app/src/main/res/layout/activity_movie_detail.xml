@@ -110,9 +110,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
                                 <Button
-                                    android:id="@+id/more"
+                                    android:id="@+id/collection"
                                     android:background="@drawable/movie_detail_btn_shape"
-                                    android:text="更多"
+                                    android:text="收藏"
                                     android:layout_alignParentBottom="true"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"/>

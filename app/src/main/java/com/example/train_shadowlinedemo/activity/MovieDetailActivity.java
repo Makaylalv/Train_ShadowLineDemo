@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Film;
 import com.example.train_shadowlinedemo.entity.Place;
@@ -100,9 +102,17 @@ public class MovieDetailActivity extends AppCompatActivity {
                     timer.schedule(task1, 0, 30);
                     break;
                 case 3:
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     fragmenPlace.setData(places);
-
                     break;
+                case 4:
+                    Toast.makeText(MovieDetailActivity.this,(String)msg.obj,Toast.LENGTH_SHORT).show();
+                    break;
+
             }
 
         }
@@ -118,7 +128,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         initBar();
         //给activity注册滑动事件
         (this).registerFragmentTouchListener(touchListener);
-
 
     }
 
@@ -155,7 +164,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         //3.创建请求对象
         Request request = new Request.Builder()
                 .post(requestBody)//请求方式为POST
-                .url("http://192.168.43.128:8080/ShadowLine/GetAllPlaceServlet")
+                .url(ConfigUtil.SERVER_ADDR+"GetAllPlaceServlet")
                 .build();
         //4.创建Call对象，发送请求，并接受响应
         final Call call = okHttpClient.newCall(request);
@@ -169,16 +178,19 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //请求成功时回调
-                Gson gson=new Gson();
-                Type type = new TypeToken<ArrayList<Place>>(){}.getType();
-                places = gson.fromJson(response.body().string(),type);
-                Message message=new Message();
-                message.what=3;
-                handler.sendMessage(message);
-                //打印测试
-                for(Place i:places){
-                    System.out.println(i.getPlaceName());
+                String str=response.body().string();
+                if(!str.equals("[]")&&str!=null&&!str.equals("")) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<ArrayList<Place>>() {
+                    }.getType();
+                    places = gson.fromJson(str, type);
+                    Message message = new Message();
+                    message.what = 3;
+                    handler.sendMessage(message);
+                    //打印测试
+                    for (Place i : places) {
+                        System.out.println(i.getPlaceMapImg());
+                    }
                 }
             }
         });
@@ -192,6 +204,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         okHttpClient=new OkHttpClient();
         Intent intent=getIntent();
         String filmJsonStr=intent.getStringExtra("film");
+        Log.e("eeeeee",filmJsonStr);
         Gson gson = new GsonBuilder()
                 .serializeNulls()//允许序列化空值
                 .setPrettyPrinting()//格式化输出
@@ -210,7 +223,14 @@ public class MovieDetailActivity extends AppCompatActivity {
         filmTypeTV=findViewById(R.id.film_type);
         tabLayout = findViewById(R.id.tab_main);
         viewPager = findViewById(R.id.viewpager);
-        button=findViewById(R.id.more);
+        button=findViewById(R.id.collection);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collectionFilm();
+            }
+        });
+
 
         listTitle.add("片场"); //标题
         listTitle.add("片场");//标题
@@ -220,7 +240,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         fragments.add(fragmentCity);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(new MovieDetailsViewPagerAdapter(getSupportFragmentManager(),fragments,listTitle));
-        getAllPlace();
+
         //赋值
         filmChinesehNametextView.setText(film.getFilmName());
         filmEnglishNametextView.setText(film.getFilmEnglishname());
@@ -233,24 +253,61 @@ public class MovieDetailActivity extends AppCompatActivity {
                 .error(R.drawable.glide_error)//请求失败时显示
                 .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
         Glide.with(this)
-                .load("http://192.168.43.128:8080/ShadowLine/imgs/"+film.getFilmImg())
+                .load(ConfigUtil.SERVER_ADDR+film.getFilmImg())
                 .apply(options)//应用请求选项
                 .into(filmImgView);
         Glide.with(this)
-                .load("http://192.168.43.128:8080/ShadowLine/imgs/"+film.getFlimMapImg())
+                .load(ConfigUtil.SERVER_ADDR+film.getFilmMapImg())
                 .apply(options)//应用请求选项
                 .into(filmMapImgView);
+
         filmMapImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent1=new Intent();
-                Gson gson=new Gson();
-                String str=gson.toJson(places);
-                intent1.putExtra("places",places);
-                intent1.setClass(MovieDetailActivity.this,DetailMapActivity.class);
-                startActivity(intent1);
+                if(places.size()!=0&&places!=null) {
+                    Gson gson = new Gson();
+                    String str = gson.toJson(places);
+                    intent1.putExtra("places", str);
+                    intent1.setClass(MovieDetailActivity.this, DetailMapActivity.class);
+                    startActivity(intent1);
+                }
             }
         });
+        getAllPlace();
+    }
+
+    private void collectionFilm() {
+
+        //2.创建RequestBody（请求体）对象
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),film.getFilmId()+"&"+"1");
+        //3.创建请求对象
+        Request request = new Request.Builder()
+                .post(requestBody)//请求方式为POST
+                .url(ConfigUtil.SERVER_ADDR+"CollectionFilmServlet")
+                .build();
+        //4.创建Call对象，发送请求，并接受响应
+        final Call call = okHttpClient.newCall(request);
+        //异步网络请求（不需要创建子线程）
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("1111111111","111111111");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String str=response.body().string();
+                Message message=new Message();
+                message.what=4;
+                message.obj=str;
+                handler.sendMessage(message);
+            }
+        });
+
     }
 
     //自定义滑动监听

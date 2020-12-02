@@ -2,6 +2,17 @@ plugins {
     id 'com.android.application'
 }
 
+// 添加插件
+apply plugin: 'com.mob.sdk'
+
+// 在MobSDK的扩展中注册SMSSDK的相关信息
+MobSDK {
+    appKey "31864de7eed41"
+    appSecret "6f85a1db8d49d276ae98a88a7c30fef3"
+    SMSSDK {}
+    fp true //严格模式
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
@@ -13,12 +24,15 @@ android {
 
     defaultConfig {
         applicationId "com.example.train_shadowlinedemo"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86','x86_64'
+        }
     }
 
     buildTypes {
@@ -61,8 +75,12 @@ dependencies {
 
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
-    //SmartRefreshLayout
+    //刷新
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-12'
-
+    //QQ登录
+    implementation 'com.github.BarefootBKK:QQLoginForAndroid:1.0.1'
+    //启动页
+    implementation 'com.github.AppIntro:AppIntro:6.0.0'
 
 }

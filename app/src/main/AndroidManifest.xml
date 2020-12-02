@@ -3,7 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.train_shadowlinedemo">
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 允许写手机存储（必须） -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" /> <!-- GUI自动填充验证码功能（非必须） -->
+    <uses-permission android:name="android.permission.READ_SMS" /> <!-- 从短信中读取验证码接口（非必须） -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 应用内好友功能（非必须） -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
 
@@ -32,7 +38,21 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
 
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+
+
     <application
+        android:networkSecurityConfig="@xml/network_security_config"
         android:name=".ShadowLineApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -41,7 +61,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Train_ShadowLineDemo">
         android:theme="@style/Theme.Train_ShadowLineDemo"
         android:usesCleartextTraffic="true">
         <meta-data
@@ -56,19 +75,28 @@
                 <action android:name="com.baidu.location.service_v5.0.0"/>
             </intent-filter>
         </service>
-
+        <activity android:name=".activity.LivingRoomActivity"
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".activity.StartLivingActivity"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".activity.MovieTypeActivity"></activity>
+        <activity android:name=".activity.AppIntroActivity"
+            android:theme="@style/Theme.Design.NoActionBar"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.PlanningRouteActivity"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".activity.MovieDetailActivity"
             android:theme="@style/AppTheme"/>
         <activity android:name=".activity.SearchActivity"/>
         <activity android:name=".activity.RegisterActivity"/>
         <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.DetailMapActivity"
+            android:theme="@style/AppTheme"/>
        <activity android:name=".fragment.ShareChildrenFragment.EditDynamicActivity"/>
         <provider
             android:authorities="com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.MyFileProvider"
@@ -79,6 +107,30 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
+        <!--QQ-->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- 这地方需要用你在开放平台申请的appid:tencent+appid -->
+                <data android:scheme="tencent1111171437" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

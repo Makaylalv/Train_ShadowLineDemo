@@ -24,14 +24,14 @@ public class Film {
     //电影位置
     private int filmPosition;
     //地图照片
-    private String flimMapImg;
+    private String filmMapImg;
 
-    public String getFlimMapImg() {
-        return flimMapImg;
+    public String getFilmMapImg() {
+        return filmMapImg;
     }
 
-    public void setFlimMapImg(String flimMapImg) {
-        this.flimMapImg = flimMapImg;
+    public void setFilmMapImg(String flimMapImg) {
+        this.filmMapImg = flimMapImg;
     }
 
     public int getFilmId() {

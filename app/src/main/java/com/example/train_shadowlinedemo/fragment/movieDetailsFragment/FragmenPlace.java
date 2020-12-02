@@ -1,14 +1,11 @@
 package com.example.train_shadowlinedemo.fragment.movieDetailsFragment;
 
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,29 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Place;
 import com.example.train_shadowlinedemo.view.MovieDetail.PlaceRecyclerViewAdapter;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
-
-import java.util.logging.LogRecord;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class FragmenPlace extends androidx.fragment.app.Fragment {
     private ArrayList<Place> places= new ArrayList<>();
-    View view;
+    private View view;
     private RecyclerView recyclerView;
 
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, android.os.Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_place, container, false);
         return view;
@@ -58,8 +42,6 @@ public class FragmenPlace extends androidx.fragment.app.Fragment {
         myAdapter.setOnItemClickListener(onItemClickListener);
         recyclerView.setAdapter(myAdapter);
     }
-
-
 
     PlaceRecyclerViewAdapter.OnItemClickListener onItemClickListener=new PlaceRecyclerViewAdapter.OnItemClickListener() {
         @Override

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:gravity="bottom"
+    android:id="@+id/layout_intro4"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg3">
+    <TextView
+        android:id="@+id/btn_open"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="100dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/circle_custom"
+        android:text="开启旅程"/>
+</LinearLayout>

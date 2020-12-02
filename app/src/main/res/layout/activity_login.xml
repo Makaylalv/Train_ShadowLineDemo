@@ -1,9 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity">
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/et_login_phone"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="107dp"
+        android:ems="10"
+        android:hint="请输入手机号"
+        android:inputType="phone" />
+
+    <requestFocus /><!--//获取焦点-->
+
+    <EditText
+        android:id="@+id/et_login_password"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/et_login_phone"
+        android:layout_below="@+id/et_login_phone"
+        android:layout_marginTop="44dp"
+        android:hint="请输入密码"
+        android:inputType="textPassword" >
+    </EditText>
+
+    <Button
+        android:id="@+id/login_commit"
+        android:layout_width="280dp"
+        android:onClick="onClicked"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/et_login_password"
+        android:layout_below="@+id/et_login_password"
+        android:layout_marginTop="44dp"
+        android:text="登录" />
+
+    <TextView
+        android:id="@+id/tv_new_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="新用户？注册"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="250dp"/>
+
+    <ImageView
+        android:id="@+id/info_icon"
+        android:src="@drawable/qq"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginLeft="65dp"/>
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/info_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="470dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="500dp"
+        android:id="@+id/text_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp" />
+
+    <Button
+        android:layout_marginLeft="65dp"
+        android:id="@+id/button_login"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="550dp"
+        android:text="QQ登录"
+        android:textColor="#87a7d6"
+        android:background="@drawable/qq"/>
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="155dp"
+        android:layout_marginTop="550dp"
+        android:src="@drawable/weixin"/>
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="245dp"
+        android:layout_marginTop="550dp"
+        android:src="@drawable/weibo"/>
+
+
+</RelativeLayout>

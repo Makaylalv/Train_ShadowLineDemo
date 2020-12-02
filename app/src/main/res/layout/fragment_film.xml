@@ -8,8 +8,8 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/btn_search"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/search"/>
         <TextView
             android:gravity="center"
@@ -23,7 +23,7 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingHorizontal="10dp"
         android:scrollbars="none">
 
@@ -35,7 +35,7 @@
             <com.youth.banner.Banner
                 android:id="@+id/movie_banner"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="220dp"
                 app:banner_indicator_height="10dp"
                 app:banner_indicator_normal_color="#C1BFBF"
                 app:banner_indicator_normal_width="7dp"
@@ -69,7 +69,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="爱"
+                            android:text="爱情"
                             android:textColor="@color/mainColor" />
                     </LinearLayout>
 
@@ -253,6 +253,7 @@
                         android:layout_height="wrap_content"
                         android:padding="5dp"
                         android:text="少年的你"
+                        android:textSize="20sp"
                         android:textColor="@color/black" />
 
                     <LinearLayout
@@ -263,6 +264,7 @@
                         <TextView
                             android:id="@+id/tv_hotmovie_fromcountry"
                             android:layout_width="wrap_content"
+                            android:layout_marginLeft="5dp"
                             android:layout_height="wrap_content"
                             android:text="中国大陆" />
 
@@ -273,13 +275,13 @@
                             android:layout_marginLeft="5dp"
                             android:text="2020" />
 
-                        <TextView
-                            android:id="@+id/tv_hotmovie_type"
-                            android:layout_marginLeft="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="爱情/青春" />
                     </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_hotmovie_type"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="爱情/青春" />
 
                 </LinearLayout>
                 <GridView
@@ -291,11 +293,18 @@
                     android:layout_height="match_parent" />
 
             </LinearLayout>
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/horizontal_dotted_line"
+                android:layerType="software"/>
+
             <com.example.train_shadowlinedemo.view.MovieShow.ListViewForScrollView
                 android:scrollbars="none"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/lv_hotmovie"/>
         </LinearLayout>
     </ScrollView>
