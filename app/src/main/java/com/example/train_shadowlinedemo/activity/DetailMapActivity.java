@@ -77,7 +77,7 @@ public class DetailMapActivity extends AppCompatActivity {
     private ImageView placeIsCollectionIV;
     private boolean isCollection;
     private int placeId;
-    private int userId=1;
+    private int userId=LoginActivity.user.getUser_id();
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -211,7 +211,7 @@ public class DetailMapActivity extends AppCompatActivity {
                 int index =idBundle.getInt("placeId");
                 Place place=new Place();
                 place=places.get(index);
-                isCollectionPlace(place.getPlaceId(),1);
+                isCollectionPlace(place.getPlaceId(),userId);
                 placeId=place.getPlaceId();
                 placeNameTV.setText(place.getPlaceName());
                 placePositionTV.setText(place.getPlacePosition());
@@ -250,7 +250,7 @@ public class DetailMapActivity extends AppCompatActivity {
         Place place=new Place();
         place=places.get(0);
         placeId=place.getPlaceId();
-        isCollectionPlace(place.getPlaceId(),1);
+        isCollectionPlace(place.getPlaceId(),userId);
         placeNameTV.setText(place.getPlaceName());
         placePositionTV.setText(place.getPlacePosition());
         placePhoneTV.setText(place.getPlacePhone());
@@ -303,6 +303,7 @@ public class DetailMapActivity extends AppCompatActivity {
 
     private void isCollectionPlace(int placeId,int userId) {
         //2.创建RequestBody（请求体）对象
+
         RequestBody requestBody = RequestBody.create(MediaType.parse(
                 "text/plain;charset=utf-8"),placeId+"&"+userId);
         //3.创建请求对象

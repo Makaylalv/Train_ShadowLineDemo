@@ -108,10 +108,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     fragmenPlace.setData(places);
+                    filmLocationNumTV.setText(places.size()+"");
                     break;
                 case 4:
                     Toast.makeText(MovieDetailActivity.this,(String)msg.obj,Toast.LENGTH_SHORT).show();
                     break;
+                case 5:
+                    filmLocationNumTV.setText("0");
 
             }
 
@@ -191,6 +194,10 @@ public class MovieDetailActivity extends AppCompatActivity {
                     for (Place i : places) {
                         System.out.println(i.getPlaceMapImg());
                     }
+                }else {
+                    Message message=new Message();
+                    message.what=5;
+                    handler.sendMessage(message);
                 }
             }
         });
@@ -282,7 +289,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         //2.创建RequestBody（请求体）对象
         RequestBody requestBody = RequestBody.create(MediaType.parse(
-                "text/plain;charset=utf-8"),film.getFilmId()+"&"+"1");
+                "text/plain;charset=utf-8"),film.getFilmId()+"&"+LoginActivity.user.getUser_id());
         //3.创建请求对象
         Request request = new Request.Builder()
                 .post(requestBody)//请求方式为POST
@@ -294,7 +301,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("1111111111","111111111");
+
                 e.printStackTrace();
             }
 

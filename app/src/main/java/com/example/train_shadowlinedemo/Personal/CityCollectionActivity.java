@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.LoginActivity;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -61,8 +62,9 @@ public class CityCollectionActivity extends AppCompatActivity {
         //2.创建Request请求对象(默认使用get请求)
         Request request = new Request.Builder()
                 .url(ConfigUtil.SERVER_ADDR+
-                        "GetCityCollectionServlet?user_id=1")//请求的地址
+                        "GetCityCollectionServlet?user_id="+ LoginActivity.user.getUser_id())//请求的地址
                 .build();
+
         //3.创建Call对象，发送请求，并接受响应
         Call call = okHttpClient.newCall(request);
         //4.异步网络请求（不需要创建子线程）

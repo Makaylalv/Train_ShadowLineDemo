@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <com.example.train_shadowlinedemo.view.MovieShow.ListViewForScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/spot_route_list" />
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/rl9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/route_btn"
+                android:textColor="#000000"
+                android:background="#87a7d6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="加入路线" />
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/likeSpot"
+                android:textColor="#000000"
+                android:background="#87a7d6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="加入收藏" />
+        </LinearLayout>
+
+
+        <!--<TextView
+            android:layout_toLeftOf="@id/sum_money"
+            android:text="总计："
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="#ff8097"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="#ff8097"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_toLeftOf="@id/balance_btn"
+            android:id="@+id/sum_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>-->
+<!--        <Button-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:id="@+id/route_btn"-->
+<!--            android:textColor="#ff8097"-->
+<!--            android:background="@drawable/button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="加入路线" />-->
+<!--        <Button-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:id="@+id/likeSpot"-->
+<!--            android:textColor="#ff8097"-->
+<!--            android:background="@drawable/button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="加入收藏" />-->
+    </RelativeLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true">-->
+<!--        <Button-->
+<!--            android:layout_weight="1"-->
+<!--            android:id="@+id/balance_btn"-->
+<!--            android:textColor="#ff8097"-->
+<!--            android:background="@drawable/button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="结算" />-->
+<!--        <Button-->
+<!--            android:layout_weight="1"-->
+<!--            android:id="@+id/balance_btn0"-->
+<!--            android:textColor="#ff8097"-->
+<!--            android:background="@drawable/button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="结算" />-->
+<!--    </LinearLayout>-->
+</RelativeLayout>

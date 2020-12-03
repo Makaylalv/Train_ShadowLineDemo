@@ -54,7 +54,7 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
     private ArrayAdapter<String> hintAdapter;//热搜框列表adapter
     private ArrayAdapter<String> autoCompleteAdapter;//自动补全
     private List<SearchResult> resultData; //搜索结果数据
-    private List<SearchResult> dbData;//数据库的结果
+    private List<SearchResult> dbData=new ArrayList<>();//数据库的结果
 
     private OkHttpClient okHttpClient;
 
@@ -282,7 +282,6 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
         FormBody formBody=new FormBody.Builder()
                 .add("type",type)
                 .build();
-        dbData=new ArrayList<>();
         Request request=new Request.Builder()
                 .post(formBody)
                 .url(ConfigUtil.SERVER_ADDR+"ClientGetDataByType")
@@ -307,7 +306,6 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
     }
 
     private void searchDataByall() {
-        dbData=new ArrayList<>();
         Request request=new Request.Builder()
                 .url(ConfigUtil.SERVER_ADDR+"ClientGetAllData")
                 .build();

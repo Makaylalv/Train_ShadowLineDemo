@@ -5,19 +5,11 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <ImageView
-        android:id="@+id/go_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
-
-
     <SurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </SurfaceView>
+        android:layout_height="match_parent"></SurfaceView>
+
     <ScrollView
         android:id="@+id/sv"
         android:layout_above="@+id/linear"
@@ -29,12 +21,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </ScrollView>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/go_out_text"
+        android:textSize="30sp"
+        android:text="主播已离开"
+       android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/go_out"/>
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/go_out"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"/>
+
     <ImageView
         android:layout_margin="10dp"
         android:src="@drawable/movie_detail_back"
         android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
 
 
     <LinearLayout

@@ -192,6 +192,7 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("登陆结果","登录成功");
                         Gson gson=new Gson();
                         user=gson.fromJson(content,User.class);
+                        Log.e("userId",user.getUser_id()+"");
                         Intent intent = new Intent();
                         intent.setClass(LoginActivity.this, MainActivity.class);
                         startActivity(intent);

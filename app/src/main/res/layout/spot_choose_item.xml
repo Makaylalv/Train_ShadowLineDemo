@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
+    <CheckBox
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/check" />
+    <ImageView
+        android:id="@+id/choose_photo"
+        android:layout_toRightOf="@id/check"
+        android:layout_width="150dp"
+        android:layout_marginRight="5dp"
+        android:layout_height="100dp"/>
+    <LinearLayout
+        android:layout_toRightOf="@id/choose_photo"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/choose_titleC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"/>
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:id="@+id/choose_titleE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/choose_id"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"/>
+    </LinearLayout>
+</RelativeLayout>

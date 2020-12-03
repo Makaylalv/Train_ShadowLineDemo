@@ -62,6 +62,7 @@ public class LivingRoomActivity extends AppCompatActivity {
     private ImageView sendButton;
     private EditText messageEditText;
     private ImageView goOutIV;
+    private TextView goOutTV;
 
     private Handler handler=new Handler(){
         @Override
@@ -72,8 +73,9 @@ public class LivingRoomActivity extends AppCompatActivity {
                     recyclerView.scrollToPosition(myAdapter.getItemCount()-1);
                     break;
                 case 2:
+                    goOutIV.setVisibility(View.VISIBLE);
+                    goOutTV.setVisibility(View.VISIBLE);
                     preview_view.setVisibility(View.GONE);
-                    Log.e("5555555555555","555555555555");
                     Glide.with(LivingRoomActivity.this)
                             .asGif()
                             .load(R.drawable.go_out)
@@ -126,7 +128,7 @@ public class LivingRoomActivity extends AppCompatActivity {
                 });
             }
         };
-        timer.schedule(timerTask,100);
+        timer.schedule(timerTask,1000);
 
     }
 
@@ -191,6 +193,8 @@ public class LivingRoomActivity extends AppCompatActivity {
                     handler.sendMessage(message);
                 }else if(updateType.value()==0){
                     preview_view.setVisibility(View.VISIBLE);
+                    goOutTV.setVisibility(View.GONE);
+                    goOutIV.setVisibility(View.GONE);
                 }
             }
         });
@@ -214,6 +218,7 @@ public class LivingRoomActivity extends AppCompatActivity {
         sendButton=findViewById(R.id.send);
         messageEditText=findViewById(R.id.content);
         imageView=findViewById(R.id.back);
+        goOutTV=findViewById(R.id.go_out_text);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

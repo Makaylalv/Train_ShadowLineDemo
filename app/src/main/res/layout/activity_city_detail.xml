@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll"
+                android:background="#fff">
+                <RelativeLayout android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/ll1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_margin="20dp"
+                            android:layout_width="200dp"
+                            android:layout_height="112dp"
+                            android:id="@+id/cityImg"
+                            android:src="@drawable/palace"/>
+                        <RelativeLayout
+                            android:layout_marginTop="15dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_marginTop="20dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="25sp"
+                                android:id="@+id/cityTextChinese"
+                                android:text="北京"/>
+                            <TextView
+                                android:layout_below="@id/cityTextChinese"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/cityTextEnglish"
+                                android:textSize="20sp"
+                                android:text="BeiJing"/>
+                            <TextView
+                                android:layout_marginTop="10dp"
+                                android:layout_below="@id/cityTextEnglish"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="15sp"
+                                android:text="中国 China"
+                                android:id="@+id/cityFrom"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_below="@id/ll1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:text="我们伟大祖国的首都其实是一个多元的城市，因此银幕上的北京也是千姿百态。巍峨古老的皇家宫殿园林讲述着历史的厚重，破败的胡同里有皇城根下的市井小民，鳞次栉比的高楼间隐藏着纸醉金迷....作为中国电影取景最频繁的城市之，北京永远都不会只有一副面孔"
+                            android:id="@+id/cityIntro"/>
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:src="@drawable/citymap"/>
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabMode="fixed"
+                    app:tabBackground="@android:color/transparent"
+                    app:tabRippleColor="@android:color/transparent"
+                    android:background="#fff">
+                </com.google.android.material.tabs.TabLayout>
+                <ImageView
+                    android:id="@+id/chooseSpot"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@id/tab_main"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/chinese"/>
+
+            </RelativeLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <com.example.train_shadowlinedemo.customerview.MyViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.example.train_shadowlinedemo.customerview.MyViewPager>
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
+<!--</ScrollView>-->

@@ -73,7 +73,7 @@ public class MovieCollectionAdapter extends BaseAdapter {
         if (isOP){
             cb_op.setVisibility(View.VISIBLE);
             RelativeLayout.LayoutParams lps = (RelativeLayout.LayoutParams) view.findViewById(R.id.movie).getLayoutParams();
-            lps.leftMargin = 72;
+            lps.leftMargin = 100;
 //            Button button = new Button(Context);
 //            button.setId(1);
 //            RelativeLayout relativeLayout = view.findViewById(R.id.rv_city_list);
