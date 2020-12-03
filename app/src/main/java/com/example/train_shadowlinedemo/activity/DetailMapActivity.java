@@ -325,6 +325,7 @@ public class DetailMapActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
                 String str=response.body().string();
+                Log.e("1111111",str);
                 Message message=new Message();
                 if(str.equals("已收藏")){
                     message.what=1;

@@ -67,7 +67,6 @@ public class AppIntroActivity extends AppIntro {
         SharedPreferences.Editor editor = activityPreferences.edit();
         editor.putBoolean("first_open", true);
         editor.commit();
-
         finish();
     }
 

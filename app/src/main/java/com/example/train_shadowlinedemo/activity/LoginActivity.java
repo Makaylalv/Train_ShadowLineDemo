@@ -3,6 +3,7 @@ package com.example.train_shadowlinedemo.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.accessibilityservice.GestureDescription;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,10 +19,12 @@ import android.widget.Toast;
 
 
 import com.bkk.library.QQLoginManager;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.MainActivity;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.RegisterActivity;
 import com.example.train_shadowlinedemo.entity.User;
+import com.google.gson.Gson;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.connect.common.Constants;
@@ -48,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private String phone;
     private String name;
     private String pwd;
+    public static User user;
 
     private EditText etPhone;
     private EditText etPwd;
@@ -66,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         etPhone = findViewById(R.id.et_login_phone);
         etPwd = findViewById(R.id.et_login_password);
@@ -167,47 +171,38 @@ public class LoginActivity extends AppCompatActivity {
             public void run() {
                 super.run();
                 try {
-                    URL url = new URL("http://192.168.43.175:8080/ShadowLine/LoginUserServlet");
+                    URL url = new URL(ConfigUtil.SERVER_ADDR+"LoginUserServlet");
                     HttpURLConnection connection = (HttpURLConnection)
                             url.openConnection();
                     //设置Http的请求方式：get\post\put\delete...,默认使get请求
                     connection.setRequestMethod("POST");
                     OutputStream outputStream = connection.getOutputStream();
-                    JSONObject object = new JSONObject();
                     String uPhone = etPhone.getText().toString();
                     String uPwd = etPwd.getText().toString();
-                    object.put("Phone",uPhone);
-                    object.put("Pwd",uPwd);
-                    outputStream.write(object.toString().getBytes());
-
+                    String str=uPhone+"&"+uPwd;
+                    outputStream.write(str.getBytes());
                     InputStream inputStream = connection.getInputStream();
                     byte[] buffer = new byte[256];
                     int len = inputStream.read(buffer);
-                    Log.e("666",len+"");
                     String content = new String(buffer,0,len);
-
-                    Log.e("登陆结果",new String(buffer,0,len));
-
                     outputStream.close();
                     inputStream.close();
-
-                    JSONObject jsonObject = new JSONObject(content);
-                    i = jsonObject.getBoolean("true");
-                    if (i){
+                    Log.e("cccccccc",content);
+                    if (!content.equals("登陆失败")){
+                        Log.e("登陆结果","登录成功");
+                        Gson gson=new Gson();
+                        user=gson.fromJson(content,User.class);
                         Intent intent = new Intent();
                         intent.setClass(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                     }else{
-                        Log.e("11","1");
+                        Log.e("登陆结果","登录失败");
                     }
-
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (ProtocolException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

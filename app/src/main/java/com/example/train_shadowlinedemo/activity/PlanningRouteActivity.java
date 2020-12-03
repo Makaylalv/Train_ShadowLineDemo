@@ -49,6 +49,7 @@ import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.CustomMarker;
 import com.example.train_shadowlinedemo.entity.Distance;
@@ -73,6 +74,8 @@ public class PlanningRouteActivity extends AppCompatActivity {
     private List<Double> doubleList;
     private List<CustomMarker> markerList;
     private ImageView imageView;
+    private int flag=0;
+    private int n=0;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -85,6 +88,14 @@ public class PlanningRouteActivity extends AppCompatActivity {
                     baiduMap.addOverlay(options);
                     searchLine();
                     break;
+                case 2:
+                    if(n<planNodeList2.size()-1){
+                        search.drivingSearch(new DrivingRoutePlanOption().from(planNodeList2.get(n)).to(planNodeList2.get(n + 1)));
+                        n++;
+                    }
+
+                    break;
+
             }
         }
     };
@@ -104,6 +115,8 @@ public class PlanningRouteActivity extends AppCompatActivity {
         initMarkerList();
 
         initSearch();
+
+
     }
 
     private void initSearch() {
@@ -348,6 +361,7 @@ public class PlanningRouteActivity extends AppCompatActivity {
 
     private void searchLine() {
         int j=planNodeList1.size()-1;
+
         new Thread(){
             @Override
             public void run() {
@@ -356,17 +370,13 @@ public class PlanningRouteActivity extends AppCompatActivity {
                         if(l==planNodeList1.size()-1){
                             continue;
                         }else {
-                            try {
+
                                 if(planNodeList2.size()!=planNodeList1.size()) {
                                     //睡眠s
-                                    sleep(100);
                                     search.drivingSearch(new DrivingRoutePlanOption().from(planNodeList1.get(i)).to(planNodeList1.get(l + 1)));
                                     //search.walkingSearch(new WalkingRoutePlanOption().from(planNodeList1.get(i)).to(planNodeList1.get(l + 1)));
                                 }
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
+
                         }
                     }
                 }
@@ -387,6 +397,7 @@ public class PlanningRouteActivity extends AppCompatActivity {
             dt.setJ(p2);
             dt.setDistance(distance);
             distanceList.add(dt);
+            Log.e("distance",dt.getDistance()+"");
         }else {
             int endMarker = 0;
             //route = result.getRouteLines().get(0);
@@ -404,6 +415,9 @@ public class PlanningRouteActivity extends AppCompatActivity {
             //routeOverlay = overlay;
             overlay.setData(drivingRouteResult.getRouteLines().get(0));
             overlay.addToMap();
+            Message message=new Message();
+            message.what=2;
+            handler.sendMessage(message);
             //overlay.zoomToSpan();
         }
         if(distanceList.size()==planNodeList1.size()*(planNodeList1.size()-1)/2&&planNodeList2.size()!=planNodeList1.size()){
@@ -481,23 +495,30 @@ public class PlanningRouteActivity extends AppCompatActivity {
                     }
                 }
                 oldLng=lng;
-            }
-            if(planNodeList2.size()==planNodeList1.size()){
-                new Thread() {
-                    @Override
-                    public void run() {
-                        for(int n = 0;n<planNodeList2.size()-1;n++)
-                        {
-                            search.drivingSearch(new DrivingRoutePlanOption().from(planNodeList2.get(n)).to(planNodeList1.get(n + 1)));
-                            try {
-                                sleep(50);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
 
-                }.run();
+            }
+            if(planNodeList2.size()==planNodeList1.size()&&flag==0){
+                flag=1;
+                Message message=new Message();
+                message.what=2;
+                handler.sendMessage(message);
+//                new Thread() {
+//                    @Override
+//                    public void run() {
+//                        for(int n = 0;n<planNodeList2.size()-1;n++)
+//                        {
+//
+//                            Log.e("lng",planNodeList2.get(n).getLocation().latitude+"HHHHHH"+planNodeList2.get(n).getLocation().longitude);
+//                            try {
+//                                sleep(100);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//
+//                }.run();
+
             }
         }
     }
