@@ -129,7 +129,6 @@ public class DynamicFragment extends Fragment {
                     @Override
                     public void run() {
                         super.run();
-
                     }
                 }.start();
             }
