@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
         intent.setClass(this, MovieDetailActivity.class);
         startActivity(intent);
         finish();*/
-        Intent intent=new Intent(this, PlanningRouteActivity.class);
-        startActivity(intent);
+       /* Intent intent=new Intent(this, PlanningRouteActivity.class);
+        startActivity(intent);*/
         //获取控件
         ivFilm=findViewById(R.id.iv_tab_film);
         ivCity=findViewById(R.id.iv_tab_city);
