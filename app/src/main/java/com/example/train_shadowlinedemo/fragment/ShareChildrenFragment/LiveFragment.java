@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.LivingRoomActivity;
+import com.example.train_shadowlinedemo.activity.LoginActivity;
 import com.example.train_shadowlinedemo.activity.StartLivingActivity;
 import com.example.train_shadowlinedemo.adapter.CustomerDynamicAdapter;
 import com.example.train_shadowlinedemo.entity.Dynamic;
@@ -69,12 +71,11 @@ public class LiveFragment extends Fragment {
                     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
                     myAdapter =new LiveRoomRecyclerViewAdapter(roomList,getContext());
                     myAdapter.setOnItemClickListener(onItemClickListener);
+
                     recyclerView.setAdapter(myAdapter);
-                    break;
-                case 2:
-                    roomList.clear();
-                    roomList.addAll(newRoomList);
+                    refreshLayout.finishRefresh();
                     myAdapter.notifyDataSetChanged();
+                    break;
             }
         }
     };
@@ -95,7 +96,7 @@ public class LiveFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        refreshLayout.setEnableLoadMore(false);//是否启用上拉加载功能
         getLivingRoom();
         return view;
     }
@@ -106,8 +107,15 @@ public class LiveFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        Log.e("1111111","111111");
+        getLivingRoom();
+        super.onResume();
+    }
 
     private void getLivingRoom() {
+
         //2.创建RequestBody（请求体）对象
         RequestBody requestBody = RequestBody.create(MediaType.parse(
                 "text/plain;charset=utf-8"),"获取正在直播的room");
@@ -124,6 +132,7 @@ public class LiveFragment extends Fragment {
             @Override
             public void onFailure(Call call, IOException e) {
                 //请求失败时回调
+
                 e.printStackTrace();
             }
 
@@ -131,14 +140,15 @@ public class LiveFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
                 String str=response.body().string();
-
                 roomList=new ArrayList<>();
                 //请求成功时回调
-                Gson gson=new Gson();
-                Type type = new TypeToken<ArrayList<Room>>(){}.getType();
-                roomList = gson.fromJson(str,type);
-                Message message=new Message();
-                message.what=1;
+                if(!str.equals("无人直播")) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<ArrayList<Room>>() {}.getType();
+                    roomList = gson.fromJson(str, type);
+                }
+                Message message = new Message();
+                message.what = 1;
                 handler.sendMessage(message);
             }
         });
@@ -168,8 +178,7 @@ public class LiveFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-                getNewLivingRoom();
+                getLivingRoom();
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -181,49 +190,12 @@ public class LiveFragment extends Fragment {
         });
     }
 
-    private void getNewLivingRoom() {
-        //2.创建RequestBody（请求体）对象
-        RequestBody requestBody = RequestBody.create(MediaType.parse(
-                "text/plain;charset=utf-8"),"获取正在直播的room");
-        //3.创建请求对象
-        Request request = new Request.Builder()
-                .post(requestBody)//请求方式为POST
-                .url(ConfigUtil.SERVER_ADDR+"GetAllLivingRoomServlet")
-                .build();
-        //4.创建Call对象，发送请求，并接受响应
-        OkHttpClient okHttpClient=new OkHttpClient();
-        final Call call = okHttpClient.newCall(request);
-        //异步网络请求（不需要创建子线程）
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                //请求失败时回调
-                e.printStackTrace();
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
-                String str=response.body().string();
-                Log.e("11111",str);
-                Gson gson=new Gson();
-                Type type = new TypeToken<ArrayList<Room>>(){}.getType();
-                newRoomList=new ArrayList<>();
-                newRoomList= gson.fromJson(str,type);
-                if(newRoomList.size()!=roomList.size()){
-                    Message message=new Message();
-                    message.what=2;
-                    handler.sendMessage(message);
-                }
-            }
-        });
-
-    }
 
     private void startLiving(){
         //2.创建RequestBody（请求体）对象
         RequestBody requestBody = RequestBody.create(MediaType.parse(
-                "text/plain;charset=utf-8"),"userId");
+                "text/plain;charset=utf-8"),""+ LoginActivity.user.getUser_id());
         //3.创建请求对象
         Request request = new Request.Builder()
                 .post(requestBody)//请求方式为POST
@@ -239,7 +211,6 @@ public class LiveFragment extends Fragment {
                 //请求失败时回调
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();

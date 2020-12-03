@@ -17,6 +17,86 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </ScrollView>
+    <ImageView
+        android:layout_margin="10dp"
+        android:src="@drawable/movie_detail_back"
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_marginRight="5dp"
+        android:id="@+id/camera"
+        android:layout_above="@+id/voice"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="70dp">
+        <ImageView
+            android:id="@+id/camera_img"
+            android:src="@drawable/camera_front"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/camera_txt"
+            android:textColor="#C8C5C5"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="摄像头"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/voice"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="70dp">
+        <ImageView
+            android:id="@+id/voice_img"
+            android:src="@drawable/microphone_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/voice_txt"
+            android:textColor="#C8C5C5"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="混响"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="5dp"
+        android:id="@+id/beauty"
+        android:layout_below="@+id/voice"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="70dp">
+        <ImageView
+            android:id="@+id/beauty_img"
+            android:src="@drawable/beauty_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/beauty_txt"
+            android:textColor="#C8C5C5"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="美颜"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>
