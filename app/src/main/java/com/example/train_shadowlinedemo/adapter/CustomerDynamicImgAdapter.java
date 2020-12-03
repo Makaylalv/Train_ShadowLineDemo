@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
@@ -20,10 +22,12 @@ public class CustomerDynamicImgAdapter extends BaseAdapter {
     private List<String> imgs=new ArrayList<String>();
     private int itemLayoutRes;
 
+
     public CustomerDynamicImgAdapter(Context mContext, List<String> imgs, int itemLayoutRes) {
         this.mContext = mContext;
         this.imgs = imgs;
         this.itemLayoutRes = itemLayoutRes;
+
     }
 
     public Context getmContext() {

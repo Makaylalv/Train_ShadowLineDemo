@@ -260,7 +260,7 @@ public class EditDynamicActivity extends AppCompatActivity {
                 Glide.with(this).load(selected.get(1)).into(ivAddImg2);
                 Cursor cursor = contentResolver1.query(selected.get(0),null,
                         null,null,null);
-               
+
                 if (cursor.moveToFirst()){
                     String imagePath = cursor.getString(cursor.getColumnIndex("_data"));
                     imagePaths.add(imagePath);
