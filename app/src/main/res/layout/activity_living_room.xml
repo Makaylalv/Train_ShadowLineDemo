@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout
+
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <ImageView
+        android:id="@+id/go_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+
     <SurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
@@ -13,10 +24,19 @@
         android:layout_width="300dp"
         android:layout_height="200dp">
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginLeft="10dp"
             android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </ScrollView>
+    <ImageView
+        android:layout_margin="10dp"
+        android:src="@drawable/movie_detail_back"
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:id="@+id/linear"
@@ -24,15 +44,21 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
         <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#fff"
+            android:background="@drawable/edit_background"
             android:id="@+id/content"
             android:layout_weight="5"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
-        <Button
+        <ImageView
             android:id="@+id/send"
-            android:layout_weight="1"
-            android:text="发送"
-            android:layout_width="wrap_content"
+            android:src="@drawable/send_msg"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
