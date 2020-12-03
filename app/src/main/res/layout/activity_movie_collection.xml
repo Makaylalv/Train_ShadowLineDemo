@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/up"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/movie_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="收藏电影" />
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:onClick="movieClicked"
+            android:id="@+id/movie_edit"
+            android:layout_alignParentRight="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="编辑"
+                android:id="@+id/movie_tv_edit"
+                android:textSize="23sp"
+                android:paddingRight="10dp"
+                android:layout_toLeftOf="@id/city_edit"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/city_edit"
+                android:src="@drawable/edit"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/li_movie"
+        android:layout_below="@id/up"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/movie_delete"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="deleteMovie"
+            android:id="@+id/movie_all_checked"
+            android:textSize="20sp"
+            android:text="全选"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/moviedelete"
+            android:text="删除"
+            android:onClick="deleteMovie"
+            android:layout_alignParentRight="true" />
+    </LinearLayout>
+</RelativeLayout>

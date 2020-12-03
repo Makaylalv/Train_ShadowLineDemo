@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:padding="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBox
+        android:id="@+id/place_op"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"/>
+    <RelativeLayout
+        android:id="@+id/place_head"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <ImageView
+            android:id="@+id/place_img"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/place1"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/place_img"
+            android:id="@+id/place_name"
+            android:text="重庆德普外国语学校"
+            android:textSize="17sp"/>
+        <TextView
+            android:id="@+id/place_english"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/place_img"
+            android:layout_below="@id/place_name"
+            android:textSize="15sp"
+            android:text="DEPU Foreign Languague School"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/place_city"
+            android:text="中国 重庆市"
+            android:layout_toRightOf="@id/place_img"
+            android:layout_below="@id/place_english"/>
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/place_film"
+        android:layout_below="@id/place_head"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:text="FILMED 少年的你"/>
+</RelativeLayout>

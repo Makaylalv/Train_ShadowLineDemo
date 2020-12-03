@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
+import com.example.train_shadowlinedemo.activity.PlanningRouteActivity;
 import com.example.train_shadowlinedemo.entity.Film;
 import com.example.train_shadowlinedemo.fragment.CityFragment;
 import com.example.train_shadowlinedemo.fragment.FilmFragment;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         intent.setClass(this, MovieDetailActivity.class);
         startActivity(intent);
         finish();*/
+        Intent intent=new Intent(this, PlanningRouteActivity.class);
+        startActivity(intent);
         //获取控件
         ivFilm=findViewById(R.id.iv_tab_film);
         ivCity=findViewById(R.id.iv_tab_city);
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         changeTab(filmFragment);
         changeColor("film");
         currentFragment=filmFragment;
+        onclickReceive();
 
     }
     private void changeTab(Fragment fragment) {
@@ -160,6 +164,22 @@ public class MainActivity extends AppCompatActivity {
                 ivShare.setImageResource(R.drawable.tab_share);
                 ivMine.setImageResource(R.drawable.tab_mine2);
                 break;
+        }
+
+    }
+    public void onclickReceive(){
+        Intent intent=getIntent();
+        if(intent!=null){
+            String skipDynamic=intent.getStringExtra("skipDynamic");
+            if(skipDynamic!=null){
+                if(skipDynamic.equals("skipDynamic")){
+                    shareFragment=new ShareFragment();
+                    changeTab(shareFragment);
+                    changeColor("share");
+
+                }
+            }
+
         }
 
     }
