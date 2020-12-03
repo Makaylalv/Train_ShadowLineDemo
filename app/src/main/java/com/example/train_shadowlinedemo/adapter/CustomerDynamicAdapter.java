@@ -17,12 +17,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Dynamic;
 import com.example.train_shadowlinedemo.entity.DynamicLikeUser;
+import com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.DynamicFragment;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -43,13 +45,28 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
     private int itemLayoutRes;
     private DynamicViewHolder holder=null;
     private OkHttpClient okHttpClient=new OkHttpClient();
+    private DynamicFragment  dynamicFragment;
+    private String userName="张狗狗";
+    private int userId=2;
+
   //  private List<View>  viewList=new ArrayList<>();
+//    public Handler handler=new Handler(){
+//      @Override
+//      public void handleMessage(@NonNull Message msg) {
+//          super.handleMessage(msg);
+//          switch(msg.what){
+//              case 30:
+//                  tv.setText(dynamics.get(Integer.parseInt(msg.obj.toString())).getLikeUser().toString()+"觉得很赞");
+//          }
+//      }
+//  };
 
 
-    public CustomerDynamicAdapter(Context mContext, List<Dynamic> dynamics, int itemLayoutRes) {
+    public CustomerDynamicAdapter(Context mContext, List<Dynamic> dynamics, int itemLayoutRes,DynamicFragment dynamicFragment) {
         this.mContext = mContext;
         this.dynamics = dynamics;
         this.itemLayoutRes = itemLayoutRes;
+        this.dynamicFragment=dynamicFragment;
     }
 
     public Context getmContext() {
@@ -99,7 +116,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-      //  if(null==view){
+       // if(null==view){
             view= LayoutInflater.from(mContext).inflate(R.layout.item_dynamic,null);
             holder=new DynamicViewHolder();
             holder.ivDynamicUserImg=view.findViewById(R.id.iv_dynamic_userimg);
@@ -113,34 +130,60 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
             holder.tvDynamicLikeUsers=view.findViewById(R.id.tv_dynamic_likeusers);
             holder.lvDynamicComments=view.findViewById(R.id.lv_dynamic_comments);
             holder.tvUserLocation=view.findViewById(R.id.tv_user_location);
+            TextView tv=view.findViewById(R.id.tv_dynamic_likeusers);
             view.setTag(holder);
 //        }else{
 //            holder= (DynamicViewHolder) view.getTag();
-//
 //        }
+        final int[] likeflag = {0};
         Glide.with(mContext).load(dynamics.get(i).getUserImg()).circleCrop().into(holder.ivDynamicUserImg);
         holder.tvDynamicUserName.setText(dynamics.get(i).getUserName());
         holder.tvDynamicDynamicTime.setText(dynamics.get(i).getDynamicTime());
         holder.tvDynmaicDynamicContent.setText(dynamics.get(i).getDynamicContent());
         holder.tvDynamicLikeUsers.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
         holder.tvUserLocation.setText(dynamics.get(i).getDynamicPlace()+" ");
+        if(dynamics.get(i).getLikeUser().contains(userName)){
+            holder.btnDynamicLike.setImageResource(R.drawable.share_like_true);
+            likeflag[0]=1;
+        }else{
+            holder.btnDynamicLike.setImageResource(R.drawable.share_like_false);
+            likeflag[0]=0;
+        }
 
         Glide.with(mContext).load("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1528689441,659647338&fm=26&gp=0.jpg").circleCrop().into(holder.ivDynamicUserImg);
         CustomerDynamicImgAdapter customerDynamicImgAdapter=new CustomerDynamicImgAdapter(mContext,dynamics.get(i).getDynamicImgs(),R.layout.item_dynamic_img);
         holder.gvDynamicDynamicImgs.setAdapter(customerDynamicImgAdapter);
         //为点赞按钮设置点击事件
-        final int[] likeflag = {0};
+
         holder.btnDynamicLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
        //         View view1=viewList.get(i);
+
                 ImageView imageView=view.findViewById(R.id.btn_dynamic_like);
+
                 if(likeflag[0]==0){
-                    holder.btnDynamicLike.setImageResource(R.drawable.share_like_true);
+                    imageView.setImageResource(R.drawable.share_like_true);
                     likeflag[0]=1;
-                }else{
+                    DynamicLikeUser dynamicLikeUser=new DynamicLikeUser(dynamics.get(i).getDynamicId(),userId,userName);
+                    dynamics.get(i).getLikeUser().add(userName);
+
+                    insertDynamicLikeUser(dynamicLikeUser,i);
+                    tv.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
+
+
+
+                }else if(likeflag[0]==1){
                     imageView.setImageResource(R.drawable.share_like_false);
-                    likeflag[0]=0;
+                    DynamicLikeUser dynamicLikeUser=new DynamicLikeUser(dynamics.get(i).getDynamicId(),userId,userName);
+
+                    dynamics.get(i).getLikeUser().remove(userName);
+
+
+                       likeflag[0]=0;
+                       deleteDynamicLikeUser(dynamicLikeUser,i);
+                       tv.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
+
                 }
 
 
@@ -150,9 +193,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
 //
 //                holder.btnDynamicLike.setImageResource(R.drawable.share_like_true);
 //                Log.e("position",i+"");
-//                DynamicLikeUser dynamicLikeUser=new DynamicLikeUser(dynamics.get(i).getDynamicId(),1,"张加民");
-//                insertDynamicLikeUser(dynamicLikeUser);
-//                holder.tvDynamicLikeUsers.setText("aaaa");
+
 
 
             }
@@ -163,7 +204,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
    //     viewList.add(view);
         return view;
     }
-    static class DynamicViewHolder{
+   static class DynamicViewHolder{
         ImageView ivDynamicUserImg;
         TextView tvDynamicUserName;
         TextView tvDynamicDynamicTime;
@@ -176,7 +217,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
         ListView lvDynamicComments;
         TextView tvUserLocation;
     }
-    public void insertDynamicLikeUser(DynamicLikeUser dynamicLikeUser){
+    public void insertDynamicLikeUser(DynamicLikeUser dynamicLikeUser,int i){
         RequestBody requestBody=RequestBody.create(MediaType.parse("text/plain;charset=utf-8"),new Gson().toJson(dynamicLikeUser));
         Log.e("点赞请求的接口是",ConfigUtil.SERVER_ADDR+"InsertDynamicLikeUserServlet");
         Request request=new Request.Builder()
@@ -192,16 +233,53 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
             public void onFailure(Call call, IOException e) {
                 //请求失败时回调
                 e.printStackTrace();
-                Log.e("登录失败","发布失败");
+                Log.e("点赞失败","点赞失败");
+
 
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.e("异步请求的结果",response.body().toString());
                 Log.e("点赞的的结果","点赞成功成功");
+                //
+//                Message message=handler.obtainMessage();
+//                message.what=30;
+//                message.obj=i;
+//                handler.sendMessage(message);
 
             }
         });
 
+    }
+    public void deleteDynamicLikeUser(DynamicLikeUser dynamicLikeUser,int i){
+        RequestBody requestBody=RequestBody.create(MediaType.parse("text/plain;charset=utf-8"),new Gson().toJson(dynamicLikeUser));
+        Log.e("点赞请求的接口是",ConfigUtil.SERVER_ADDR+"DeleteLikeUserServlet");
+        Request request=new Request.Builder()
+                .post(requestBody)
+                .url(ConfigUtil.SERVER_ADDR+"DeleteLikeUserServlet")
+                .build();
+        //创建Call对象,发送请求，并接受响应
+
+        Call call=okHttpClient.newCall(request);
+        //异步网络请求(不需要创建子线程)
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+                Log.e("取消点赞失败","取消点赞失败");
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.e("异步请求的结果",response.body().toString());
+                Log.e("取消点赞的的结果","取消点赞成功");
+//                Message message=handler.obtainMessage();
+//                message.what=30;
+//                message.obj=i;
+//                handler.sendMessage(message);
+
+            }
+        });
     }
 }

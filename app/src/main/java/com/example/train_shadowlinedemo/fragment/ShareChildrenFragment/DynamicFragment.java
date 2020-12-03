@@ -43,6 +43,7 @@ public class DynamicFragment extends Fragment {
     private List<Dynamic> dynamics=new ArrayList<Dynamic>();
     private OkHttpClient okHttpClient=new OkHttpClient();
     private Gson gson=new Gson();
+    private CustomerDynamicAdapter customerDynamicAdapter;
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -52,9 +53,10 @@ public class DynamicFragment extends Fragment {
                     String imginfo=msg.obj.toString();
                     dynamics=gson.fromJson(imginfo,new TypeToken<List<Dynamic>>(){}.getType());
                     Log.e("dynamics",dynamics.toString());
-                    CustomerDynamicAdapter customerDynamicAdapter=new CustomerDynamicAdapter(getContext(),dynamics,R.layout.item_dynamic);
+                    customerDynamicAdapter=new CustomerDynamicAdapter(getContext(),dynamics,R.layout.item_dynamic,DynamicFragment.this);
                     ListView lvDynamics=view.findViewById(R.id.lv_dynamics);
                     lvDynamics.setAdapter(customerDynamicAdapter);
+                    customerDynamicAdapter.notifyDataSetChanged();
                     break;
             }
         }
@@ -153,5 +155,9 @@ public class DynamicFragment extends Fragment {
             }
         });
 
+    }
+    public void notifyDataSetChanged(){
+        getAllDynamics();
+       
     }
 }
