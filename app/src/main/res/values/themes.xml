@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Train_ShadowLineDemo" parent="Theme.MaterialComponents.DayNight">
+    <style name="Theme.Train_ShadowLineDemo" parent="Theme.AppCompat.Light">
         <!-- Primary brand color. -->
         <item name="windowNoTitle">true</item>
         <item name="background">@color/bgcolor</item>

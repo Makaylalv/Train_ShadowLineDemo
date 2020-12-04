@@ -87,7 +87,7 @@ public class CustomerDynamicImgAdapter extends BaseAdapter {
             dynamicImgViewHolder= (DynamicImgViewHolder) view.getTag();
         }
         Glide.with(mContext).load(ConfigUtil.SERVER_ADDR +"imgs/dynamic/dynamicImgs/"+imgs.get(i)+".jpg").into(dynamicImgViewHolder.ivDynamicImg);
-        Log.e("图片的地址是",ConfigUtil.SERVER_ADDR +"imgs/dynamic/dynamicImgs/"+imgs.get(i)+".jpg"+imgs.get(i)+".jpg");
+      //  Log.e("图片的地址是",ConfigUtil.SERVER_ADDR +"imgs/dynamic/dynamicImgs/"+imgs.get(i)+".jpg"+imgs.get(i)+".jpg");
         return view;
     }
     static class  DynamicImgViewHolder{

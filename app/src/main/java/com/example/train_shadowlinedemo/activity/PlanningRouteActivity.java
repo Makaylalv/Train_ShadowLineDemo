@@ -338,17 +338,16 @@ public class PlanningRouteActivity extends AppCompatActivity {
     }
 
     private void getView() {
-        editText=findViewById(R.id.edit);
         mMapView=findViewById(R.id.map_view);
         baiduMap=mMapView.getMap();
         button=findViewById(R.id.button);
-        button1=findViewById(R.id.reset);
-        button1.setOnClickListener(new View.OnClickListener() {
+
+      /*  button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 reStartActivity();
             }
-        });
+        });*/
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -52,7 +52,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
                     String str= (String) msg.obj;
                     if(str.equals("1")){
                         //Glide.with(this).load(R.drawable.like1).into(like);
-                        spotChooseAdapter.changeCheckState();
+                       // spotChooseAdapter.changeCheckState();
                         routeSpots.clear();
                         Log.e("routeSpots的清空的内容",routeSpots.toString());
                         Toast.makeText(ChooseSpotActivity.this,"路线添加成功",Toast.LENGTH_SHORT);
@@ -61,7 +61,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
                 case 2:
                     String str0= (String) msg.obj;
                     if(str0.equals("1")){
-                        spotChooseAdapter.changeCheckState();
+                        //spotChooseAdapter.changeCheckState();
                         //Glide.with(this).load(R.drawable.like1).into(like);
                         Toast.makeText(ChooseSpotActivity.this,"收藏成功",Toast.LENGTH_SHORT);
                     }
@@ -91,6 +91,9 @@ public class ChooseSpotActivity extends AppCompatActivity {
                     routeSpots.add(routeSpot);
                 }
                 upRouteSync();
+                Intent i=new Intent();
+                i.setClass(ChooseSpotActivity.this,PlanningRouteActivity.class);
+                startActivity(i);
 //                spotHasChosen.clear();
 
             }

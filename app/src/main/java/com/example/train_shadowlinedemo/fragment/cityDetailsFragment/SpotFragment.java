@@ -88,7 +88,6 @@ public class SpotFragment extends Fragment {
 //        userId=sharedPreferences.getString("id","");
 
         okHttpClient=new OkHttpClient();
-        Log.e("cityid的值",cityId);
         getCitySpotSync();
         //downloadStr(ConfigUtil.SERVER_ADDR + "DownUserOrderServlet");
         return root;
@@ -114,13 +113,11 @@ public class SpotFragment extends Fragment {
                         //Log.e("响应数据",response.body().string());
                         //再去看下和gson
                         String placeJson=response.body().string();
-                        Log.e("placeJson",placeJson);
                         Type type=new TypeToken<List<Place>>(){}.getType();
                         Gson gson=new Gson();
                         List<Place> spots=gson.fromJson(placeJson,type);
                         //修改数据源
                         places.addAll(spots);
-                        Log.e("places",places.toString());
                        // EventBus.getDefault().postSticky(true);
                         Message msg = new Message();
                         //设置Message对象的参数
@@ -139,7 +136,6 @@ public class SpotFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
     //注意设置sticky属性 默认是false
     public void onMessage(Boolean flag){
-//        Toast.makeText(this,flag,Toast.LENGTH_LONG).show();
         initView();
     }
 

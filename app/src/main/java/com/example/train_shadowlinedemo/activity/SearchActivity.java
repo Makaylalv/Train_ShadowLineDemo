@@ -202,7 +202,7 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
     //初始化搜索数据
     private void initData() {
         //从数据库获取数据  
-        getDbData();
+        //getDbData();
         //初始化热搜版数据
         getHintData();
         //初始化自动补全数据  

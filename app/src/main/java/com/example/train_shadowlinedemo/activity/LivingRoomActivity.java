@@ -128,7 +128,7 @@ public class LivingRoomActivity extends AppCompatActivity {
                 });
             }
         };
-        timer.schedule(timerTask,1000);
+        timer.schedule(timerTask,3000);
 
     }
 

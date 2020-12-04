@@ -65,7 +65,7 @@ public class SpotChooseAdapter extends BaseAdapter {
             }
 
         }
-        spotHasChosen.clear();
+        //spotHasChosen.clear();
     }
     @Override
     public long getItemId(int position) {
