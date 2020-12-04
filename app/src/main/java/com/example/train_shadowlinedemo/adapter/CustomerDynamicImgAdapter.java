@@ -86,7 +86,7 @@ public class CustomerDynamicImgAdapter extends BaseAdapter {
         }else{
             dynamicImgViewHolder= (DynamicImgViewHolder) view.getTag();
         }
-        Glide.with(mContext).load(ConfigUtil.SERVER_ADDR +"imgs/dynamic/dynamicImgs/"+imgs.get(i)+".jpg").into(dynamicImgViewHolder.ivDynamicImg);
+        Glide.with(mContext).load(ConfigUtil.SERVER_ADDR +"imgs/dynamic/dynamicImgs/"+imgs.get(i)+".jpg").override(300,300).into(dynamicImgViewHolder.ivDynamicImg);
         Log.e("图片的地址是",ConfigUtil.SERVER_ADDR +"imgs/dynamic/dynamicImgs/"+imgs.get(i)+".jpg"+imgs.get(i)+".jpg");
         return view;
     }

@@ -21,6 +21,9 @@ import com.example.train_shadowlinedemo.entity.Dynamic;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,12 +41,13 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class DynamicFragment extends Fragment {
-    private View view;
+    public View view;
     private FloatingActionButton fabAddDynamic;
     private List<Dynamic> dynamics=new ArrayList<Dynamic>();
     private OkHttpClient okHttpClient=new OkHttpClient();
     private Gson gson=new Gson();
     private CustomerDynamicAdapter customerDynamicAdapter;
+    private SmartRefreshLayout refreshLayout;
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -76,6 +80,7 @@ public class DynamicFragment extends Fragment {
     //初始化布局控件
     private void initView(){
         fabAddDynamic=view.findViewById(R.id.fab_add_dynamic);
+        refreshLayout=view.findViewById(R.id.rl_dynamic);
     }
     //为布局控件设置点击事件
     private void setOnClickListener(){
@@ -88,6 +93,14 @@ public class DynamicFragment extends Fragment {
                 intent.putExtra("skipdynamic","skipdynamic");
                 intent.setClass(getContext(), EditDynamicActivity.class);
                 startActivity(intent);
+            }
+        });
+        //下拉刷新时调用
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                getAllDynamics();
+                Log.e("动态列表页执行了下拉事件","a");
             }
         });
     }
@@ -126,7 +139,7 @@ public class DynamicFragment extends Fragment {
             public void onFailure(Call call, IOException e) {
                 //请求失败时回调
                 e.printStackTrace();
-                Log.e("登录失败","发布失败");
+                Log.e("登录失败","发布失败"+e.getMessage());
                 new Thread(){
                     @Override
                     public void run() {

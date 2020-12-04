@@ -37,6 +37,7 @@
 
     </LinearLayout>
     <TextView
+
         android:id="@+id/tv_dynamic_dynamiccontent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -123,7 +124,12 @@
         android:id="@+id/lv_dynamic_comments"
         android:layout_width="match_parent"
         android:layout_height="50dp">
-
     </ListView>
+    <EditText
+        android:id="@+id/et_dynamicaddcomment"
+        android:layout_width="match_parent"
+        android:hint="评论"
+        android:layout_height="40dp"/>
+
 
 </LinearLayout>

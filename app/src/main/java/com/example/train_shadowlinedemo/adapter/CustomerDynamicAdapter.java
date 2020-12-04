@@ -9,11 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -124,6 +128,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
             holder.tvDynamicDynamicTime=view.findViewById(R.id.tv_dynamic_dynamictime);
             holder.tvDynmaicDynamicContent=view.findViewById(R.id.tv_dynamic_dynamiccontent);
             holder.gvDynamicDynamicImgs=view.findViewById(R.id.gv_dynamic_dynamicimgs);
+            GridView gvDynamicDynamicImgs =view.findViewById(R.id.gv_dynamic_dynamicimgs);
             holder.btnDynamicLike=view.findViewById(R.id.btn_dynamic_like);
             holder.btnDynamicComment=view.findViewById(R.id.btn_dynamic_comment);
             holder.btnDynamicForward=view.findViewById(R.id.btn_dynamic_forward);
@@ -152,59 +157,58 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
 
         Glide.with(mContext).load("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1528689441,659647338&fm=26&gp=0.jpg").circleCrop().into(holder.ivDynamicUserImg);
         CustomerDynamicImgAdapter customerDynamicImgAdapter=new CustomerDynamicImgAdapter(mContext,dynamics.get(i).getDynamicImgs(),R.layout.item_dynamic_img);
-        holder.gvDynamicDynamicImgs.setAdapter(customerDynamicImgAdapter);
-        //为点赞按钮设置点击事件
 
+        List<String> dynamicsimgs=dynamics.get(i).getDynamicImgs();
+        Log.e("我的动态1",dynamicsimgs.size()+""+dynamicsimgs.toString());
+        if(dynamicsimgs.size()==0){
+           gvDynamicDynamicImgs.setVisibility(View.GONE);
+        }
+        gvDynamicDynamicImgs.setAdapter(customerDynamicImgAdapter);
+        TextView hide_down = view.findViewById(R.id.hide_down);
+        EditText comment_content = view.findViewById(R.id.comment_content);
+        Button comment_send = view.findViewById(R.id.comment_send);
+        RelativeLayout rlComment=dynamicFragment.getView().findViewById(R.id.rl_comment);
+        //为点赞按钮设置点击事件
         holder.btnDynamicLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-       //         View view1=viewList.get(i);
+
 
                 ImageView imageView=view.findViewById(R.id.btn_dynamic_like);
-
                 if(likeflag[0]==0){
                     imageView.setImageResource(R.drawable.share_like_true);
+                  //  holder.btnDynamicLike.setImageResource(R.drawable.share_like_true);
                     likeflag[0]=1;
                     DynamicLikeUser dynamicLikeUser=new DynamicLikeUser(dynamics.get(i).getDynamicId(),userId,userName);
                     dynamics.get(i).getLikeUser().add(userName);
 
                     insertDynamicLikeUser(dynamicLikeUser,i);
                     tv.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
-
-
-
                 }else if(likeflag[0]==1){
                     imageView.setImageResource(R.drawable.share_like_false);
+                  //  holder.btnDynamicLike.setImageResource(R.drawable.share_like_false);
                     DynamicLikeUser dynamicLikeUser=new DynamicLikeUser(dynamics.get(i).getDynamicId(),userId,userName);
-
                     dynamics.get(i).getLikeUser().remove(userName);
-
-
-                       likeflag[0]=0;
-                       deleteDynamicLikeUser(dynamicLikeUser,i);
-                       tv.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
-
+                    likeflag[0]=0;
+                    deleteDynamicLikeUser(dynamicLikeUser,i);
+                    tv.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
                 }
-
-
-                Log.e("333333333333333333",view.getId()+"");
-//                Drawable drawable=mContext.getResources().getDrawable(R.drawable.share_like_false);
-//                drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
-//
-//                holder.btnDynamicLike.setImageResource(R.drawable.share_like_true);
-//                Log.e("position",i+"");
-
-
+            }
+        });
+        //为评论按钮设置点击事件
+        holder.btnDynamicComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 弹出输入法
+                InputMethodManager imm = (InputMethodManager) mContext.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                rlComment.setVisibility(View.VISIBLE);
 
             }
         });
-
-
-
-   //     viewList.add(view);
         return view;
     }
-   static class DynamicViewHolder{
+    class DynamicViewHolder{
         ImageView ivDynamicUserImg;
         TextView tvDynamicUserName;
         TextView tvDynamicDynamicTime;

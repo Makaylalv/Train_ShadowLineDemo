@@ -238,10 +238,11 @@ public class EditDynamicActivity extends AppCompatActivity {
             List<Uri> selected = Matisse.obtainResult(data);
             ContentResolver contentResolver = getContentResolver();
             if(selected.size() == 1) {
+
                 ContentResolver contentResolver1 = getContentResolver();
                 imagePaths.clear();
                 setnull();
-                Glide.with(this).load(selected.get(0)).into(ivAddImg1);
+                Glide.with(this).load(selected.get(0)).override(600,200).into(ivAddImg1);
                 Cursor cursor = contentResolver1.query(selected.get(0),null,
                         null,null,null);
                 if (cursor.moveToFirst()){
@@ -252,12 +253,13 @@ public class EditDynamicActivity extends AppCompatActivity {
 
             }
             else if(selected.size() == 2) {
+
                 imagePaths.clear();
                 setnull();
                 ContentResolver contentResolver1 = getContentResolver();
                 ContentResolver contentResolver2 = getContentResolver();
-                Glide.with(this).load(selected.get(0)).into(ivAddImg1);
-                Glide.with(this).load(selected.get(1)).into(ivAddImg2);
+                Glide.with(this).load(selected.get(0)).override(600,200).into(ivAddImg1);
+                Glide.with(this).load(selected.get(1)).override(600,200).into(ivAddImg2);
                 Cursor cursor = contentResolver1.query(selected.get(0),null,
                         null,null,null);
 
@@ -274,13 +276,15 @@ public class EditDynamicActivity extends AppCompatActivity {
                     imagePaths.add(imagePath);
                 }
 
+
             }
             else if(selected.size() == 3) {
+
                 imagePaths.clear();
                 setnull();
-                Glide.with(this).load(selected.get(0)).into(ivAddImg1);
-                Glide.with(this).load(selected.get(1)).into(ivAddImg2);
-                Glide.with(this).load(selected.get(2)).into(ivAddImg3);
+                Glide.with(this).load(selected.get(0)).override(600,200).into(ivAddImg1);
+                Glide.with(this).load(selected.get(1)).override(600,200).into(ivAddImg2);
+                Glide.with(this).load(selected.get(2)).override(600,200).into(ivAddImg3);
                 Cursor cursor0 = contentResolver.query(selected.get(0),null,
                         null,null,null);
                 if (cursor0.moveToFirst()){
@@ -299,6 +303,7 @@ public class EditDynamicActivity extends AppCompatActivity {
                     String imagePath = cursor2.getString(cursor2.getColumnIndex("_data"));
                     imagePaths.add(imagePath);
                 }
+
             }
         }
     }
@@ -328,12 +333,14 @@ public class EditDynamicActivity extends AppCompatActivity {
             imgs.add(time+"img1");
             uploadFile(imagePaths.get(0),imgs.get(0));
 
+
         }else if(imagePaths.size()==2){
             imgs.add(time+"img1");
             imgs.add(time+"img2");
             uploadFile(imagePaths.get(0),imgs.get(0));
             uploadFile(imagePaths.get(1),imgs.get(1));
             Log.e("图片的路径为",imagePaths.toString());
+            location();
         }else if(imagePaths.size()==3){
             imgs.add(time+"img1");
             imgs.add(time+"img2");
