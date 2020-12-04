@@ -99,7 +99,7 @@ public class StartLivingActivity extends AppCompatActivity{
 
 
         //初始化bar
-        initBar();
+        //initBar();
 
 
         initRecyclerView();
@@ -133,6 +133,7 @@ public class StartLivingActivity extends AppCompatActivity{
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
             }
         });
@@ -286,6 +287,7 @@ public class StartLivingActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         stopLiving();
+        zegoExpressEngine.useFrontCamera(true);
         zegoExpressEngine.stopPublishingStream();
         zegoExpressEngine.logoutRoom(""+LoginActivity.user.getUser_id());
         super.onStop();

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,7 +57,7 @@ public class PlaceCollectionActivity extends AppCompatActivity {
         //2.创建Request请求对象(默认使用get请求)
         Request request = new Request.Builder()
                 .url(ConfigUtil.SERVER_ADDR  +
-                        "GetPlaceCollectionServlet?user_id=1")//请求的地址
+                        "GetPlaceCollectionServlet?user_id="+ LoginActivity.user.getUser_id())//请求的地址
                 .build();
         //3.创建Call对象，发送请求，并接受响应
         Call call = okHttpClient.newCall(request);

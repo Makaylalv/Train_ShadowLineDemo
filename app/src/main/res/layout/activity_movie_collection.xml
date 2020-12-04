@@ -19,17 +19,18 @@
             android:onClick="movieClicked"
             android:id="@+id/movie_edit"
             android:layout_alignParentRight="true">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="编辑"
                 android:id="@+id/movie_tv_edit"
-                android:textSize="23sp"
-                android:paddingRight="10dp"
-                android:layout_toLeftOf="@id/city_edit"/>
-            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/city_edit"
+                android:paddingRight="10dp"
+                android:text="编辑"
+                android:textSize="20sp" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/city_edit"
                 android:src="@drawable/edit"
                 android:layout_alignParentRight="true"/>
@@ -46,11 +47,11 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:id="@+id/movie_delete"
-        android:visibility="gone"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:onClick="deleteMovie"
             android:id="@+id/movie_all_checked"
@@ -61,8 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/moviedelete"
+            android:paddingLeft="20dp"
             android:text="删除"
-            android:onClick="deleteMovie"
-            android:layout_alignParentRight="true" />
+            android:onClick="deleteMovie" />
     </LinearLayout>
 </RelativeLayout>

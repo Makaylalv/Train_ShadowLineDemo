@@ -140,6 +140,7 @@ public class LiveFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
                 String str=response.body().string();
+                Log.e("11111111",str);
                 roomList=new ArrayList<>();
                 //请求成功时回调
                 if(!str.equals("无人直播")) {

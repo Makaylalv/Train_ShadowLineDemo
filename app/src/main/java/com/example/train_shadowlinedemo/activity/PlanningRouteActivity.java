@@ -303,6 +303,7 @@ public class PlanningRouteActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
+
                     }
 
                 }.run();
@@ -337,17 +338,16 @@ public class PlanningRouteActivity extends AppCompatActivity {
     }
 
     private void getView() {
-        editText=findViewById(R.id.edit);
         mMapView=findViewById(R.id.map_view);
         baiduMap=mMapView.getMap();
         button=findViewById(R.id.button);
-        button1=findViewById(R.id.reset);
-        button1.setOnClickListener(new View.OnClickListener() {
+
+      /*  button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 reStartActivity();
             }
-        });
+        });*/
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -473,7 +473,6 @@ public class PlanningRouteActivity extends AppCompatActivity {
                         if (p > q) {
                             distance1 = list.get(m);
                             lng = list.get(m).getJ().getLocation();
-
                         }
                     }
                 }
@@ -493,8 +492,8 @@ public class PlanningRouteActivity extends AppCompatActivity {
                         l=m;
                         break;
                     }
+                    oldLng=lng;
                 }
-                oldLng=lng;
 
             }
             if(planNodeList2.size()==planNodeList1.size()&&flag==0){

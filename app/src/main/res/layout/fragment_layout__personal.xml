@@ -57,7 +57,7 @@
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
                 android:text="Firm choice and persistent persistence"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_below="@id/tv_name"
                 android:id="@+id/tv_signature"/>
         </RelativeLayout>
@@ -78,7 +78,7 @@
                 android:layout_marginTop="25dp"
                 android:text="我的收藏"
                 android:layout_toRightOf="@id/line"
-                android:textSize="27sp"/>
+                android:textSize="20sp"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_margin="30dp"
@@ -90,12 +90,13 @@
                 android:id="@+id/rv_movie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:id="@+id/lv_movie"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentLeft="true"
-                    android:src="@drawable/movie"/>
+                    android:src="@drawable/movie" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

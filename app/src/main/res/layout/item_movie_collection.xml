@@ -2,7 +2,7 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="150dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="20dp">
+    android:layout_margin="10dp">
     <CheckBox
         android:id="@+id/movie_op"
         android:layout_width="wrap_content"
@@ -11,12 +11,13 @@
         android:layout_centerVertical="true"
         android:visibility="gone"/>
     <RelativeLayout
+        android:padding="10dp"
         android:id="@+id/movie"
         android:layout_width="match_parent"
-        android:layout_height="130dp">
+        android:layout_height="140dp">
         <ImageView
             android:layout_width="90dp"
-            android:layout_height="130dp"
+            android:layout_height="140dp"
             android:id="@+id/movie_img"
             android:layout_marginRight="10dp"
             android:src="@drawable/movie1"/>
@@ -29,7 +30,7 @@
             android:textSize="17sp"/>
         <TextView
             android:layout_width="210dp"
-            android:layout_height="41dp"
+            android:layout_height="40dp"
             android:text="BettsrsDays"
             android:textSize="15sp"
             android:id="@+id/movie_english"

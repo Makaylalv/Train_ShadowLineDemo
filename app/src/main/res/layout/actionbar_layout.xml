@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:padding="5dp"
+    android:id="@+id/bar"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:src="@drawable/back"
+        android:layout_width="25dp"
+        android:id="@+id/back"
+        android:layout_height="25dp"/>
+    <ImageView
+        android:layout_marginRight="15dp"
+        android:src="@drawable/like0"
+        android:id="@+id/like"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_toLeftOf="@id/more0"/>
+    <ImageView
+        android:id="@+id/more0"
+        android:src="@drawable/more"
+        android:layout_alignParentRight="true"
+        android:layout_width="25dp"
+        android:layout_height="25dp"/>
+</RelativeLayout>
