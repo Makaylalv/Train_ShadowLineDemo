@@ -2,112 +2,108 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.train_shadowlinedemo">
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- 允许写手机存储（必须） -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 允许写手机存储（必须） -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" /> <!-- GUI自动填充验证码功能（非必须） -->
     <uses-permission android:name="android.permission.READ_SMS" /> <!-- 从短信中读取验证码接口（非必须） -->
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 应用内好友功能（非必须） -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 这个权限用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- 这个权限用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <!-- 用于读取手机当前的状态-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <!--用于打开相机-->
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 用于打开相机 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.Manifest.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-
-
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-
-
     <application
         android:name=".ShadowLineApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Train_ShadowLineDemo"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.PlaceDetailActivity"></activity>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="9RinesBdOwWrBIuFEs0I2y6SPavIzWoz" />
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"
-            >
+            android:process=":remote">
             <intent-filter>
-                <action android:name="com.baidu.location.service_v5.0.0"/>
+                <action android:name="com.baidu.location.service_v5.0.0" />
             </intent-filter>
         </service>
 
         <activity android:name=".activity.LivingRoomActivity" />
         <activity android:name=".activity.StartLivingActivity" />
-        <activity android:name=".activity.MovieTypeActivity"/>
-        <activity android:name=".activity.AppIntroActivity"
+        <activity android:name=".activity.MovieTypeActivity" />
+        <activity
+            android:name=".activity.AppIntroActivity"
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"></activity>
+        <activity
+            android:name=".activity.PlanningRouteActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.MovieDetailActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity
+            android:name=".activity.DetailMapActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".fragment.ShareChildrenFragment.EditDynamicActivity" />
 
-        </activity>
-        <activity android:name=".activity.PlanningRouteActivity"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".activity.MovieDetailActivity"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".activity.SearchActivity"/>
-        <activity android:name=".activity.RegisterActivity"/>
-        <activity android:name=".activity.LoginActivity"/>
-        <activity android:name=".activity.DetailMapActivity"
-            android:theme="@style/AppTheme"/>
-       <activity android:name=".fragment.ShareChildrenFragment.EditDynamicActivity"/>
         <provider
+            android:name=".fragment.ShareChildrenFragment.MyFileProvider"
             android:authorities="com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.MyFileProvider"
-            android:name="com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.MyFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
-        </provider>
-
-        <!--QQ-->
+        </provider> <!-- QQ -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -121,23 +117,18 @@
                 <data android:scheme="tencent1111171437" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-<!--        个人中心-->
-        <activity android:name=".Personal.PlaceCollectionActivity"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 个人中心 -->
+        <activity android:name=".Personal.PlaceCollectionActivity" />
         <activity android:name=".Personal.CityCollectionActivity" />
-        <activity android:name=".Personal.MovieCollectionActivity" />
-<!--        城市-->
-        <activity android:name=".activity.ChooseSpotActivity"></activity>
-        <activity android:name=".activity.CityDetailActivity"
-            android:theme="@style/AppTheme"/>
-
-
-
+        <activity android:name=".Personal.MovieCollectionActivity" /> <!-- 城市 -->
+        <activity android:name=".activity.ChooseSpotActivity" />
+        <activity
+            android:name=".activity.CityDetailActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

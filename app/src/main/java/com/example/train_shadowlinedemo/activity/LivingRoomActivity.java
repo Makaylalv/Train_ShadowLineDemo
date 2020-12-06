@@ -95,12 +95,6 @@ public class LivingRoomActivity extends AppCompatActivity {
 
         initLiving();
 
-
-
-
-        //初始化bar
-        //initBar();
-
         initRecyclerView();
 
 

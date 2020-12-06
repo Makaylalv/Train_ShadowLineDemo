@@ -10,7 +10,6 @@
         android:layout_height="match_parent"/>
 
     <com.example.train_shadowlinedemo.view.SlideView.SlideBottomLayout
-
         android:id="@+id/slideLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,15 +50,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp">
                         <LinearLayout
-
-
                             android:orientation="vertical"
                             android:layout_weight="5"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent">
-
                             <TextView
-
                                 android:id="@+id/place_name"
                                 android:textSize="20sp"
                                 android:gravity="center_vertical"

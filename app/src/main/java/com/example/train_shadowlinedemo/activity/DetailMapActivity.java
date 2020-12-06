@@ -168,7 +168,6 @@ public class DetailMapActivity extends AppCompatActivity {
             //在当前位置添加标注覆盖物
             Bundle bundle = new Bundle();
             bundle.putInt("placeId", i);
-
             if(i==0) {
                 optionsSelect=new MarkerOptions().position(point).icon(descriptorSelect);
                 Marker marker = (Marker) baiduMap.addOverlay(optionsSelect);
