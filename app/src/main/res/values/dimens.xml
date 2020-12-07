@@ -3,4 +3,7 @@
     <dimen name="BtnTextSize">17sp</dimen>
     <dimen name="filmTextSize">17sp</dimen>
     <dimen name="filmMarginTop">10dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="_0sdp">0dp</dimen>
 </resources>
