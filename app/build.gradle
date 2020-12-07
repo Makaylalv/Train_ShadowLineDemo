@@ -64,6 +64,7 @@ dependencies {
     //Glide
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
     //OkHttp框架
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     //获取图片框架
@@ -82,5 +83,6 @@ dependencies {
     implementation 'com.github.BarefootBKK:QQLoginForAndroid:1.0.1'
     //启动页
     implementation 'com.github.AppIntro:AppIntro:6.0.0'
-
+    //样式
+    compile 'com.intuit.sdp:sdp-android:1.0.3'
 }

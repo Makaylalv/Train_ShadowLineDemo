@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private String phone;
     private String name;
     private String pwd;
-    public static User user;
+    public static User user = new User();
 
     private EditText etPhone;
     private EditText etPwd;
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                         phone = intent.getStringExtra("Phone");
                         name = intent.getStringExtra("Name");
                         pwd = intent.getStringExtra("Pwd");
-                        URL url = new URL("http://192.168.43.175:8080/ShadowLine/AddUserServlet");
+                        URL url = new URL(ConfigUtil.SERVER_ADDR+"ShadowLine/AddUserServlet");
                         Log.e("111","333");
                         HttpURLConnection connection = (HttpURLConnection)
                                 url.openConnection();
@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }.start();
         }
+        user.setUser_id(1);
     }
 
     //把用户对象的数据转成JSON格式字符串
