@@ -75,11 +75,11 @@
     <Button
         android:layout_marginLeft="65dp"
         android:id="@+id/button_login"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginTop="550dp"
         android:text="QQ登录"
-        android:textColor="#87a7d6"
+        android:textColor="#0D4F83"
         android:background="@drawable/qq"/>
 
     <ImageView
