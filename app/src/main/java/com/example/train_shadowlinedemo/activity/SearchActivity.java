@@ -1,5 +1,6 @@
 package com.example.train_shadowlinedemo.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -109,6 +110,29 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
         initChildViews();//初始化历史搜索记录
         initData();//初始化数据
         initViews();//初始化控件
+        lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                //处理跳转点击事件
+                SearchResult result=resultData.get(position);
+                String searchType=result.getType();
+                switch (searchType){
+                    case "电影":
+                        getFilmByid(result.getId());
+                        break;
+                    case "地点":
+                        //跳转到地点详情
+                        break;
+                    case "城市":
+                        //跳转到城市详情
+                        Log.e("444444",result.getId()+"");
+                        Intent intent=new Intent(SearchActivity.this,CityDetailActivity.class);
+                        intent.putExtra("id",result.getId()+"");
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
     }
 
     //删除历史搜索记录
@@ -147,7 +171,7 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
             initChildViews();
         }else if(result.equals("delete")){
             flowLayout.removeAllViews();
-        }else{
+        } else{
             MarginLayoutParams lp = new MarginLayoutParams(
                     LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             lp.leftMargin = 10;
@@ -163,6 +187,13 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
             flowLayout.addView(view,0,lp);
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleJump(Film film){
+        Intent intent=new Intent(this,MovieDetailActivity.class);
+        intent.putExtra("film",new Gson().toJson(film));
+        Log.e("eeeee",new Gson().toJson(film));
+        startActivity(intent);
+    }
 
     //注销订阅者
     @Override
@@ -177,32 +208,39 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
         //设置adapter
         customSearchView.setTipsHintAdapter(hintAdapter);
         customSearchView.setAutoCompleteAdapter(autoCompleteAdapter);
-        lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+    }
+
+    private void getFilmByid(int id) {
+        FormBody formBody=new FormBody.Builder()
+                .add("id",id+"")
+                .build();
+        Request request=new Request.Builder()
+                .post(formBody)
+                .url(ConfigUtil.SERVER_ADDR+"ClientGetFilmById")
+                .build();
+        Call call=okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                //处理跳转点击事件
-                SearchResult result=resultData.get(position);
-                String searchType=result.getType();
-                switch (searchType){
-                    case "电影":
-                        //跳转到电影详情
-                        break;
-                    case "地点":
-                        //跳转到地点详情
-                        break;
-                    case "城市":
-                        //跳转到城市详情
-                        break;
-                }
-                Toast.makeText(SearchActivity.this, position + "", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call call, IOException e) {
+                Log.e("onFailure","searchDataBySelectedType发生错误");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //获取轮播图列表数据
+                String json=response.body().string();
+                Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
+                List<Film> list=fromToJson(json,type);
+                Log.e("ddddddd",json);
+                //修改数据源
+                EventBus.getDefault().post(list.get(0));
             }
         });
+
     }
 
     //初始化搜索数据
     private void initData() {
-        //从数据库获取数据  
-        //getDbData();
         //初始化热搜版数据
         getHintData();
         //初始化自动补全数据  
