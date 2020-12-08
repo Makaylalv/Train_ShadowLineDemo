@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.BulletChat;
@@ -41,6 +42,7 @@ import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zegoexpress.callback.IZegoDestroyCompletionCallback;
 import im.zego.zegoexpress.callback.IZegoEventHandler;
 import im.zego.zegoexpress.callback.IZegoIMSendBarrageMessageCallback;
+import im.zego.zegoexpress.callback.IZegoRoomSetRoomExtraInfoCallback;
 import im.zego.zegoexpress.constants.ZegoRoomState;
 import im.zego.zegoexpress.constants.ZegoScenario;
 import im.zego.zegoexpress.constants.ZegoUpdateType;
@@ -48,6 +50,7 @@ import im.zego.zegoexpress.entity.ZegoBarrageMessageInfo;
 import im.zego.zegoexpress.entity.ZegoBroadcastMessageInfo;
 import im.zego.zegoexpress.entity.ZegoCanvas;
 import im.zego.zegoexpress.entity.ZegoRoomConfig;
+import im.zego.zegoexpress.entity.ZegoRoomExtraInfo;
 import im.zego.zegoexpress.entity.ZegoStream;
 import im.zego.zegoexpress.entity.ZegoUser;
 
@@ -63,6 +66,8 @@ public class LivingRoomActivity extends AppCompatActivity {
     private EditText messageEditText;
     private ImageView goOutIV;
     private TextView goOutTV;
+    private TextView locationTV;
+    private ImageView locationIV;
 
     private Handler handler=new Handler(){
         @Override
@@ -191,6 +196,17 @@ public class LivingRoomActivity extends AppCompatActivity {
                     goOutIV.setVisibility(View.GONE);
                 }
             }
+
+            @Override
+            public void onRoomExtraInfoUpdate(String roomID, ArrayList<ZegoRoomExtraInfo> roomExtraInfoList) {
+                Log.e("88888","888888");
+                ZegoRoomExtraInfo zegoRoomExtraInfo=roomExtraInfoList.get(roomExtraInfoList.size()-1);
+                String loction=zegoRoomExtraInfo.value;
+                String str[]=loction.split("&");
+                String address=str[0];
+               // LatLng latLng=new LatLng(Double.parseDouble(str[1]),Double.parseDouble(str[2]));
+                locationTV.setText(address);
+            }
         });
       ;
         /** 创建用户 */
@@ -213,6 +229,8 @@ public class LivingRoomActivity extends AppCompatActivity {
         messageEditText=findViewById(R.id.content);
         imageView=findViewById(R.id.back);
         goOutTV=findViewById(R.id.go_out_text);
+        locationIV=findViewById(R.id.location_img);
+        locationTV=findViewById(R.id.location_txt);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,7 +292,6 @@ public class LivingRoomActivity extends AppCompatActivity {
         zegoExpressEngine.logoutRoom(""+roomId);
         super.onStop();
     }
-
 
 
     BulletChatRecyclerViewAdapter.OnItemClickListener onItemClickListener=new BulletChatRecyclerViewAdapter.OnItemClickListener() {
