@@ -9,5 +9,8 @@
         <item name="android:windowEnterAnimation">@anim/popup_show</item>
         <item name="android:windowExitAnimation">@anim/popup_gone</item>
     </style>
-
+    <style name="FullActivity" parent="">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

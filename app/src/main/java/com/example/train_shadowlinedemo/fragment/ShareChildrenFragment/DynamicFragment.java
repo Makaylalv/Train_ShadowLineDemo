@@ -56,10 +56,11 @@ public class DynamicFragment extends Fragment {
                 case 100:
                     String imginfo=msg.obj.toString();
                     dynamics=gson.fromJson(imginfo,new TypeToken<List<Dynamic>>(){}.getType());
-                    Log.e("dynamics",dynamics.toString());
+                    Log.e("dynamics",dynamics.size()+"");
                     customerDynamicAdapter=new CustomerDynamicAdapter(getContext(),dynamics,R.layout.item_dynamic,DynamicFragment.this);
                     ListView lvDynamics=view.findViewById(R.id.lv_dynamics);
                     lvDynamics.setAdapter(customerDynamicAdapter);
+                    refreshLayout.finishRefresh();
                     customerDynamicAdapter.notifyDataSetChanged();
                     break;
             }
@@ -71,7 +72,8 @@ public class DynamicFragment extends Fragment {
         view =inflater.inflate(R.layout.fragment_shared_dynamic_fragment,container,false);
         initView();
         setOnClickListener();
-        initData();
+        //initData();
+        getAllDynamics();
 //        CustomerDynamicAdapter customerDynamicAdapter=new CustomerDynamicAdapter(getContext(),dynamics,R.layout.item_dynamic);
 //        ListView lvDynamics=view.findViewById(R.id.lv_dynamics);
 //        lvDynamics.setAdapter(customerDynamicAdapter);

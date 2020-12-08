@@ -36,6 +36,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.train_shadowlinedemo.Personal.CityCollectionActivity;
+import com.example.train_shadowlinedemo.Personal.DeleteCommentPopupWindow;
 import com.example.train_shadowlinedemo.Personal.MovieCollectionActivity;
 import com.example.train_shadowlinedemo.Personal.PhotoPopupWindow;
 import com.example.train_shadowlinedemo.Personal.PlaceCollectionActivity;
@@ -187,7 +188,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
                     }
                 });
                 View rootView = LayoutInflater.from(PersonalFragment.this.getActivity()).inflate(R.layout.fragment_layout__personal,null);
-                popupWindow.showAtLocation(rootView, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0,0);
+              popupWindow.showAtLocation(rootView, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,10,10);
 
             }
         });

@@ -20,14 +20,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.textclassifier.TextLinks;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +52,8 @@ import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.MainActivity;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.LoginActivity;
+import com.example.train_shadowlinedemo.adapter.CustomerEditImgAdapter;
 import com.example.train_shadowlinedemo.entity.Dynamic;
 import com.google.gson.Gson;
 import com.zhihu.matisse.Matisse;
@@ -98,7 +105,9 @@ public class EditDynamicActivity extends AppCompatActivity {
     private List<String> imagePaths=new ArrayList<>();
     //百度地图定位功能
     private TextView tvPersonalLocation;
+    private GridView gvEditImgs;
     public LocationClient mLocationClient=null;
+
     private MyLocationListener myListener=new MyLocationListener();
     public Handler handler=new Handler(){
         @Override
@@ -119,6 +128,9 @@ public class EditDynamicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState!=null){
+            tvPersonalLocation.setText(savedInstanceState.getString("addr"));
+        }
         setContentView(R.layout.activity_edit_dynamic);
         initView();
         setOnclickListener();
@@ -160,13 +172,11 @@ public class EditDynamicActivity extends AppCompatActivity {
         dm=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         llUserLocation=findViewById(R.id.ll_user_location);
-        ivAddImg1=findViewById(R.id.iv_add_img1);
-        ivAddImg2=findViewById(R.id.iv_add_img2);
-        ivAddImg3=findViewById(R.id.iv_add_img3);
         btnConfirmPublish=findViewById(R.id.btn_share_confirm_publish);
         okHttpClient=new OkHttpClient();
         //百度地图
         tvPersonalLocation=findViewById(R.id.tv_personal_location);
+        gvEditImgs=findViewById(R.id.gv_edit_imgs);
     }
     //为控件设置点击事件
     private void setOnclickListener(){
@@ -189,13 +199,14 @@ public class EditDynamicActivity extends AppCompatActivity {
                         Matisse.from(EditDynamicActivity.this)
                         .choose(MimeType.ofAll())
                         .countable(true)//是否有序
-                        .maxSelectable(3)//最大图片数量
+                        .maxSelectable(9)//最大图片数量
                         .gridExpectedSize(dm.widthPixels/3)
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                         .thumbnailScale(0.85f)
                         .imageEngine(new GlideEngine())
                         .theme(R.style.Matisse_Zhihu) //主题
                         .capture(true)
+
                                 .captureStrategy(new CaptureStrategy(true,"com.example.train_shadowlinedemo.SharedFragment.MyFileProvider"))
                         .forResult(REQUEST_CODE_CHOOSE);
                     }
@@ -224,90 +235,25 @@ public class EditDynamicActivity extends AppCompatActivity {
         );
 
     }
-    protected void setnull(){
-        ivAddImg1.setImageDrawable(null);
-        ivAddImg2.setImageDrawable(null);
-        ivAddImg3.setImageDrawable(null);
-    }
-    //选择图片后的响应操作
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 10 && resultCode == RESULT_OK) {
-            List<Uri> selected = Matisse.obtainResult(data);
-            ContentResolver contentResolver = getContentResolver();
-            if(selected.size() == 1) {
-
-                ContentResolver contentResolver1 = getContentResolver();
-                imagePaths.clear();
-                setnull();
-                Glide.with(this).load(selected.get(0)).override(600,200).into(ivAddImg1);
-                Cursor cursor = contentResolver1.query(selected.get(0),null,
-                        null,null,null);
-                if (cursor.moveToFirst()){
-                    String imagePath = cursor.getString(cursor.getColumnIndex("_data"));
-                    imagePaths.add(imagePath);
-                }
-
-
-            }
-            else if(selected.size() == 2) {
-
-                imagePaths.clear();
-                setnull();
-                ContentResolver contentResolver1 = getContentResolver();
-                ContentResolver contentResolver2 = getContentResolver();
-                Glide.with(this).load(selected.get(0)).override(600,200).into(ivAddImg1);
-                Glide.with(this).load(selected.get(1)).override(600,200).into(ivAddImg2);
-                Cursor cursor = contentResolver1.query(selected.get(0),null,
-                        null,null,null);
-
-                if (cursor.moveToFirst()){
-                    String imagePath = cursor.getString(cursor.getColumnIndex("_data"));
-                    imagePaths.add(imagePath);
-
-                }
-                Cursor cursor2 = contentResolver2.query(selected.get(1),null,
-                        null,null,null);
-                if (cursor2.moveToFirst()){
-
-                    String imagePath = cursor2.getString(cursor2.getColumnIndex("_data"));
-                    imagePaths.add(imagePath);
-                }
-
-
-            }
-            else if(selected.size() == 3) {
-
-                imagePaths.clear();
-                setnull();
-                Glide.with(this).load(selected.get(0)).override(600,200).into(ivAddImg1);
-                Glide.with(this).load(selected.get(1)).override(600,200).into(ivAddImg2);
-                Glide.with(this).load(selected.get(2)).override(600,200).into(ivAddImg3);
-                Cursor cursor0 = contentResolver.query(selected.get(0),null,
-                        null,null,null);
-                if (cursor0.moveToFirst()){
-                    String imagePath = cursor0.getString(cursor0.getColumnIndex("_data"));
-                    imagePaths.add(imagePath);
-                }
-                Cursor cursor1 = contentResolver.query(selected.get(1),null,
-                        null,null,null);
-                if (cursor1.moveToFirst()){
-                    String imagePath = cursor1.getString(cursor1.getColumnIndex("_data"));
-                    imagePaths.add(imagePath);
-                }
-                Cursor cursor2 = contentResolver.query(selected.get(2),null,
-                        null,null,null);
-                if (cursor2.moveToFirst()){
-                    String imagePath = cursor2.getString(cursor2.getColumnIndex("_data"));
-                    imagePaths.add(imagePath);
-                }
-
+protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == 10 && resultCode == RESULT_OK) {
+        List<Uri> selected = Matisse.obtainResult(data);
+        ContentResolver contentResolver = getContentResolver();
+        CustomerEditImgAdapter customerEditImgAdapter=new CustomerEditImgAdapter(EditDynamicActivity.this,selected,R.layout.item_edit_dynamic_img);
+        gvEditImgs.setAdapter(customerEditImgAdapter);
+        imagePaths.clear();
+        for(int i=0;i<selected.size();i++){
+            Cursor cursor=contentResolver.query(selected.get(i),null,null,null,null);
+            if(cursor.moveToFirst()){
+                String imagePath = cursor.getString(cursor.getColumnIndex("_data"));
+              imagePaths.add(imagePath);
             }
         }
     }
-    //动态申请权限
+}
+//动态申请权限
     private void requestPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA
@@ -319,7 +265,7 @@ public class EditDynamicActivity extends AppCompatActivity {
     //将动态信息上传到数据库
     private void addDynamic(){
         Dynamic dynamic =new Dynamic();
-        dynamic.setUserName("张狗民");
+        dynamic.setUserName(LoginActivity.user.getUser_name());
         dynamic.setLikeUser(null);
         dynamic.setDynamicPlace(tvPersonalLocation.getText().toString());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -327,33 +273,11 @@ public class EditDynamicActivity extends AppCompatActivity {
         dynamic.setDynamicContent(etShareText.getText().toString());
         List<String> imgs=new ArrayList<>();
         long time=System.currentTimeMillis();
-        if(imagePaths.size()==0){
-
-        }else if(imagePaths.size()==1){
-            imgs.add(time+"img1");
-            uploadFile(imagePaths.get(0),imgs.get(0));
-
-
-        }else if(imagePaths.size()==2){
-            imgs.add(time+"img1");
-            imgs.add(time+"img2");
-            uploadFile(imagePaths.get(0),imgs.get(0));
-            uploadFile(imagePaths.get(1),imgs.get(1));
-            Log.e("图片的路径为",imagePaths.toString());
-            location();
-        }else if(imagePaths.size()==3){
-            imgs.add(time+"img1");
-            imgs.add(time+"img2");
-            imgs.add(time+"img3");
-            uploadFile(imagePaths.get(0),imgs.get(0));
-            uploadFile(imagePaths.get(1),imgs.get(1));
-            uploadFile(imagePaths.get(2),imgs.get(2));
+        for(int i=0;i<imagePaths.size();i++){
+            imgs.add(time+"img"+i);
+            uploadFile(imagePaths.get(i),imgs.get(i));
         }
-
-
-
-
-
+        Log.e("选择的图片路径为",imagePaths.toString());
         dynamic.setDynamicImgs(imgs);
         //创建RequestBody（请求体对象）
         RequestBody requestBody=RequestBody.create(MediaType.parse("text/plain;charset=utf-8"),new Gson().toJson(dynamic));
@@ -424,8 +348,7 @@ public class EditDynamicActivity extends AppCompatActivity {
                 Log.e("登录的结果","请求成功");
             }
         });
-//        UploadImgAsyncTask uploadImgAsyncTask=new UploadImgAsyncTask();
-//        uploadImgAsyncTask.execute(fileName,filePath);
+
 
     }
     @Override
@@ -436,21 +359,38 @@ public class EditDynamicActivity extends AppCompatActivity {
         }
     }
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (!mLocationClient.isStarted()){
-            mLocationClient.start();
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString("addr",tvPersonalLocation.getText().toString());
+    }
+    public static void setListViewHeightBasedOnChildren(GridView listView) {
+        // 获取listview的adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
         }
+        // 固定列宽，有多少列
+        int col = 3;// listView.getNumColumns();
+        int totalHeight = 0;
+        // i每次加4，相当于listAdapter.getCount()小于等于4时 循环一次，计算一次item的高度，
+        // listAdapter.getCount()小于等于8时计算两次高度相加
+        for (int i = 0; i < listAdapter.getCount(); i += col) {
+            // 获取listview的每一个item
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            // 获取item的高度和
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        // 获取listview的布局参数
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        // 设置高度
+        params.height = totalHeight;
+        // 设置margin
+        ((ViewGroup.MarginLayoutParams) params).setMargins(10, 10, 10, 10);
+        // 设置参数
+        listView.setLayoutParams(params);
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mLocationClient.stop();//停止定位
-    }
-
-
 }
  class MyLocationListener extends BDAbstractLocationListener {
     @Override
@@ -458,7 +398,6 @@ public class EditDynamicActivity extends AppCompatActivity {
         //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
         //以下只列举部分获取地址相关的结果信息
         //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
-
        double  latitude= location.getLatitude();
        double longitude=  location.getLongitude();
        Log.e("当前位置的经纬度信息为",latitude+",,"+longitude);
@@ -493,7 +432,6 @@ public class EditDynamicActivity extends AppCompatActivity {
                 // POI召回半径，允许设置区间为0-1000米，超过1000米按1000米召回。默认值为1000
                 .radius(500));
         mCoder.destroy();
-
-
     }
-}
+
+ }
