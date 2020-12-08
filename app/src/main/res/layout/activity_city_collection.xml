@@ -2,7 +2,9 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/city_title" android:id="@+id/city_title"/>
     <RelativeLayout
+        android:layout_below="@id/city_title"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,12 +35,15 @@
                 android:id="@+id/city_edit"
                 android:src="@drawable/edit"
                 android:layout_alignParentRight="true"/>
-
         </RelativeLayout>
-
-
     </RelativeLayout>
-
+    <ImageView
+        android:id="@+id/nocity"
+        android:layout_below="@id/place"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:src="@drawable/nocity"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

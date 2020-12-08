@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,7 +44,9 @@ public class MovieCollectionActivity extends AppCompatActivity {
     private List<FilmCollection> unCheckedList = new ArrayList<>();
     private OkHttpClient okHttpClient;
     private TextView movie_tv_edit;
+    private ImageView no_movie;
     private ListView lvFilm;
+    private ImageView back;
     private boolean isOP;
     int i = 0;
     private MovieCollectionAdapter movieCollectionAdapter;
@@ -50,8 +54,18 @@ public class MovieCollectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_movie_collection);
         movie_tv_edit = findViewById(R.id.movie_tv_edit);
+        no_movie = findViewById(R.id.nomovie);
+        lvFilm = findViewById(R.id.li_movie);
+        back = findViewById(R.id.lv_movie_title);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         //1.创建OkHttpClient对象,获取数据
         okHttpClient = new OkHttpClient();
         //获取数据
@@ -108,6 +122,11 @@ public class MovieCollectionActivity extends AppCompatActivity {
                             lvFilm = findViewById(R.id.li_movie);
                             lvFilm.setAdapter(movieCollectionAdapter);
                             TextView tv_count = findViewById(R.id.movie_count);
+                            if (movieCollectionAdapter.getCount()==0){
+                                no_movie.setVisibility(View.VISIBLE);
+                                lvFilm.setVisibility(View.GONE);
+                                movieCollectionAdapter.notifyDataSetChanged();
+                            }
                             tv_count.setText("收藏电影("+movieCollectionAdapter.getCount()+")");
                             lvFilm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
@@ -141,7 +160,6 @@ public class MovieCollectionActivity extends AppCompatActivity {
                 }
                 movieCollectionAdapter.setOP(isOP);
                 movieCollectionAdapter.notifyDataSetChanged();
-
                 break;
         }
     }
@@ -211,6 +229,11 @@ public class MovieCollectionActivity extends AppCompatActivity {
                         public void run() {
                             TextView textView = findViewById(R.id.movie_count);
                             textView.setText("收藏电影(" + unCheckedList.size() + ")");
+                            if (unCheckedList.size()==0){
+                                no_movie.setVisibility(View.VISIBLE);
+                                lvFilm.setVisibility(View.GONE);
+                                movieCollectionAdapter.notifyDataSetChanged();
+                            }
                         }
                     });
                 }

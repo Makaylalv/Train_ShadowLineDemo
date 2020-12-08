@@ -2,7 +2,9 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/movie_title" android:id="@+id/movie_title"/>
     <RelativeLayout
+        android:layout_below="@id/movie_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/up"
@@ -37,7 +39,14 @@
 
         </RelativeLayout>
     </RelativeLayout>
-
+    <ImageView
+        android:id="@+id/nomovie"
+        android:layout_below="@id/up"
+        android:onClick="movieClicked"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:src="@drawable/nomovie"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

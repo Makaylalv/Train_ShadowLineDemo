@@ -49,7 +49,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Train_ShadowLineDemo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.PlaceDetailActivity"></activity>
+        <activity android:name=".Personal.SetActivity"></activity>
+        <activity android:name=".Personal.RouteCollectionActivity" />
+        <activity android:name=".activity.PlaceDetailActivity" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -76,7 +78,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".activity.PlanningRouteActivity"
             android:theme="@style/AppTheme" />
