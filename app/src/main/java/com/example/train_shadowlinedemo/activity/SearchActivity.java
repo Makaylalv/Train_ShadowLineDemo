@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.Film;
+import com.example.train_shadowlinedemo.entity.Place;
 import com.example.train_shadowlinedemo.entity.SearchResult;
 import com.example.train_shadowlinedemo.view.MovieShow.CustomSearchView;
 import com.example.train_shadowlinedemo.view.MovieShow.SearchAdapter;
@@ -122,6 +123,7 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
                         break;
                     case "地点":
                         //跳转到地点详情
+                        getPlaceByid(result.getId());
                         break;
                     case "城市":
                         //跳转到城市详情
@@ -131,6 +133,33 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
                         startActivity(intent);
                         break;
                 }
+            }
+        });
+    }
+
+    private void getPlaceByid(int id) {
+        FormBody formBody=new FormBody.Builder()
+                .add("id",id+"")
+                .build();
+        Request request=new Request.Builder()
+                .post(formBody)
+                .url(ConfigUtil.SERVER_ADDR+"ClientGetPlaceById")
+                .build();
+        Call call=okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("onFailure","发生错误");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //获取轮播图列表数据
+                String json=response.body().string();
+                Type type=new TypeToken<Place>(){}.getType();//获取实际类型
+                Place place=fromToJson(json,type);
+                Log.e("ddddddd",json);
+                //修改数据源
+                EventBus.getDefault().post(place);
             }
         });
     }
@@ -191,7 +220,12 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
     public void handleJump(Film film){
         Intent intent=new Intent(this,MovieDetailActivity.class);
         intent.putExtra("film",new Gson().toJson(film));
-        Log.e("eeeee",new Gson().toJson(film));
+        startActivity(intent);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleJumpToPlace(Place place){
+        Intent intent=new Intent(this,PlaceDetailActivity.class);
+        intent.putExtra("place",new Gson().toJson(place));
         startActivity(intent);
     }
 
@@ -231,7 +265,6 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
                 String json=response.body().string();
                 Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
                 List<Film> list=fromToJson(json,type);
-                Log.e("ddddddd",json);
                 //修改数据源
                 EventBus.getDefault().post(list.get(0));
             }
@@ -340,7 +373,6 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
                 dbData.addAll(list);
             }
         });
-
     }
 
     private void searchDataByall() {

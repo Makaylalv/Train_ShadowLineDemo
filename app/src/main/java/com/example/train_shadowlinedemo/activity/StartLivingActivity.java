@@ -139,7 +139,6 @@ public class StartLivingActivity extends AppCompatActivity{
                     Log.e("data",nearPlaceRecyclerViewAdapter.getItemCount()+"");
                     nearPlaceRecyclerViewAdapter.setOnItemClickListener(nearOnItemClickListener);
                     placeRecyclerView.setAdapter(nearPlaceRecyclerViewAdapter);
-
                     break;
 
 
@@ -155,13 +154,9 @@ public class StartLivingActivity extends AppCompatActivity{
         getView();
 
         initLiving();
-
         //初始化bar
         //initBar();
-
         initRecyclerView();
-
-
     }
 
     private void initRecyclerView() {
@@ -243,6 +238,7 @@ public class StartLivingActivity extends AppCompatActivity{
 
                     }
                 });
+        //点击返回按钮，结束直播
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -336,8 +332,6 @@ public class StartLivingActivity extends AppCompatActivity{
             @Override
             public void onRoomUserUpdate(String roomID, ZegoUpdateType updateType, ArrayList<ZegoUser> userList) {
                 /** 用户状态更新，登陆房间后，当房间内有用户新增或删除时，SDK会通过该回调通知 */
-
-
             }
 
             @Override
@@ -359,7 +353,6 @@ public class StartLivingActivity extends AppCompatActivity{
                 message.what=1;
                 handler.sendMessage(message);
             }
-
         });
 
         /** 创建用户 */
