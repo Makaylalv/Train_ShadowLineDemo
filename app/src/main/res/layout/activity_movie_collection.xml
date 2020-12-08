@@ -48,6 +48,7 @@
         android:layout_height="70dp"
         android:id="@+id/movie_delete"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:layout_alignParentBottom="true">
         <TextView
             android:layout_width="50dp"
