@@ -27,14 +27,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baidu.mapapi.model.LatLng;
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.SmartSwipeWrapper;
+import com.billy.android.swipe.SwipeConsumer;
+import com.billy.android.swipe.consumer.DrawerConsumer;
+import com.billy.android.swipe.listener.SwipeListener;
 import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.BulletChat;
+import com.example.train_shadowlinedemo.entity.PlaceAndFilm;
 import com.example.train_shadowlinedemo.view.LiveRoom.BulletChatRecyclerViewAdapter;
+import com.example.train_shadowlinedemo.view.LiveRoom.NearPlaceRecyclerViewAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,6 +66,13 @@ import im.zego.zegoexpress.entity.ZegoRoomConfig;
 import im.zego.zegoexpress.entity.ZegoRoomExtraInfo;
 import im.zego.zegoexpress.entity.ZegoStream;
 import im.zego.zegoexpress.entity.ZegoUser;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class LivingRoomActivity extends AppCompatActivity {
     private ZegoExpressEngine zegoExpressEngine;
@@ -68,6 +88,11 @@ public class LivingRoomActivity extends AppCompatActivity {
     private TextView goOutTV;
     private TextView locationTV;
     private ImageView locationIV;
+    private LinearLayout linearLayout;
+    private String loactionCity;
+    private RecyclerView placeRecyclerView;
+    private NearPlaceRecyclerViewAdapter nearPlaceRecyclerViewAdapter;
+    private List<PlaceAndFilm> placeAndFilms;
 
     private Handler handler=new Handler(){
         @Override
@@ -85,6 +110,15 @@ public class LivingRoomActivity extends AppCompatActivity {
                             .asGif()
                             .load(R.drawable.go_out)
                             .into(goOutIV);
+                    break;
+                case 3:
+                    LinearLayoutManager layout = new LinearLayoutManager(LivingRoomActivity.this);
+                    layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    placeRecyclerView.setLayoutManager(layout);
+                    nearPlaceRecyclerViewAdapter =new NearPlaceRecyclerViewAdapter(placeAndFilms,LivingRoomActivity.this);
+                    Log.e("data",nearPlaceRecyclerViewAdapter.getItemCount()+"");
+                    nearPlaceRecyclerViewAdapter.setOnItemClickListener(nearOnItemClickListener);
+                    placeRecyclerView.setAdapter(nearPlaceRecyclerViewAdapter);
                     break;
 
             }
@@ -104,8 +138,41 @@ public class LivingRoomActivity extends AppCompatActivity {
 
 
         sendMsg();
+
+        getLivingNearPlace();
+
+
     }
 
+    private void getLivingNearPlace() {
+        //2.创建RequestBody（请求体）对象
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),roomId+"");
+        //3.创建请求对象
+        Request request = new Request.Builder()
+                .post(requestBody)//请求方式为POST
+                .url(ConfigUtil.SERVER_ADDR+"GetLivingCityServlet")
+                .build();
+        //4.创建Call对象，发送请求，并接受响应
+        OkHttpClient okHttpClient=new OkHttpClient();
+        final Call call = okHttpClient.newCall(request);
+        //异步网络请求（不需要创建子线程）
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
+                String str=response.body().string();
+                loactionCity=str;
+            }
+        });
+
+
+    }
 
 
     private void sendMsg() {
@@ -229,6 +296,59 @@ public class LivingRoomActivity extends AppCompatActivity {
         locationIV=findViewById(R.id.location_img);
         locationTV=findViewById(R.id.location_txt);
 
+        linearLayout=findViewById(R.id.place_layout);
+        placeRecyclerView=findViewById(R.id.place_recyclerview);
+
+        SmartSwipe.wrap(this)
+                .addConsumer(new DrawerConsumer())    //抽屉效果
+                //可以设置横向(左右两侧)的抽屉为同一个view
+                //也可以为不同方向分别设置不同的view
+                .setBottomDrawerView(linearLayout)
+                .addListener(new SwipeListener() {
+                    @Override
+                    public void onConsumerAttachedToWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
+                        Log.e("Attached","Attached");
+                    }
+
+                    @Override
+                    public void onConsumerDetachedFromWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
+                        Log.e("Detached","Detached");
+                    }
+
+                    @Override
+                    public void onSwipeStateChanged(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int state, int direction, float progress) {
+                        Log.e("State","State");
+                    }
+
+                    @Override
+                    public void onSwipeStart(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+                        Log.e("Start","Start");
+                    }
+
+                    @Override
+                    public void onSwipeProcess(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, boolean settling, float progress) {
+                        Log.e("Process","Process");
+                    }
+
+                    @Override
+                    public void onSwipeRelease(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, float progress, float xVelocity, float yVelocity) {
+                        Log.e("Release","Release");
+                    }
+
+                    @Override
+                    public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+                        Log.e("Opened","Opened");
+                        getLocationPlace();
+
+                    }
+
+                    @Override
+                    public void onSwipeClosed(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+                        Log.e("Closed","Closed");
+
+                    }
+                });
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -307,4 +427,49 @@ public class LivingRoomActivity extends AppCompatActivity {
         public void onItemLongClick(View v) {
         }
     };
+    NearPlaceRecyclerViewAdapter.OnItemClickListener nearOnItemClickListener=new NearPlaceRecyclerViewAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View v, NearPlaceRecyclerViewAdapter.ViewName viewName, int position) {
+
+        }
+
+        @Override
+        public void onItemLongClick(View v) {
+
+        }
+    };
+
+    private void getLocationPlace() {
+        //2.创建RequestBody（请求体）对象
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),loactionCity);
+        //3.创建请求对象
+        Request request = new Request.Builder()
+                .post(requestBody)//请求方式为POST
+                .url(ConfigUtil.SERVER_ADDR+"GetNearPlaceAndFilmServlet")
+                .build();
+        //4.创建Call对象，发送请求，并接受响应
+        OkHttpClient okHttpClient=new OkHttpClient();
+        final Call call = okHttpClient.newCall(request);
+        //异步网络请求（不需要创建子线程）
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
+                String str=response.body().string();
+                Gson gson=new Gson();
+                Type type = new TypeToken<ArrayList<PlaceAndFilm>>() {}.getType();
+                placeAndFilms=new ArrayList<>();
+                placeAndFilms=gson.fromJson(str,type);
+                Message message=new Message();
+                message.what=3;
+                handler.sendMessage(message);
+            }
+        });
+    }
 }

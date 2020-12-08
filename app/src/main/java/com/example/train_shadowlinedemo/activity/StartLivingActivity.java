@@ -226,9 +226,9 @@ public class StartLivingActivity extends AppCompatActivity{
                     @Override
                     public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
                         Log.e("Opened","Opened");
-                        Message message=new Message();
-                        message.what=3;
-                        handler.sendMessage(message);
+                        //获取地点
+                        getLocationPlace();
+
 
                     }
 
@@ -492,8 +492,7 @@ public class StartLivingActivity extends AppCompatActivity{
                 locationTV.setText(bdLocation.getCity()+"");
                 loactionCity=bdLocation.getCity();
                 locationLiving();
-                //获取地点
-                getLocationPlace();
+
             }
         });
         locationClient.start();
@@ -523,12 +522,13 @@ public class StartLivingActivity extends AppCompatActivity{
             public void onResponse(Call call, Response response) throws IOException {
                 //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
                 String str=response.body().string();
-
                 Gson gson=new Gson();
                 Type type = new TypeToken<ArrayList<PlaceAndFilm>>() {}.getType();
                 placeAndFilms=new ArrayList<>();
                 placeAndFilms=gson.fromJson(str,type);
-
+                Message message=new Message();
+                message.what=3;
+                handler.sendMessage(message);
             }
         });
     }
@@ -561,6 +561,7 @@ public class StartLivingActivity extends AppCompatActivity{
         });
 
     }
+
 
 
 }
