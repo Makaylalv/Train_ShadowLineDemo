@@ -17,16 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rv_film_outcountry"/>
-<!--        <LinearLayout-->
-<!--            android:id="@+id/linear"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal">-->
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_film_type"/>
-<!--        </LinearLayout>-->
+        </LinearLayout>
 
         <com.example.train_shadowlinedemo.view.MovieShow.ListViewForScrollView
             android:layout_width="match_parent"

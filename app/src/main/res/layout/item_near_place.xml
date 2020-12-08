@@ -2,6 +2,9 @@
 <LinearLayout android:layout_width="wrap_content"
     android:layout_height="170dp"
     android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:background="@drawable/place_near_style"
+    android:layout_marginBottom="5dp"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <ImageView
 
@@ -9,12 +12,12 @@
         android:layout_width="120dp"
         android:layout_height="120dp"/>
     <TextView
-        android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:id="@+id/near_place_name"
         android:layout_width="match_parent"
         android:layout_height="25dp"/>
     <TextView
-        android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:id="@+id/near_place_film_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

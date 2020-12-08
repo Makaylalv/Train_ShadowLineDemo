@@ -10,12 +10,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.entity.Film;
 import com.example.train_shadowlinedemo.entity.SearchResult;
 import com.example.train_shadowlinedemo.view.MovieShow.SearchAdapter;
 import com.example.train_shadowlinedemo.view.MovieShow.SelectFilmAdapter;
@@ -71,7 +73,7 @@ public class MovieTypeActivity extends AppCompatActivity {
         outCountry="全部";
         filmType=type;
         Log.e("MovieTypeActivity",type);
-//        LinearLayout linearLayout=findViewById(R.id.linear);
+        LinearLayout linearLayout=findViewById(R.id.linear);
         SelectFilmAdapter adapter= (SelectFilmAdapter) rvFilmType.getAdapter();
         Log.e("1111111",""+adapter.getItemCount());
         rvIsnewFilm.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -117,17 +119,13 @@ public class MovieTypeActivity extends AppCompatActivity {
                 if(rvFilmType!=null&&adapter.getItemCount()>0){
                     for(int i=0;i<adapter.getItemCount();i++){
                         if(adapter.getmDatas().get(i).equals(type)){
-                            Log.e("333",width+"");
-                            if(i>5){
-                                rvFilmType.scrollBy(width*2,0);
-                            }
                             View childView =rvFilmType.getLayoutManager().findViewByPosition(i);
                             if(childView!=null){
                                 TextView textView=childView.findViewById(R.id.tv_select_film);
                                 textView.setBackgroundColor(Color.BLACK);
                                 textView.setTextColor(Color.WHITE);
                             }
-//                            rvFilmType.smoothScrollToPosition(i+2);
+                            rvFilmType.smoothScrollToPosition(i+2);
                             break;
                         }
                     }
@@ -135,12 +133,52 @@ public class MovieTypeActivity extends AppCompatActivity {
 
             }
         });
+        lvFilmResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                SearchResult result=results.get(i);
+                getFilmByid(result.getId());
+            }
+        });
     }
+
+    private void getFilmByid(int id) {
+        FormBody formBody=new FormBody.Builder()
+                .add("id",id+"")
+                .build();
+        Request request=new Request.Builder()
+                .post(formBody)
+                .url(ConfigUtil.SERVER_ADDR+"ClientGetFilmById")
+                .build();
+        Call call=okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("onFailure","searchDataBySelectedType发生错误");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //获取轮播图列表数据
+                String json=response.body().string();
+                Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
+                List<Film> list=new Gson().fromJson(json,type);
+                //修改数据源
+                EventBus.getDefault().post(list.get(0));
+            }
+        });
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleMessage(String str){
         if(str.equals("getSelectResult")){
             searchAdapter.notifyDataSetChanged();
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleJump(Film film){
+        Intent intent=new Intent(this,MovieDetailActivity.class);
+        intent.putExtra("film",new Gson().toJson(film));
+        startActivity(intent);
     }
     //获取筛选的数据
     private void getResultData(String isNew,String time,String country,String type) {
@@ -173,9 +211,6 @@ public class MovieTypeActivity extends AppCompatActivity {
                 EventBus.getDefault().post("getSelectResult");
             }
         });
-
-
-
     }
 
     private void initView() {

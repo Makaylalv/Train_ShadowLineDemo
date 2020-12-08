@@ -62,7 +62,6 @@ public class FragmenPlace extends androidx.fragment.app.Fragment {
                     Toast.makeText(getContext(),"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
                     break;
             }
-
         }
 
         @Override
