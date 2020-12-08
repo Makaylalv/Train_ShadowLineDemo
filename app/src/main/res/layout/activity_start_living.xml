@@ -124,8 +124,9 @@
         android:id="@+id/place_layout"
         android:background="#96FFFFFF"
         android:layout_width="200dp"
-        android:layout_height="200dp">
+        android:layout_height="230dp">
         <LinearLayout
+            android:layout_margin="10dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
