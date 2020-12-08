@@ -19,11 +19,12 @@ import com.mob.MobSDK;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import okhttp3.OkHttpClient;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     String APPKEY = "31864de7eed41";
     String APPSECRETE = "6f85a1db8d49d276ae98a88a7c30fef3";
-
+    private OkHttpClient okHttpClient;
     private String cord_number;
 
     // 手机号输入框
@@ -51,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        okHttpClient = new OkHttpClient();
         init();		//初始化控件
     }
 
@@ -153,7 +154,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                         //通过短信登录跳转到主页面
                         Intent intent = new Intent(RegisterActivity.this,
-                                MainActivity.class);
+                                LoginActivity.class);
                         intent.putExtra("Register","注册成功");
                         intent.putExtra("Phone",rPhone);
                         intent.putExtra("Name",rName);
@@ -242,4 +243,5 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onDestroy();
     }
 }
+
 

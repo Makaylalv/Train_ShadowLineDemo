@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/draw"
+    android:background="#f7f7f7"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,146 +11,191 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:id="@+id/head"
-            android:background="@drawable/bac1">
-
+            android:id="@+id/head">
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/lv_setting"
-                android:src="@drawable/setting"
-                android:layout_alignParentTop="true"
-                android:visibility="gone"
-                android:layout_alignParentLeft="true"/>
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/mImage"
+                android:scaleType="centerCrop"/>
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/lv_inform"
-                android:layout_alignParentTop="true"
-                android:visibility="gone"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/information"/>
-            <ImageView
+                android:id="@+id/img_head"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/head1"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
                 android:onClick="onClicked"
-                android:id="@+id/img_head"/>
+                android:src="@drawable/head1" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/user"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/img_head">
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:paddingTop="27dp"
+                    android:layout_height="wrap_content"
+                    android:text="用户名："
+                    android:textColor="#ffffff"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/username"
+                    android:paddingTop="27dp"
+                    android:text="柴晓艺"
+                    android:textColor="#ffffff"
+                    android:textSize="15sp"
+                    android:id="@+id/tv_name"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Firm choice and persistent persistence"
+                    android:textSize="13sp"
+                    android:textColor="#ffffff"
+                    android:layout_below="@id/username"
+                    android:id="@+id/tv_signature"/>
+            </RelativeLayout>
         </RelativeLayout>
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/user"
-            android:layout_below="@id/head">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:text="柴晓艺"
-                android:textSize="20sp"
-                android:id="@+id/tv_name"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:text="Firm choice and persistent persistence"
-                android:textSize="18sp"
-                android:layout_below="@id/tv_name"
-                android:id="@+id/tv_signature"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/collection"
-            android:layout_below="@id/user">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/line"
-                android:layout_marginTop="30dp"
-                android:src="@drawable/line"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="我的收藏"
-                android:layout_toRightOf="@id/line"
-                android:textSize="20sp"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_margin="30dp"
+            android:layout_below="@id/head"
             android:id="@+id/rv_collection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/collection">
+            style="@style/personal_26">
+
             <RelativeLayout
-                android:id="@+id/rv_movie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:id="@+id/rel_myorder"
+                style="@style/personal_27">
+
+                <TextView
+                    android:id="@+id/tv_mycollection"
+                    style="@style/personal_29"
+                    android:text="我的收藏"/>
 
                 <ImageView
-                    android:id="@+id/lv_movie"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentLeft="true"
-                    android:src="@drawable/movie" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_movie"
-                    android:layout_below="@id/lv_movie"
-                    android:textSize="18sp"
-                    android:text="电影"/>
-
+                    android:id="@+id/personal_widget_30"
+                    style="@style/personal_30"/>
             </RelativeLayout>
+
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/rv_cut">
-                <ImageView
-                    android:id="@+id/lv_cut"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/cut"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_below="@id/lv_cut"
-                    android:text="片场"
-                    android:id="@+id/tv_cut"/>
-            </RelativeLayout>
+                android:id="@+id/line"
+                style="@style/personal_28"/>
+
             <RelativeLayout
-                android:id="@+id/rv_city"
-                android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
+                android:id="@+id/personal_widget_31"
+                style="@style/personal_31">
 
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/lv_city"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/movie"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="城市"
-                    android:textSize="18sp"
-                    android:layout_below="@id/lv_city"/>
+                <RelativeLayout
+                    android:id="@+id/rv_movie"
+                    style="@style/personal_32">
+
+                    <ImageView
+                        android:id="@+id/lv_movie"
+                        style="@style/personal_33"/>
+
+                    <TextView
+                        android:id="@+id/tv_movie"
+                        style="@style/personal_34"
+                        android:text="电影"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rv_cut"
+                    style="@style/personal_35">
+                    <ImageView
+                        android:id="@+id/lv_cut"
+                        style="@style/personal_36"/>
+                    <TextView
+                        android:id="@+id/tv_cut"
+                        style="@style/personal_37"
+                        android:text="片场"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rv_city"
+                    style="@style/personal_38">
+
+                    <ImageView
+                        android:id="@+id/lv_city"
+                        style="@style/personal_39"/>
+
+                    <TextView
+                        android:id="@+id/tv_city"
+                        style="@style/personal_40"
+                        android:text="城市"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rv_route"
+                    style="@style/personal_41">
+
+                    <ImageView
+                        android:id="@+id/lv_route"
+                        style="@style/personal_42"/>
+
+                    <TextView
+                        android:id="@+id/tv_route"
+                        style="@style/personal_43"
+                        android:text="路线"/>
+                </RelativeLayout>
             </RelativeLayout>
-
         </RelativeLayout>
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/rv_collection">
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/rv_collection"
+            android:id="@+id/personal_widget_50"
+            style="@style/personal_50">
 
+            <RelativeLayout
+                android:id="@+id/rel_tsukkomi"
+                style="@style/personal_51">
+                <TextView
+                    android:id="@+id/personal_widget_52"
+                    style="@style/personal_52"
+                    android:text="我要吐槽"/>
 
+                <ImageView
+                    android:id="@+id/personal_widget_53"
+                    style="@style/personal_53"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/personal_widget_54"
+                style="@style/personal_54"/>
+
+            <RelativeLayout
+                android:id="@+id/rel_down"
+                style="@style/personal_55">
+
+                <TextView
+                    android:id="@+id/personal_widget_56"
+                    style="@style/personal_56"
+                    android:text="文档下载"/>
+
+                <ImageView
+                    android:id="@+id/personal_widget_57"
+                    style="@style/personal_57"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/personal_widget_58"
+                style="@style/personal_58"/>
+
+            <RelativeLayout
+                android:id="@+id/rel_appset"
+                style="@style/personal_59">
+
+                <TextView
+                    android:id="@+id/personal_widget_60"
+                    style="@style/personal_60"
+                    android:text="APP设置"/>
+
+                <ImageView
+                    android:id="@+id/personal_widget_61"
+                    style="@style/personal_61"/>
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 

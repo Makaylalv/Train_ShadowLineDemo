@@ -35,6 +35,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.Personal.BlurTransformation;
 import com.example.train_shadowlinedemo.Personal.CityCollectionActivity;
 import com.example.train_shadowlinedemo.Personal.DeleteCommentPopupWindow;
 import com.example.train_shadowlinedemo.Personal.MovieCollectionActivity;
@@ -45,10 +47,21 @@ import com.example.train_shadowlinedemo.R;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
+
 public class PersonalFragment extends Fragment implements View.OnClickListener{
     private ImageView img_head;
+    private ImageView mImg;
     private Bitmap head;
     private PhotoPopupWindow popupWindow;
+    private TextView username;
+    private TextView name;
+    private TextView type;
+    private TextView collection;
+    private TextView movie;
+    private TextView city;
+    private TextView cut;
+    private TextView route;
     private static final int REQUEST_IMAGE_GET = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_SMALL_IMAGE_CUTTING = 2;
@@ -75,15 +88,40 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         rv_city.setOnClickListener(PersonalFragment.this);
         RelativeLayout rv_place = view.findViewById(R.id.rv_cut);
         rv_place.setOnClickListener(PersonalFragment.this);
+        username = view.findViewById(R.id.username);
+        name = view.findViewById(R.id.tv_name);
+        type = view.findViewById(R.id.tv_signature);
+        collection = view.findViewById(R.id.tv_mycollection);
+        movie = view.findViewById(R.id.tv_movie);
+        cut = view.findViewById(R.id.tv_cut);
+        city = view.findViewById(R.id.tv_city);
+        route = view.findViewById(R.id.tv_route);
         //头像
+        mImg = view.findViewById(R.id.mImage);
         img_head = view.findViewById(R.id.img_head);
         Drawable drawable = getResources().getDrawable(R.drawable.head1);
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+        Glide.with(PersonalFragment.this.getContext())
+                .load(R.drawable.head1)
+                .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
+                .into(mImg);
         head = bitmapDrawable.getBitmap();
         Bitmap bitmap =  toRoundBitmap(head);
         img_head.setImageBitmap(bitmap);
         changePhoto(img_head);
-
+        //设置字体
+        //从asset 读取字体
+        AssetManager mgr = getResources().getAssets();
+        //根据路径得到Typeface
+        Typeface tf = Typeface.createFromAsset(mgr, "Regular.ttf");//仿宋
+        username.setTypeface(tf);
+        name.setTypeface(tf);
+        type.setTypeface(tf);
+        collection.setTypeface(tf);
+        movie.setTypeface(tf);
+        cut.setTypeface(tf);
+        city.setTypeface(tf);
+        route.setTypeface(tf);
         return view;
     }
     //处理点击事件
@@ -274,6 +312,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
                 }
             }
             // 在视图中显示图片
+            Glide.with(PersonalFragment.this.getContext())
+                    .load(photo)
+                    .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
+                    .into(mImg);
             Bitmap bitmap =  toRoundBitmap(photo);
             img_head.setImageBitmap(bitmap);
         }

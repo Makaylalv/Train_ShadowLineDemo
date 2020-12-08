@@ -9,8 +9,285 @@
         <item name="android:windowEnterAnimation">@anim/popup_show</item>
         <item name="android:windowExitAnimation">@anim/popup_gone</item>
     </style>
-    <style name="FullActivity" parent="">
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
+    <style name="personal_26">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/_99sdp</item>
+        <item name="android:layout_marginTop">@dimen/_4sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:background">#ffffff</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+    <style name="personal_27">
+        <item name="android:layout_width">@dimen/_277sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginTop">@dimen/_10sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_29">
+        <item name="android:layout_width">@dimen/_83sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#101010</item>
+        <item name="android:textSize">@dimen/_15sdp</item>
+    </style>
+    <style name="personal_30">
+        <item name="android:layout_width">@dimen/_13sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_181sdp</item>
+        <item name="android:layout_toRightOf">@+id/tv_mycollection</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/personal_30_30</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_28">
+        <item name="android:layout_width">@dimen/_277sdp</item>
+        <item name="android:layout_height">@dimen/_1sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:layout_below">@+id/rel_myorder</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:background">#dbdbdb</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+     <style name="personal_31">
+        <item name="android:layout_width">@dimen/_252sdp</item>
+        <item name="android:layout_height">@dimen/_43sdp</item>
+        <item name="android:layout_marginTop">@dimen/_6sdp</item>
+        <item name="android:layout_below">@+id/line</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_32">
+        <item name="android:layout_width">@dimen/_35sdp</item>
+        <item name="android:layout_height">@dimen/_43sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_33">
+        <item name="android:layout_width">@dimen/_27sdp</item>
+        <item name="android:layout_height">@dimen/_25sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/pmovie2</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_34">
+        <item name="android:layout_width">@dimen/_35sdp</item>
+        <item name="android:layout_height">@dimen/_12sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_6sdp</item>
+        <item name="android:layout_below">@+id/lv_movie</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#252725</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+    <style name="personal_35">
+        <item name="android:layout_width">@dimen/_35sdp</item>
+        <item name="android:layout_height">@dimen/_43sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_37sdp</item>
+        <item name="android:layout_toRightOf">@+id/rv_movie</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_36">
+        <item name="android:layout_width">@dimen/_27sdp</item>
+        <item name="android:layout_height">@dimen/_25sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/pcut2</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_37">
+        <item name="android:layout_width">@dimen/_35sdp</item>
+        <item name="android:layout_height">@dimen/_12sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_6sdp</item>
+        <item name="android:layout_below">@+id/lv_cut</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#252725</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+    <style name="personal_38">
+        <item name="android:layout_width">@dimen/_35sdp</item>
+        <item name="android:layout_height">@dimen/_43sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_38sdp</item>
+        <item name="android:layout_toRightOf">@+id/rv_cut</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_39">
+        <item name="android:layout_width">@dimen/_27sdp</item>
+        <item name="android:layout_height">@dimen/_25sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/city2</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_40">
+        <item name="android:layout_width">@dimen/_35sdp</item>
+        <item name="android:layout_height">@dimen/_12sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_6sdp</item>
+        <item name="android:layout_below">@+id/lv_city</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#252725</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+    <style name="personal_41">
+        <item name="android:layout_width">@dimen/_25sdp</item>
+        <item name="android:layout_height">@dimen/_43sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_45sdp</item>
+        <item name="android:layout_toRightOf">@+id/rv_city</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_42">
+        <item name="android:layout_width">@dimen/_25sdp</item>
+        <item name="android:layout_height">@dimen/_25sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/proute2</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_43">
+        <item name="android:layout_width">@dimen/_25sdp</item>
+        <item name="android:layout_height">@dimen/_12sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_6sdp</item>
+        <item name="android:layout_below">@+id/lv_route</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#252725</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+    <style name="personal_50">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/_114sdp</item>
+        <item name="android:layout_marginTop">@dimen/_4sdp</item>
+        <item name="android:background">#ffffff</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_51">
+        <item name="android:layout_width">@dimen/_277sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_52">
+        <item name="android:layout_width">@dimen/_72sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#141414</item>
+        <item name="android:textSize">@dimen/_13sdp</item>
+    </style>
+    <style name="personal_53">
+        <item name="android:layout_width">@dimen/_16sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_189sdp</item>
+        <item name="android:layout_toRightOf">@+id/personal_widget_52</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/personal_53_53</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_54">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/_1sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:layout_below">@+id/rel_tsukkomi</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:background">#dbdbdb</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_55">
+        <item name="android:layout_width">@dimen/_277sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:layout_below">@+id/personal_widget_54</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_56">
+        <item name="android:layout_width">@dimen/_72sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#141414</item>
+        <item name="android:textSize">@dimen/_13sdp</item>
+    </style>
+    <style name="personal_57">
+        <item name="android:layout_width">@dimen/_16sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_189sdp</item>
+        <item name="android:layout_toRightOf">@+id/personal_widget_56</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/personal_57_57</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_58">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/_1sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:layout_below">@+id/rel_down</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:background">#dbdbdb</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_59">
+        <item name="android:layout_width">@dimen/_277sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:layout_below">@+id/personal_widget_58</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_60">
+        <item name="android:layout_width">@dimen/_72sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#141414</item>
+        <item name="android:textSize">@dimen/_13sdp</item>
+    </style>
+    <style name="personal_61">
+        <item name="android:layout_width">@dimen/_16sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_189sdp</item>
+        <item name="android:layout_toRightOf">@+id/personal_widget_60</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/personal_61_61</item>
+        <item name="android:gravity">left</item>
     </style>
 </resources>

@@ -311,6 +311,7 @@ public class FilmFragment  extends Fragment {
         rvNewFilmList.setLayoutManager(linearLayoutManager);
         //设置适配器adapter
         rvNewFilmList.setAdapter(newFilmAdapter);
+
     }
 
     class MyOnClickListener implements View.OnClickListener {
