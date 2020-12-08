@@ -25,6 +25,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,13 +45,21 @@ import com.billy.android.swipe.listener.SwipeListener;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.BulletChat;
+import com.example.train_shadowlinedemo.entity.Place;
+import com.example.train_shadowlinedemo.entity.PlaceAndFilm;
 import com.example.train_shadowlinedemo.view.LiveRoom.BulletChatRecyclerViewAdapter;
+import com.example.train_shadowlinedemo.view.LiveRoom.LiveRoomRecyclerViewAdapter;
+import com.example.train_shadowlinedemo.view.LiveRoom.NearPlaceRecyclerViewAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.smssdk.gui.SmartVerifyPage;
 import im.zego.zegoexpress.ZegoExpressEngine;
@@ -100,6 +109,9 @@ public class StartLivingActivity extends AppCompatActivity{
     private ImageView locationIV;
     private LinearLayout linearLayout;
     private String loactionCity;
+    private RecyclerView placeRecyclerView;
+    private NearPlaceRecyclerViewAdapter nearPlaceRecyclerViewAdapter;
+    private List<PlaceAndFilm> placeAndFilms;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -118,6 +130,19 @@ public class StartLivingActivity extends AppCompatActivity{
                         }
                     });
                     break;
+                case 3:
+
+                    LinearLayoutManager layout = new LinearLayoutManager(StartLivingActivity.this);
+                    layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    placeRecyclerView.setLayoutManager(layout);
+                    nearPlaceRecyclerViewAdapter =new NearPlaceRecyclerViewAdapter(placeAndFilms,StartLivingActivity.this);
+                    Log.e("data",nearPlaceRecyclerViewAdapter.getItemCount()+"");
+                    nearPlaceRecyclerViewAdapter.setOnItemClickListener(nearOnItemClickListener);
+                    placeRecyclerView.setAdapter(nearPlaceRecyclerViewAdapter);
+
+                    break;
+
+
             }
         }
     };
@@ -166,6 +191,7 @@ public class StartLivingActivity extends AppCompatActivity{
         locationIV=findViewById(R.id.location_img);
         locationTV=findViewById(R.id.location_txt);
         linearLayout=findViewById(R.id.place_layout);
+        placeRecyclerView=findViewById(R.id.place_recyclerview);
         SmartSwipe.wrap(this)
                 .addConsumer(new DrawerConsumer())    //抽屉效果
                 //可以设置横向(左右两侧)的抽屉为同一个view
@@ -205,6 +231,9 @@ public class StartLivingActivity extends AppCompatActivity{
                     @Override
                     public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
                         Log.e("Opened","Opened");
+                        Message message=new Message();
+                        message.what=3;
+                        handler.sendMessage(message);
 
                     }
 
@@ -400,6 +429,18 @@ public class StartLivingActivity extends AppCompatActivity{
         }
     };
 
+    NearPlaceRecyclerViewAdapter.OnItemClickListener nearOnItemClickListener=new NearPlaceRecyclerViewAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View v, NearPlaceRecyclerViewAdapter.ViewName viewName, int position) {
+
+        }
+
+        @Override
+        public void onItemLongClick(View v) {
+
+        }
+    };
+
 
     private void stopLiving(){
         //2.创建RequestBody（请求体）对象
@@ -460,14 +501,43 @@ public class StartLivingActivity extends AppCompatActivity{
                 locationLiving();
                 //获取地点
                 getLocationPlace();
-
-
             }
         });
         locationClient.start();
     }
 
+
     private void getLocationPlace() {
+        //2.创建RequestBody（请求体）对象
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),loactionCity);
+        //3.创建请求对象
+        Request request = new Request.Builder()
+                .post(requestBody)//请求方式为POST
+                .url(ConfigUtil.SERVER_ADDR+"GetNearPlaceAndFilmServlet")
+                .build();
+        //4.创建Call对象，发送请求，并接受响应
+        OkHttpClient okHttpClient=new OkHttpClient();
+        final Call call = okHttpClient.newCall(request);
+        //异步网络请求（不需要创建子线程）
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
+                String str=response.body().string();
+
+                Gson gson=new Gson();
+                Type type = new TypeToken<ArrayList<PlaceAndFilm>>() {}.getType();
+                placeAndFilms=new ArrayList<>();
+                placeAndFilms=gson.fromJson(str,type);
+
+            }
+        });
     }
 
 

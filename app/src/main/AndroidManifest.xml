@@ -49,11 +49,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Train_ShadowLineDemo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.PlaceDetailActivity"></activity>
+        <activity android:name=".activity.PlaceDetailActivity"
+            android:theme="@style/AppTheme"></activity>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="9RinesBdOwWrBIuFEs0I2y6SPavIzWoz" />
+            android:value="UGreORh3iebNAtlF94fhfv6smUTWNmaw" />
 
         <service
             android:name="com.baidu.location.f"
@@ -70,13 +71,11 @@
         <activity
             android:name=".activity.AppIntroActivity"
             android:theme="@style/Theme.Design.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity">
+
+        </activity>
         <activity
             android:name=".activity.PlanningRouteActivity"
             android:theme="@style/AppTheme" />
@@ -85,7 +84,13 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.DetailMapActivity"
             android:theme="@style/AppTheme" />
@@ -129,6 +134,7 @@
         <activity
             android:name=".activity.CityDetailActivity"
             android:theme="@style/AppTheme" />
+
     </application>
 
 </manifest>
