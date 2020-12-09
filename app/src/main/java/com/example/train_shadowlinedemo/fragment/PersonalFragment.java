@@ -160,7 +160,17 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         tv_about = view.findViewById(R.id.tv_about);
         tv_agreement = view.findViewById(R.id.tv_agreement);
         tv_setting = view.findViewById(R.id.tv_setting);
+        Log.e("username",LoginActivity.user.getUser_name());
+        name.setText(LoginActivity.user.getUser_name());
 
+        if (SetActivity.update){
+            Log.e("nameupdate","1111");
+            name.setText(SetActivity.nameupdate);
+
+        }else {
+            Log.e("111","1111");
+            name.setText(LoginActivity.user.getUser_name());
+        }
         rv_about.setOnClickListener(PersonalFragment.this);
         rv_agreement.setOnClickListener(PersonalFragment.this);
         rv_talk.setOnClickListener(PersonalFragment.this);

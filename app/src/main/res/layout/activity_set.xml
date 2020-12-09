@@ -5,16 +5,16 @@
     <include layout="@layout/personal_set" android:id="@+id/personal_title"/>
     <RelativeLayout
         android:id="@+id/set_edit"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:background="#ffffff"
+        android:visibility="gone"
         android:layout_height="52dp">
         <TextView
             android:id="@+id/edit_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="25dp"
             android:layout_centerVertical="true"
             android:text="取消"/>
         <TextView
@@ -24,14 +24,14 @@
             android:textSize="20sp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingRight="10dp"
+            android:paddingRight="25dp"
             android:textColor="@color/purple_500"
             android:text="保存"/>
     </RelativeLayout>
     <RelativeLayout
-        android:layout_below="@id/personal_title"
         android:id="@+id/username_set"
-        style="@style/personal_rv">
+        style="@style/personal_rv"
+        android:layout_marginTop="@dimen/_52sdp">
         <TextView
             android:id="@+id/tv_username_set"
             style="@style/personal_tv"

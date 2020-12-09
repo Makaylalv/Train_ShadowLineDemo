@@ -21,20 +21,25 @@ public class SetActivity extends AppCompatActivity implements View.OnClickListen
     private EditText et_phone;
     private ImageView back;
     private RelativeLayout set_edit;
+    private RelativeLayout username_set;
     private LinearLayout personal_title;
     private TextView cancel;
     private TextView save;
+    public static String nameupdate;
+    public static boolean update;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_set);
+        update = true;
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         String sign = intent.getStringExtra("signature");
 
         set_edit = findViewById(R.id.set_edit);
         personal_title = findViewById(R.id.personal_title);
+        username_set = findViewById(R.id.username_set);
         cancel = findViewById(R.id.edit_cancel);
         save = findViewById(R.id.edit_save);
 
@@ -42,15 +47,60 @@ public class SetActivity extends AppCompatActivity implements View.OnClickListen
         et_phone = findViewById(R.id.et_phone);
         et_name.setText(name);
         et_phone.setText(sign);
-        et_name.setOnClickListener(new View.OnClickListener() {
+        et_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View view) {
-                personal_title.setVisibility(View.GONE);
-                set_edit.setVisibility(View.VISIBLE);
+            public void onFocusChange(View view, boolean b) {
+                if (b){
+                    personal_title.setVisibility(View.GONE);
+                    set_edit.setVisibility(View.VISIBLE);
+                }
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        personal_title.setVisibility(View.VISIBLE);
+                        set_edit.setVisibility(View.GONE);
+                        et_name.setFocusable(false);
+                        nameupdate = et_name.getText().toString();
+                        update = false;
+                    }
+                });
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        personal_title.setVisibility(View.VISIBLE);
+                        set_edit.setVisibility(View.GONE);
+                        et_name.setFocusable(false);
+                    }
+                });
             }
         });
-//        et_name.setOnClickListener(this);
-//        et_phone.setOnClickListener(this);
+        et_phone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b){
+                    personal_title.setVisibility(View.GONE);
+                    set_edit.setVisibility(View.VISIBLE);
+                }
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        personal_title.setVisibility(View.VISIBLE);
+                        set_edit.setVisibility(View.GONE);
+                        et_phone.setFocusable(false);
+                        nameupdate = et_name.getText().toString();
+                        update = false;
+                    }
+                });
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        personal_title.setVisibility(View.VISIBLE);
+                        set_edit.setVisibility(View.GONE);
+                        et_phone.setFocusable(false);
+                    }
+                });
+            }
+        });
         back = findViewById(R.id.set_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
