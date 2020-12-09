@@ -328,6 +328,43 @@
         <item name="android:src">@drawable/personal_61_61</item>
         <item name="android:gravity">left</item>
     </style>
+    <style name="personal_rv">
+        <item name="android:layout_width">@dimen/_277sdp</item>
+        <item name="android:layout_height">@dimen/_20sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:layout_below">@+id/about</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_tv">
+        <item name="android:layout_width">@dimen/_72sdp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#141414</item>
+        <item name="android:textSize">@dimen/_13sdp</item>
+    </style>
+    <style name="personal_img">
+        <item name="android:layout_width">@dimen/_16sdp</item>
+        <item name="android:layout_height">@dimen/_20sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_189sdp</item>
+        <item name="android:layout_toRightOf">@+id/tv_about</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/personal_61_61</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/_1sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:background">#dbdbdb</item>
+        <item name="android:gravity">left</item>
+    </style>
     <style name="FullActivity" parent="">
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
