@@ -1,5 +1,6 @@
 package com.example.train_shadowlinedemo.fragment.movieDetailsFragment;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.PlaceDetailActivity;
 import com.example.train_shadowlinedemo.entity.Place;
 import com.example.train_shadowlinedemo.view.MovieDetail.PlaceRecyclerViewAdapter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -37,6 +40,7 @@ public class FragmenPlace extends androidx.fragment.app.Fragment {
     public void setData(ArrayList<Place> places){
         this.places=places;
         recyclerView = view.findViewById(R.id.recyclerview);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         PlaceRecyclerViewAdapter myAdapter =new PlaceRecyclerViewAdapter(places,getContext());
         myAdapter.setOnItemClickListener(onItemClickListener);
@@ -49,10 +53,15 @@ public class FragmenPlace extends androidx.fragment.app.Fragment {
             //viewName可区分item及item内部控件
             switch (v.getId()){
                 default:
+                    Gson gson=new Gson();
+                    String placeJson=gson.toJson(places.get(position));
+                    Intent intent=new Intent();
+                    intent.setClass(getContext(), PlaceDetailActivity.class);
+                    intent.putExtra("place",placeJson);
+                    startActivity(intent);
                     Toast.makeText(getContext(),"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
                     break;
             }
-
         }
 
         @Override

@@ -149,10 +149,10 @@
             style="@style/personal_50">
 
             <RelativeLayout
-                android:id="@+id/rel_tsukkomi"
+                android:id="@+id/rv_talk"
                 style="@style/personal_51">
                 <TextView
-                    android:id="@+id/personal_widget_52"
+                    android:id="@+id/tv_talk"
                     style="@style/personal_52"
                     android:text="我要吐槽"/>
 
@@ -166,13 +166,13 @@
                 style="@style/personal_54"/>
 
             <RelativeLayout
-                android:id="@+id/rel_down"
+                android:id="@+id/rv_agreement"
                 style="@style/personal_55">
 
                 <TextView
-                    android:id="@+id/personal_widget_56"
+                    android:id="@+id/tv_agreement"
                     style="@style/personal_56"
-                    android:text="文档下载"/>
+                    android:text="用户协议" />
 
                 <ImageView
                     android:id="@+id/personal_widget_57"
@@ -180,23 +180,47 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/personal_widget_58"
+                android:id="@+id/set"
                 style="@style/personal_58"/>
 
             <RelativeLayout
-                android:id="@+id/rel_appset"
+                android:id="@+id/rv_set"
                 style="@style/personal_59">
 
                 <TextView
-                    android:id="@+id/personal_widget_60"
+                    android:id="@+id/tv_setting"
                     style="@style/personal_60"
-                    android:text="APP设置"/>
+                    android:text="资料设置" />
 
                 <ImageView
                     android:id="@+id/personal_widget_61"
                     style="@style/personal_61"/>
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/about"
+                style="@style/personal_62"/>
+
+            <RelativeLayout
+                android:id="@+id/rv_about"
+                style="@style/personal_63">
+
+                <TextView
+                    android:id="@+id/tv_about"
+                    style="@style/personal_64"
+                    android:text="关于影行"/>
+
+                <ImageView
+                    android:id="@+id/personal_widget_62"
+                    style="@style/personal_65"/>
+            </RelativeLayout>
         </RelativeLayout>
+        <Button
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/quit"
+            android:text="退出登录"/>
     </RelativeLayout>
 
 

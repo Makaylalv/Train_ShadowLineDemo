@@ -2,7 +2,9 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/cut_title" android:id="@+id/cut_title"/>
     <RelativeLayout
+        android:layout_below="@+id/cut_title"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +39,13 @@
         </RelativeLayout>
 
     </RelativeLayout>
-
+    <ImageView
+        android:id="@+id/nocut"
+        android:layout_below="@id/place"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:src="@drawable/nocut"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
