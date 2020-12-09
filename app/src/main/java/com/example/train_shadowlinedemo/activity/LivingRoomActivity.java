@@ -430,9 +430,14 @@ public class LivingRoomActivity extends AppCompatActivity {
     NearPlaceRecyclerViewAdapter.OnItemClickListener nearOnItemClickListener=new NearPlaceRecyclerViewAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View v, NearPlaceRecyclerViewAdapter.ViewName viewName, int position) {
-
+            switch (v.getId()){
+                default:
+                    Intent intent=new Intent(LivingRoomActivity.this,PlaceDetailActivity.class);
+                    intent.putExtra("place",new Gson().toJson(placeAndFilms.get(position).getPlace()));
+                    startActivity(intent);
+                    break;
+            }
         }
-
         @Override
         public void onItemLongClick(View v) {
 

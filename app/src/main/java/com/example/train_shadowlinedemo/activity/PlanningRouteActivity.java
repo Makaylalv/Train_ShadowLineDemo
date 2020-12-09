@@ -53,7 +53,11 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.CustomMarker;
 import com.example.train_shadowlinedemo.entity.Distance;
+import com.example.train_shadowlinedemo.entity.Place;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -603,16 +607,20 @@ public class PlanningRouteActivity extends AppCompatActivity {
                     longitude=bdLocation.getLongitude();//精度
                     int code=bdLocation.getLocType();//获取定位错误码
                     Log.e("定位成功","维度"+latitude+"精度"+longitude+"定位结果"+code);
+                    List<Place> places=new ArrayList<>();
+                    Type type=new TypeToken<List<Place>>(){}.getType();
+                    Intent intent=getIntent();
+                    String string=intent.getStringExtra("places");
+
+                    Gson gson=new Gson();
+                    places=gson.fromJson(string,type);
+                    Log.e("size",places.size()+"");
                     PlanNode node = PlanNode.withLocation(new LatLng(latitude, longitude));
-                    PlanNode node1 = PlanNode.withLocation(new LatLng(29.41041, 106.554545));
-                    PlanNode node2= PlanNode.withLocation(new LatLng(29.562098, 106.591978));
-                    PlanNode node3 = PlanNode.withLocation(new LatLng(29.549486, 106.594493));
-                    PlanNode node4 = PlanNode.withLocation(new LatLng(29.530622, 106.577894));
                     planNodeList1.add(node);
-                    planNodeList1.add(node1);
-                    planNodeList1.add(node2);
-                    planNodeList1.add(node3);
-                    planNodeList1.add(node4);
+                    for(int i=0;i<places.size();i++){
+                        PlanNode node1 = PlanNode.withLocation(new LatLng(places.get(i).getPlaceLatitude(), places.get(i).getPlaceLongitude()));
+                        planNodeList1.add(node1);
+                    }
                     //移动地图界面显示到当前位置
                     //把哪一个坐标点显示到地图中间
                     LatLng point=new LatLng(latitude,longitude);

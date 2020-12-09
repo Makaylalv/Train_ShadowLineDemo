@@ -416,9 +416,7 @@ public class StartLivingActivity extends AppCompatActivity{
                     Toast.makeText(StartLivingActivity.this,"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
                     break;
             }
-
         }
-
         @Override
         public void onItemLongClick(View v) {
         }
@@ -462,7 +460,6 @@ public class StartLivingActivity extends AppCompatActivity{
                 String str=response.body().string();
             }
         });
-
     }
 
 
