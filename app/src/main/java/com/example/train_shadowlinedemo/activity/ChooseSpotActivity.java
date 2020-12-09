@@ -3,15 +3,19 @@ package com.example.train_shadowlinedemo.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.adapter.SpotChooseAdapter;
@@ -19,6 +23,10 @@ import com.example.train_shadowlinedemo.entity.Place;
 import com.example.train_shadowlinedemo.entity.RouteSpot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -35,10 +43,10 @@ import okhttp3.Response;
 
 public class ChooseSpotActivity extends AppCompatActivity {
     private List<Place> places = new ArrayList<>();
-
     private List<Integer> spotHasChosen = new ArrayList<>();
     private SpotChooseAdapter spotChooseAdapter;
     private OkHttpClient okHttpClient;
+    private CheckBox allIn;
     String cityId="";
     String userId="1";
     private List<RouteSpot> routeSpots=new ArrayList<>();
@@ -52,8 +60,13 @@ public class ChooseSpotActivity extends AppCompatActivity {
                     String str= (String) msg.obj;
                     if(str.equals("1")){
                         //Glide.with(this).load(R.drawable.like1).into(like);
-                       // spotChooseAdapter.changeCheckState();
+                        spotChooseAdapter.changeCheckState();
                         routeSpots.clear();
+                        if(allIn.isChecked()){
+                            allIn.setText("全选");
+                            allIn.setChecked(false);
+                        }
+
                         Log.e("routeSpots的清空的内容",routeSpots.toString());
                         Toast.makeText(ChooseSpotActivity.this,"路线添加成功",Toast.LENGTH_SHORT);
                     }
@@ -61,7 +74,14 @@ public class ChooseSpotActivity extends AppCompatActivity {
                 case 2:
                     String str0= (String) msg.obj;
                     if(str0.equals("1")){
-                        //spotChooseAdapter.changeCheckState();
+                        Log.e("change的spotHasChosen",spotHasChosen.toString()+"%%"+spotHasChosen.size());
+                        spotChooseAdapter.changeCheckState();
+                        if(allIn.isChecked()){
+                            allIn.setText("全选");
+                            allIn.setChecked(false);
+                        }
+
+
                         //Glide.with(this).load(R.drawable.like1).into(like);
                         Toast.makeText(ChooseSpotActivity.this,"收藏成功",Toast.LENGTH_SHORT);
                     }
@@ -76,24 +96,37 @@ public class ChooseSpotActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_spot);
+//        final SharedPreferences sharedPreferences=getSharedPreferences("loginInfo",MODE_PRIVATE);
+//        userId=sharedPreferences.getString("id","");
         okHttpClient=new OkHttpClient();
-        userId=LoginActivity.user.getUser_id()+"";
         Intent i=getIntent();
         cityId=i.getStringExtra("cityId");
         like=findViewById(R.id.likeSpot);
         choose=findViewById(R.id.route_btn);
+        allIn=findViewById(R.id.allIn);
+        allIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(allIn.getText().toString().equals("全选")){
+                    spotChooseAdapter.allCheckTrue();
+                    allIn.setText("全不选");
+                }else{
+//                    spotHasChosen.clear();
+                    spotChooseAdapter.changeCheckState();
+                    allIn.setText("全选");
+                }
+            }
+        });
         //加入路线
         choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // noRepeat(spotHasChosen);
                 for(Integer i:spotHasChosen){
                     RouteSpot routeSpot=new RouteSpot(i,Integer.parseInt(userId));
                     routeSpots.add(routeSpot);
                 }
                 upRouteSync();
-                Intent i=new Intent();
-                i.setClass(ChooseSpotActivity.this,PlanningRouteActivity.class);
-                startActivity(i);
 //                spotHasChosen.clear();
 
             }
@@ -105,11 +138,15 @@ public class ChooseSpotActivity extends AppCompatActivity {
                 Log.e("userId",userId);
                 Log.e("spotHasChosen",spotHasChosen.toString());
                 int id=Integer.parseInt(userId);
+                //noRepeat(spotHasChosen);
+                Log.e("spotHasChosen",spotHasChosen.toString());
                 for(Integer i:spotHasChosen){
                     RouteSpot routeSpot=new RouteSpot(i,id);
                     routeSpots.add(routeSpot);
                 }
                 upPlaceLikeSync();
+                // spotHasChosen.clear();//?
+                //怎么取消选中状态
 
             }
         });
@@ -126,7 +163,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
         //3.创建请求对象
         Request request = new Request.Builder()
                 .post(requestBody)//请求方式为POST
-                .url(ConfigUtil.SERVER_ADDR+ "SpotsLikeServlet?userId="+userId)
+                .url(ConfigUtil.SERVER_ADDR + "SpotsLikeServlet?userId="+userId)
                 .build();
         //4.创建Call对象，发送请求，并接受响应
         final Call call = okHttpClient.newCall(request);
@@ -140,10 +177,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //请求成功时回调
-                //Log.e("异步请求的结果",response.body().string());
-                //不能直接修改UI，如果需要修改UI，需要使用Handler或者EventBus
-//                Log.e("收藏结果",response.body().string());
+
                 String str=response.body().string();
                 Log.e("收藏结果",str);
 //                        EventBus.getDefault().postSticky(flag);
@@ -155,14 +189,16 @@ public class ChooseSpotActivity extends AppCompatActivity {
                 handler.sendMessage(msg);
             }
         });
+
+
     }
-    public void upRouteSync() {
+    public void upRouteSync(){
         //2.创建request请求对象
-        Log.e("routeSpots的内容", routeSpots.toString());
+        Log.e("routeSpots的内容",routeSpots.toString());
         RequestBody requestBody = RequestBody.create(MediaType.parse(
-                "text/plain;charset=utf-8"), new Gson().toJson(routeSpots));
+                "text/plain;charset=utf-8"),new Gson().toJson(routeSpots));
         routeSpots.clear();
-        Log.e("routeSpots的内容", routeSpots.toString());
+        Log.e("routeSpots的内容",routeSpots.toString());
         //3.创建请求对象
         Request request = new Request.Builder()
                 .post(requestBody)//请求方式为POST
@@ -184,8 +220,8 @@ public class ChooseSpotActivity extends AppCompatActivity {
                 //Log.e("异步请求的结果",response.body().string());
                 //不能直接修改UI，如果需要修改UI，需要使用Handler或者EventBus
                 //Log.e("收藏结果",response.body().string());
-                String str = response.body().string();
-                Log.e("收藏结果", str);
+                String str=response.body().string();
+                Log.e("收藏结果",str);
                 Message msg = new Message();
                 //设置Message对象的参数
                 msg.what = 1;
@@ -194,11 +230,17 @@ public class ChooseSpotActivity extends AppCompatActivity {
                 handler.sendMessage(msg);
             }
         });
+
+
+
+
+
     }
+
 
     public void initView(){
         spotChooseAdapter = new SpotChooseAdapter(places,this,
-                R.layout.spot_choose_item,spotHasChosen);//看下都有的数据吧
+                R.layout.spot_choose_item,spotHasChosen,allIn);//看下都有的数据吧
         ListView stuListView = findViewById(R.id.spot_route_list);
         stuListView.setAdapter(spotChooseAdapter);
     }
@@ -220,7 +262,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
                     //判断是否相应成功 根据请求码判断
                     if(response.isSuccessful()){
                         //获取服务端相应的数据 并且是字符串数据
-                       // Log.e("响应数据",response.body().string());
+                        // Log.e("响应数据",response.body().string());
                         //再去看下和gson
                         String placeJson=response.body().string();
                         Log.e("响应数据",placeJson);
@@ -229,6 +271,8 @@ public class ChooseSpotActivity extends AppCompatActivity {
                         List<Place> spots=gson.fromJson(placeJson,type);
                         //修改数据源
                         places.addAll(spots);
+                        // EventBus.getDefault().postSticky(true);
+//                        EventBus.getDefault().postSticky(true);
                         Message msg = new Message();
                         //设置Message对象的参数
                         msg.what = 3;
@@ -241,6 +285,11 @@ public class ChooseSpotActivity extends AppCompatActivity {
                 }
             }
         }.start();
+
     }
+
+
+
+
 
 }
