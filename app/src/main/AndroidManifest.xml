@@ -3,6 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.train_shadowlinedemo">
 
+
+
+
+
+
+
+
+<!--分享-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+
+
+
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 允许写手机存储（必须） -->
@@ -48,7 +71,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Train_ShadowLineDemo"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+
+        tools:replace="android:name">
         <activity android:name=".activity.PlaceDetailActivity"></activity>
 
         <meta-data
@@ -129,7 +154,74 @@
         <activity android:name=".activity.ChooseSpotActivity" />
         <activity
             android:name=".activity.CityDetailActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
+
+
+
+
+        <!--ShareSDK相关start-->
+<!--        <activity-->
+<!--            android:name="com.mob.tools.MobUIShell"-->
+<!--            android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
+<!--            android:configChanges="keyboardHidden|orientation|screenSize"-->
+<!--            android:windowSoftInputMode="stateHidden|adjustResize" >-->
+
+<!--            &lt;!&ndash; 调用新浪原生SDK，需要注册的回调activity &ndash;&gt;-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--            &lt;!&ndash;集成line客户端登录授权，需要添如下格式的过滤器&ndash;&gt;-->
+<!--            <intent-filter>-->
+<!--                <data android:scheme="line.1477692153" />-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+
+<!--        </activity>-->
+<!--        &lt;!&ndash; 填写您从Mob开发者后台中得到的Appkey和AppSecret &ndash;&gt;-->
+<!--        <meta-data android:name="Mob-AppKey" android:value="31864de7eed41"/>-->
+<!--        <meta-data android:name="Mob-AppSecret" android:value="6f85a1db8d49d276ae98a88a7c30fef3"/>-->
+<!--        <activity-->
+<!--            android:name="cn.sharesdk.tencent.qq.ReceiveActivity"-->
+<!--            android:launchMode="singleTask"-->
+<!--            android:noHistory="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <data android:scheme="tencent1111171437" />-->
+<!--                &lt;!&ndash;tencent+你的在腾讯申请的AppId,不改的话分享可以成功但是回调一直是onCancel哦&ndash;&gt;-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+        <!-- ShareSDK的activity -->
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <!--QQ分享回调-->
+        <activity
+            android:name="cn.sharesdk.tencent.qq.ReceiveActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent1111171437" />
+            </intent-filter>
+        </activity>
+
+        <meta-data android:name="Mob-AppKey" android:value="31864de7eed41"/>
+        <meta-data android:name="Mob-AppSecret" android:value="6f85a1db8d49d276ae98a88a7c30fef3"/>
     </application>
 
 </manifest>

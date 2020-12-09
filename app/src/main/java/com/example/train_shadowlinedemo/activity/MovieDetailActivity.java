@@ -399,10 +399,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(event);
     }
 
-    /**定义滑动接口
+    /**
+     * 定义滑动接口
      */
     public interface ActivityTouchListener {
-
         boolean onTouchEvent(MotionEvent event);
     }
 

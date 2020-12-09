@@ -1,12 +1,17 @@
 package com.example.train_shadowlinedemo.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -32,6 +37,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -57,6 +64,23 @@ public class MovieTypeActivity extends AppCompatActivity {
     private String filmType=null;
     private OkHttpClient okHttpClient;
     private SearchAdapter searchAdapter;
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+
+            switch (msg.what){
+                case 1:
+                    View childView= (View) msg.obj;
+                    if(childView!=null){
+                        TextView textView=childView.findViewById(R.id.tv_select_film);
+                        textView.setBackgroundColor(Color.BLACK);
+                        textView.setTextColor(Color.WHITE);
+                    }
+                    break;
+            }
+        }
+    };
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +99,12 @@ public class MovieTypeActivity extends AppCompatActivity {
         Log.e("MovieTypeActivity",type);
         LinearLayout linearLayout=findViewById(R.id.linear);
         SelectFilmAdapter adapter= (SelectFilmAdapter) rvFilmType.getAdapter();
-        Log.e("1111111",""+adapter.getItemCount());
+        //Log.e("1111111",""+adapter.getItemCount());
         rvIsnewFilm.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 View view=rvIsnewFilm.getLayoutManager().findViewByPosition(0);
+
                 TextView textView=view.findViewById(R.id.tv_select_film);
                 textView.setBackgroundColor(Color.BLACK);
                 textView.setTextColor(Color.WHITE);
@@ -119,13 +144,20 @@ public class MovieTypeActivity extends AppCompatActivity {
                 if(rvFilmType!=null&&adapter.getItemCount()>0){
                     for(int i=0;i<adapter.getItemCount();i++){
                         if(adapter.getmDatas().get(i).equals(type)){
-                            View childView =rvFilmType.getLayoutManager().findViewByPosition(i);
-                            if(childView!=null){
-                                TextView textView=childView.findViewById(R.id.tv_select_film);
-                                textView.setBackgroundColor(Color.BLACK);
-                                textView.setTextColor(Color.WHITE);
-                            }
                             rvFilmType.smoothScrollToPosition(i+2);
+                            Timer timer=new Timer();
+                            int finalI = i;
+                            TimerTask timerTask=new TimerTask() {
+                                @Override
+                                public void run() {
+                                    Message message=new Message();
+                                    message.what=1;
+                                    message.obj=rvFilmType.getLayoutManager().findViewByPosition(finalI);
+                                    handler.sendMessage(message);
+                                }
+                            };
+                           timer.schedule(timerTask,20);
+
                             break;
                         }
                     }
@@ -140,6 +172,7 @@ public class MovieTypeActivity extends AppCompatActivity {
                 getFilmByid(result.getId());
             }
         });
+
     }
 
     private void getFilmByid(int id) {

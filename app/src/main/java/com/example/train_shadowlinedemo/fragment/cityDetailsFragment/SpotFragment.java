@@ -56,6 +56,7 @@ public class SpotFragment extends Fragment {
             switch (msg.what) {
                 case 1:
                     initView();
+                    EventBus.getDefault().postSticky(places);
                     break;
                 case 2:
 
@@ -71,11 +72,7 @@ public class SpotFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent=new Intent(getContext(), DetailedCakeActivity.class);
-//                intent.putExtra("id",places.get(position).getPlaceId());
-//                Log.e("id",places.get(position).getPlaceId()+"");
-//                Log.e("跳转了","DetailedCakeActivity");
-//                startActivity(intent);
+
 
             }
         });
@@ -86,12 +83,13 @@ public class SpotFragment extends Fragment {
         root=inflater.inflate(R.layout.fragment_spot,container,false);
 //        final SharedPreferences sharedPreferences=getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
 //        userId=sharedPreferences.getString("id","");
-
+        EventBus.getDefault().register(this);
         okHttpClient=new OkHttpClient();
         getCitySpotSync();
         //downloadStr(ConfigUtil.SERVER_ADDR + "DownUserOrderServlet");
         return root;
     }
+
     public void getCitySpotSync(){
         //2.创建request请求对象
         Request request=new Request.Builder()

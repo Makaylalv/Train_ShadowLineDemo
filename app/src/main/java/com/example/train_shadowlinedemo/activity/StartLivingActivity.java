@@ -227,7 +227,9 @@ public class StartLivingActivity extends AppCompatActivity{
                     public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
                         Log.e("Opened","Opened");
                         //获取地点
-                        getLocationPlace();
+                        if(loactionCity!=null&&!locationClient.equals("")) {
+                            getLocationPlace();
+                        }
 
 
                     }
