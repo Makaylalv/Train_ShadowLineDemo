@@ -10,6 +10,7 @@
         android:id="@+id/et_login_phone"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/p1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="107dp"
@@ -23,6 +24,7 @@
         android:id="@+id/et_login_password"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/p2"
         android:layout_alignLeft="@+id/et_login_phone"
         android:layout_below="@+id/et_login_phone"
         android:layout_marginTop="44dp"
@@ -32,21 +34,25 @@
 
     <Button
         android:id="@+id/login_commit"
-        android:layout_width="280dp"
+        android:layout_width="260dp"
         android:onClick="onClicked"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/et_login_password"
         android:layout_below="@+id/et_login_password"
-        android:layout_marginTop="44dp"
-        android:text="登录" />
+        android:layout_marginTop="65dp"
+        android:layout_marginLeft="10dp"
+        android:text="登录"
+        android:textColor="@color/white"
+        android:background="@drawable/register_detail_btn_shape"/>
 
     <TextView
         android:id="@+id/tv_new_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="新用户？注册"
+        android:textSize="17sp"
         android:layout_marginTop="250dp"
-        android:layout_marginLeft="250dp"/>
+        android:layout_marginLeft="210dp"/>
 
     <ImageView
         android:id="@+id/info_icon"
@@ -54,7 +60,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="550dp"
-        android:layout_marginLeft="65dp"/>
+        android:layout_marginLeft="70dp"/>
 
     <TextView
         android:gravity="center"
@@ -73,26 +79,25 @@
         android:textSize="14sp" />
 
     <Button
-        android:layout_marginLeft="65dp"
+        android:layout_marginLeft="70dp"
         android:id="@+id/button_login"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginTop="550dp"
-        android:text="QQ登录"
-        android:textColor="#0D4F83"
+        android:textColor="#1296db"
         android:background="@drawable/qq"/>
 
     <ImageView
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_marginLeft="155dp"
+        android:layout_marginLeft="160dp"
         android:layout_marginTop="550dp"
         android:src="@drawable/weixin"/>
 
     <ImageView
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_marginLeft="245dp"
+        android:layout_marginLeft="250dp"
         android:layout_marginTop="550dp"
         android:src="@drawable/weibo"/>
 

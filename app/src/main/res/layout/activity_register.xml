@@ -10,6 +10,7 @@
         android:id="@+id/login_input_phone_et"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/p1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="107dp"
@@ -21,11 +22,12 @@
 
     <EditText
         android:id="@+id/login_input_code_et"
-        android:layout_width="170dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/p3"
         android:layout_alignLeft="@+id/login_input_phone_et"
         android:layout_below="@+id/login_input_phone_et"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="20dp"
         android:hint="请输入验证码"
         android:inputType="phone"  >
     </EditText>
@@ -33,39 +35,46 @@
     <Button
         android:id="@+id/login_request_code_btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_alignRight="@+id/login_input_phone_et"
         android:layout_alignTop="@+id/login_input_code_et"
-        android:text="获取验证码" />
+        android:layout_marginTop="10dp"
+        android:text="获取验证码"
+        android:textColor="@color/white"
+        android:background="#87a7d6"/>
 
     <EditText
         android:id="@+id/login_input_name_et"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/p4"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="270dp"
-        android:ems="10"
+        android:layout_marginTop="250dp"
         android:hint="请输入用户名" />
 
     <EditText
         android:id="@+id/login_input_password_et"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/p2"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="340dp"
+        android:layout_marginTop="315dp"
         android:ems="10"
         android:hint="请输入密码"
         android:inputType="textPassword"/>
 
     <Button
         android:id="@+id/login_commit_btn"
-        android:layout_width="280dp"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/login_input_code_et"
         android:layout_below="@+id/login_input_code_et"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="160dp"
-        android:text="注册" />
+        android:text="注册"
+        android:textColor="@color/white"
+        android:background="@drawable/register_detail_btn_shape"/>
 
 </RelativeLayout>
