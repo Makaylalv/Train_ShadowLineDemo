@@ -100,7 +100,24 @@ public class ChooseSpotActivity extends AppCompatActivity {
 //        userId=sharedPreferences.getString("id","");
         okHttpClient=new OkHttpClient();
         Intent i=getIntent();
+
         cityId=i.getStringExtra("cityId");
+        if(cityId==null){
+            Gson gson=new Gson();
+            String str=i.getStringExtra("placelist");
+            Type type=new TypeToken<List<Place>>(){}.getType();
+            places=gson.fromJson(str,type);
+            Message msg = new Message();
+            //设置Message对象的参数
+            msg.what = 3;
+            msg.obj = "str";
+            //发送Message
+            handler.sendMessage(msg);
+
+        }else{
+            getCitySpotSync();
+
+        }
         like=findViewById(R.id.likeSpot);
         choose=findViewById(R.id.route_btn);
         allIn=findViewById(R.id.allIn);
@@ -150,7 +167,6 @@ public class ChooseSpotActivity extends AppCompatActivity {
 
             }
         });
-        getCitySpotSync();
 
     }
     public void upPlaceLikeSync(){

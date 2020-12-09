@@ -132,24 +132,39 @@
                         android:layout_marginBottom="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"/>
+                    <View
+                        android:background="#DCDCDC"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
 
                 </LinearLayout>
 
             </RelativeLayout>
 
-
-
-
-            <com.google.android.material.tabs.TabLayout
-
-                android:id="@+id/tab_main"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="fixed"
-                app:tabBackground="@android:color/transparent"
-                app:tabRippleColor="@android:color/transparent"
-                android:background="#fff">
-            </com.google.android.material.tabs.TabLayout>
+                android:layout_height="wrap_content">
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_main"
+                    android:layout_weight="7"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="#fff"
+                    app:tabBackground="@android:color/transparent"
+                    app:tabMode="fixed"
+                    app:tabRippleColor="@android:color/transparent">
+                </com.google.android.material.tabs.TabLayout>
+                <ImageView
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:id="@+id/chooseSpot"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="42dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/new_plan"/>
+            </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <RelativeLayout
