@@ -75,7 +75,8 @@
 
         tools:replace="android:name">
         <activity android:name=".activity.PlaceDetailActivity"></activity>
-
+        <activity android:name=".Personal.SetActivity"></activity>
+        <activity android:name=".Personal.RouteCollectionActivity" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="9RinesBdOwWrBIuFEs0I2y6SPavIzWoz" />

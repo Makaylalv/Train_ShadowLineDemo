@@ -46,6 +46,18 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
 
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class LoginActivity extends AppCompatActivity {
     private String reg = null;
     private String phone;
@@ -57,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etPwd;
     private boolean i = false;
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "LoginActivity";
     //QQ包名
     private static final String PACKAGE_QQ = "com.tencent.mobileqq";
 
@@ -66,12 +78,18 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView infoIcon;
     //初始化腾讯服务
     private Tencent mTencent;
+    //QQname
+    private String Qname;
+    private String openid;
+    private int id = 0;
+    private OkHttpClient okHttpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        okHttpClient = new OkHttpClient();
         etPhone = findViewById(R.id.et_login_phone);
         etPwd = findViewById(R.id.et_login_password);
 
@@ -122,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                         phone = intent.getStringExtra("Phone");
                         name = intent.getStringExtra("Name");
                         pwd = intent.getStringExtra("Pwd");
-                        URL url = new URL("http://192.168.43.175:8080/ShadowLine/AddUserServlet");
+                        URL url = new URL(ConfigUtil.SERVER_ADDR+"AddUserServlet");
                         Log.e("111","333");
                         HttpURLConnection connection = (HttpURLConnection)
                                 url.openConnection();
@@ -286,8 +304,9 @@ public class LoginActivity extends AppCompatActivity {
                     //头像
                     String avatar = ((JSONObject) object).getString("figureurl_2");
                     ////GlideUtils.showGlide(MainActivity.this, avatar, infoIcon);
-                    String nickName = ((JSONObject) object).getString("nickname");
-                    //infoName.setText(nickName);
+                    Qname = ((JSONObject) object).getString("nickname");
+                    insertQuser();
+                    infoName.setText(Qname);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -344,8 +363,29 @@ public class LoginActivity extends AppCompatActivity {
         }
         return is;
     }
+    public void insertQuser(){
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),Qname);
+        Request request = new Request.Builder().post(requestBody).url(ConfigUtil.SERVER_ADDR+"GetQnameServlet")
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
 
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String str=response.body().string();
+                Gson gson=new Gson();
+                user =gson.fromJson(str,User.class);
+            }
+        });
+    }
 }
+
+
 
 
 
