@@ -68,7 +68,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
                         }
 
                         Log.e("routeSpots的清空的内容",routeSpots.toString());
-                        Toast.makeText(ChooseSpotActivity.this,"路线添加成功",Toast.LENGTH_SHORT);
+                        Toast.makeText(ChooseSpotActivity.this,"路线添加成功",Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case 2:
@@ -83,7 +83,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
 
 
                         //Glide.with(this).load(R.drawable.like1).into(like);
-                        Toast.makeText(ChooseSpotActivity.this,"收藏成功",Toast.LENGTH_SHORT);
+                        Toast.makeText(ChooseSpotActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case 3:
