@@ -70,6 +70,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private Timer timer = new Timer();
     private Film film;
     private ImageView imageView;
+    private ImageView chooseSpotIV;
     private ArrayList<Place> places= new ArrayList<>();
     private OkHttpClient okHttpClient;
     private ArrayList<ActivityTouchListener> myActivityTouchListeners = new ArrayList<>();
@@ -232,13 +233,23 @@ public class MovieDetailActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_main);
         viewPager = findViewById(R.id.viewpager);
         button=findViewById(R.id.collection);
+        chooseSpotIV=findViewById(R.id.chooseSpot);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 collectionFilm();
             }
         });
-
+        chooseSpotIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Gson gson1=new Gson();
+                String str=gson1.toJson(places);
+                Intent intent1=new Intent(MovieDetailActivity.this,ChooseSpotActivity.class);
+                intent1.putExtra("placeList",str);
+                startActivity(intent1);
+            }
+        });
 
         listTitle.add("片场"); //标题
         listTitle.add("片场");//标题
