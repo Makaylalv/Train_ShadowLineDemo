@@ -181,7 +181,7 @@
     </style>
     <style name="personal_50">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">@dimen/_114sdp</item>
+        <item name="android:layout_height">@dimen/_170sdp</item>
         <item name="android:layout_marginTop">@dimen/_4sdp</item>
         <item name="android:background">#ffffff</item>
         <item name="android:gravity">left</item>
@@ -208,7 +208,7 @@
         <item name="android:layout_width">@dimen/_16sdp</item>
         <item name="android:layout_height">@dimen/_16sdp</item>
         <item name="android:layout_marginLeft">@dimen/_189sdp</item>
-        <item name="android:layout_toRightOf">@+id/personal_widget_52</item>
+        <item name="android:layout_toRightOf">@+id/tv_talk</item>
         <item name="android:layout_marginTop">@dimen/_0sdp</item>
         <item name="android:padding">@dimen/_0sdp</item>
         <item name="android:src">@drawable/personal_53_53</item>
@@ -218,7 +218,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/_1sdp</item>
         <item name="android:layout_marginTop">@dimen/_11sdp</item>
-        <item name="android:layout_below">@+id/rel_tsukkomi</item>
+        <item name="android:layout_below">@+id/rv_talk</item>
         <item name="android:padding">@dimen/_0sdp</item>
         <item name="android:background">#dbdbdb</item>
         <item name="android:gravity">left</item>
@@ -246,7 +246,7 @@
         <item name="android:layout_width">@dimen/_16sdp</item>
         <item name="android:layout_height">@dimen/_16sdp</item>
         <item name="android:layout_marginLeft">@dimen/_189sdp</item>
-        <item name="android:layout_toRightOf">@+id/personal_widget_56</item>
+        <item name="android:layout_toRightOf">@+id/tv_agreement</item>
         <item name="android:layout_marginTop">@dimen/_0sdp</item>
         <item name="android:padding">@dimen/_0sdp</item>
         <item name="android:src">@drawable/personal_57_57</item>
@@ -256,7 +256,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/_1sdp</item>
         <item name="android:layout_marginTop">@dimen/_11sdp</item>
-        <item name="android:layout_below">@+id/rel_down</item>
+        <item name="android:layout_below">@+id/rv_agreement</item>
         <item name="android:padding">@dimen/_0sdp</item>
         <item name="android:background">#dbdbdb</item>
         <item name="android:gravity">left</item>
@@ -265,7 +265,7 @@
         <item name="android:layout_width">@dimen/_277sdp</item>
         <item name="android:layout_height">@dimen/_16sdp</item>
         <item name="android:layout_marginTop">@dimen/_11sdp</item>
-        <item name="android:layout_below">@+id/personal_widget_58</item>
+        <item name="android:layout_below">@+id/set</item>
         <item name="android:padding">@dimen/_0sdp</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:gravity">left</item>
@@ -284,14 +284,50 @@
         <item name="android:layout_width">@dimen/_16sdp</item>
         <item name="android:layout_height">@dimen/_16sdp</item>
         <item name="android:layout_marginLeft">@dimen/_189sdp</item>
-        <item name="android:layout_toRightOf">@+id/personal_widget_60</item>
+        <item name="android:layout_toRightOf">@+id/tv_setting</item>
         <item name="android:layout_marginTop">@dimen/_0sdp</item>
         <item name="android:padding">@dimen/_0sdp</item>
         <item name="android:src">@drawable/personal_61_61</item>
         <item name="android:gravity">left</item>
     </style>
-
-
+    <style name="personal_62">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/_1sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:layout_below">@+id/rv_set</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:background">#dbdbdb</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_63">
+        <item name="android:layout_width">@dimen/_277sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginTop">@dimen/_11sdp</item>
+        <item name="android:layout_below">@+id/about</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="personal_64">
+        <item name="android:layout_width">@dimen/_72sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_0sdp</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#141414</item>
+        <item name="android:textSize">@dimen/_13sdp</item>
+    </style>
+    <style name="personal_65">
+        <item name="android:layout_width">@dimen/_16sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_189sdp</item>
+        <item name="android:layout_toRightOf">@+id/tv_about</item>
+        <item name="android:layout_marginTop">@dimen/_0sdp</item>
+        <item name="android:padding">@dimen/_0sdp</item>
+        <item name="android:src">@drawable/personal_61_61</item>
+        <item name="android:gravity">left</item>
+    </style>
     <style name="FullActivity" parent="">
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
