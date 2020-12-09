@@ -42,28 +42,12 @@
                 android:id="@+id/et_share_text"
                 android:hint="分享新鲜事..."
                 />
-            <LinearLayout
+
+            <com.example.train_shadowlinedemo.view.customerview.MyGridView
+                android:id="@+id/gv_edit_imgs"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/iv_add_img1"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"/>
-                <ImageView
-                    android:id="@+id/iv_add_img2"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <ImageView
-                    android:id="@+id/iv_add_img3"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
+                android:numColumns="3"
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_width="150dp"
                 android:gravity="center"

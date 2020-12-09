@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,6 +44,8 @@ public class CityCollectionActivity extends AppCompatActivity {
     private List<CityCollection> unCheckedList = new ArrayList<>();
     private OkHttpClient okHttpClient;
     private ListView lvCity;
+    private ImageView no_city;
+    private ImageView back;
     private TextView tv_edit;
     private boolean isOP;
     int i = 0;
@@ -51,8 +55,18 @@ public class CityCollectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_city_collection);
+        lvCity = findViewById(R.id.li_city);
         tv_edit = findViewById(R.id.tv_edit);
+        no_city = findViewById(R.id.nocity);
+        back = findViewById(R.id.lv_city_title);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         //1.创建OkHttpClient对象,获取数据
         okHttpClient = new OkHttpClient();
         //获取数据
@@ -105,6 +119,11 @@ public class CityCollectionActivity extends AppCompatActivity {
                             lvCity = findViewById(R.id.li_city);
                             lvCity.setAdapter(cityCollectionAdapter);
                             TextView tv_count = findViewById(R.id.city_count);
+                            if (cityCollectionAdapter.getCount()==0){
+                                no_city.setVisibility(View.VISIBLE);
+                                cityCollectionAdapter.notifyDataSetChanged();
+                                lvCity.setVisibility(View.GONE);
+                            }
                             tv_count.setText("收藏城市(" + cityCollectionAdapter.getCount() + ")");
                             lvCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
@@ -208,6 +227,11 @@ public class CityCollectionActivity extends AppCompatActivity {
                         public void run() {
                             TextView textView = findViewById(R.id.city_count);
                             textView.setText("收藏城市(" + unCheckedList.size() + ")");
+                            if (unCheckedList.size()==0){
+                                no_city.setVisibility(View.VISIBLE);
+                                cityCollectionAdapter.notifyDataSetChanged();
+                                lvCity.setVisibility(View.GONE);
+                            }
                         }
                     });
                 }

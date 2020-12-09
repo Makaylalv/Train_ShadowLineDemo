@@ -4,8 +4,18 @@ public class Comment {
     private int commentId;//评论id
     private int dynamicId;//动态id
     private int userId;//用户id
-    private String username;
+    private String username;//用户姓名
     private String commentContent;//评论内容
+    private String commentTime;//评论时间
+
+    public Comment( int dynamicId, int userId, String username, String commentContent, String commentTime) {
+
+        this.dynamicId = dynamicId;
+        this.userId = userId;
+        this.username = username;
+        this.commentContent = commentContent;
+        this.commentTime = commentTime;
+    }
 
     public int getCommentId() {
         return commentId;
@@ -47,6 +57,14 @@ public class Comment {
         this.commentContent = commentContent;
     }
 
+    public String getCommentTime() {
+        return commentTime;
+    }
+
+    public void setCommentTime(String commentTime) {
+        this.commentTime = commentTime;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
@@ -55,6 +73,7 @@ public class Comment {
                 ", userId=" + userId +
                 ", username='" + username + '\'' +
                 ", commentContent='" + commentContent + '\'' +
+                ", commentTime='" + commentTime + '\'' +
                 '}';
     }
 }

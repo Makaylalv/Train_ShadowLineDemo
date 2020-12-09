@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
-    private Fragment currentFragment=new Fragment();
+    private Fragment currentFragment = new Fragment();
     private ImageView ivFilm;
     private ImageView ivCity;
     private ImageView ivShare;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private CityFragment cityFragment;
     private ShareFragment shareFragment;
     private PersonalFragment personalFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,42 +69,43 @@ public class MainActivity extends AppCompatActivity {
        /* Intent intent=new Intent(this, PlanningRouteActivity.class);
         startActivity(intent);*/
         //获取控件
-        ivFilm=findViewById(R.id.iv_tab_film);
-        ivCity=findViewById(R.id.iv_tab_city);
-        ivShare=findViewById(R.id.iv_tab_share);
-        ivMine=findViewById(R.id.iv_tab_mine);
-        tvFilm=findViewById(R.id.tv_tab_film);
-        tvCity=findViewById(R.id.tv_tab_city);
-        tvShare=findViewById(R.id.tv_tab_share);
-        tvMine=findViewById(R.id.tv_tab_mine);
+        ivFilm = findViewById(R.id.iv_tab_film);
+        ivCity = findViewById(R.id.iv_tab_city);
+        ivShare = findViewById(R.id.iv_tab_share);
+        ivMine = findViewById(R.id.iv_tab_mine);
+        tvFilm = findViewById(R.id.tv_tab_film);
+        tvCity = findViewById(R.id.tv_tab_city);
+        tvShare = findViewById(R.id.tv_tab_share);
+        tvMine = findViewById(R.id.tv_tab_mine);
         //选择电影列表为主界面
-        filmFragment=new FilmFragment();
-        cityFragment=new CityFragment();
-        shareFragment=new ShareFragment();
-        personalFragment=new PersonalFragment();
+        filmFragment = new FilmFragment();
+        cityFragment = new CityFragment();
+        shareFragment = new ShareFragment();
+        personalFragment = new PersonalFragment();
         changeTab(filmFragment);
         changeColor("film");
-        currentFragment=filmFragment;
+        currentFragment = filmFragment;
         onclickReceive();
 
     }
+
     private void changeTab(Fragment fragment) {
-        FragmentManager manager=getSupportFragmentManager();
-        FragmentTransaction transaction=manager.beginTransaction();
-        if(currentFragment!=fragment){
-            if(!fragment.isAdded()){
-                transaction.add(R.id.tab_content,fragment);
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        if (currentFragment != fragment) {
+            if (!fragment.isAdded()) {
+                transaction.add(R.id.tab_content, fragment);
             }
             transaction.hide(currentFragment);
             transaction.show(fragment);
             transaction.commit();
-            currentFragment=fragment;
+            currentFragment = fragment;
         }
 
     }
 
     public void fragmentOnClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.tab_film:
                 changeTab(filmFragment);
                 changeColor("film");
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeColor(String str) {
-        switch (str){
+        switch (str) {
             case "film":
                 tvFilm.setTextColor(getResources().getColor(R.color.mainColor));
                 tvCity.setTextColor(getResources().getColor(R.color.black));
@@ -167,13 +170,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    public void onclickReceive(){
-        Intent intent=getIntent();
-        if(intent!=null){
-            String skipDynamic=intent.getStringExtra("skipDynamic");
-            if(skipDynamic!=null){
-                if(skipDynamic.equals("skipDynamic")){
-                    shareFragment=new ShareFragment();
+
+    public void onclickReceive() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            String skipDynamic = intent.getStringExtra("skipDynamic");
+            if (skipDynamic != null) {
+                if (skipDynamic.equals("skipDynamic")) {
+                    shareFragment = new ShareFragment();
                     changeTab(shareFragment);
                     changeColor("share");
 

@@ -16,6 +16,7 @@ import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.route.DrivingRouteLine;
 import com.baidu.mapapi.search.route.DrivingRouteLine.DrivingStep;
+import com.example.train_shadowlinedemo.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,27 +53,27 @@ public class DrivingRouteOverlay extends OverlayManager {
             for (DrivingStep step : mRouteLine.getAllStep()) {
                 Bundle b = new Bundle();
                 b.putInt("index", mRouteLine.getAllStep().indexOf(step));
-//                if (step.getEntrance() != null) {
-//                    overlayOptionses.add((new MarkerOptions())
-//                            .position(step.getEntrance().getLocation())
-//                                    .anchor(0.5f, 0.5f)
-//                                            .zIndex(10)
-//                                                    .rotate((360 - step.getDirection()))
-//                                                            .extraInfo(b)
-//                                                                    .icon(BitmapDescriptorFactory
-//                                                                            .fromAssetWithDpi("icon_line_node.png")));
-//                }
-//                // 最后路段绘制出口点
-//                if (mRouteLine.getAllStep().indexOf(step) == (mRouteLine
-//                        .getAllStep().size() - 1) && step.getExit() != null) {
-//                    overlayOptionses.add((new MarkerOptions())
-//                            .position(step.getExit().getLocation())
-//                                    .anchor(0.5f, 0.5f)
-//                                            .zIndex(10)
-//                                                    .icon(BitmapDescriptorFactory
-//                                                            .fromAssetWithDpi("icon_line_node.png")));
-//
-//                }
+                if (step.getEntrance() != null) {
+                    overlayOptionses.add((new MarkerOptions())
+                            .position(step.getEntrance().getLocation())
+                                    .anchor(0.5f, 0.5f)
+                                            .zIndex(10)
+                                                    .rotate((360 - step.getDirection()))
+                                                            .extraInfo(b)
+                                                                    .icon(BitmapDescriptorFactory
+                                                                                .fromResource(R.drawable.icon_line_node)));
+                }
+                // 最后路段绘制出口点
+                if (mRouteLine.getAllStep().indexOf(step) == (mRouteLine
+                        .getAllStep().size() - 1) && step.getExit() != null) {
+                    overlayOptionses.add((new MarkerOptions())
+                            .position(step.getExit().getLocation())
+                                    .anchor(0.5f, 0.5f)
+                                            .zIndex(10)
+                                                    .icon(BitmapDescriptorFactory
+                                                            .fromResource(R.drawable.icon_line_node)));
+
+                }
             }
         }
 

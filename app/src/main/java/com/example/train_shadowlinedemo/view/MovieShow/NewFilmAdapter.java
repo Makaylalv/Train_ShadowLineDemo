@@ -16,6 +16,7 @@ import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
 import com.example.train_shadowlinedemo.entity.Film;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -55,6 +56,8 @@ public class NewFilmAdapter extends RecyclerView.Adapter<NewFilmAdapter.ItemView
             public void onClick(View view) {
                 //点击跳转到详情页面
                 Intent intent=new Intent(mContext, MovieDetailActivity.class);
+                intent.putExtra("film",new Gson().toJson(film));
+                mContext.startActivity(intent);
             }
         });
     }

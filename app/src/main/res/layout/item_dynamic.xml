@@ -21,7 +21,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/mainColor"
-
                 android:textSize="15sp"
                 android:text="超级无敌可爱马">
             </TextView>
@@ -37,6 +36,7 @@
 
     </LinearLayout>
     <TextView
+
         android:id="@+id/tv_dynamic_dynamiccontent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,15 +46,19 @@
 ">
 
     </TextView>
-    <GridView
+    <com.example.train_shadowlinedemo.view.customerview.MyGridView
         android:id="@+id/gv_dynamic_dynamicimgs"
         android:layout_width="match_parent"
         android:numColumns="3"
-        android:layout_height="200dp">
-    </GridView>
+        android:layout_height="wrap_content">
+
+    </com.example.train_shadowlinedemo.view.customerview.MyGridView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_marginTop="15dp"
         android:layout_height="wrap_content">
         <ImageView
             android:layout_width="25dp"
@@ -64,7 +68,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_user_location">
-
         </TextView>
     </LinearLayout>
     <LinearLayout
@@ -75,8 +78,8 @@
 
         <ImageView
             android:id="@+id/btn_dynamic_like"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/share_like_false"
             android:gravity="center_vertical"
             >
@@ -90,12 +93,13 @@
             android:layout_height="20dp">
 
         </Button>
+
         <Button
-            android:layout_marginLeft="15dp"
             android:id="@+id/btn_dynamic_forward"
-            android:background="@drawable/dynamic_forward"
-            android:layout_width="20dp"
-            android:layout_height="20dp">
+            android:layout_width="16dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/dynamic_forward">
 
         </Button>
     </LinearLayout>
@@ -106,7 +110,7 @@
         android:layout_height="wrap_content">
         <ImageView
             android:layout_width="20dp"
-            android:src="@drawable/share_like_false"
+            android:src="@drawable/likepeople"
             android:layout_height="20dp">
 
         </ImageView>
@@ -122,8 +126,55 @@
     <ListView
         android:id="@+id/lv_dynamic_comments"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-
+        android:layout_height="wrap_content">
     </ListView>
-
+    <RelativeLayout
+        android:id="@+id/rl_comment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#676363" />
+        <TextView
+            android:id="@+id/hide_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="隐藏"
+            android:textSize="13sp"
+            android:textColor="#000000"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#676363"
+            android:layout_toRightOf="@id/hide_down"
+            android:layout_marginLeft="10dp"/>
+        <EditText
+            android:id="@+id/comment_content"
+            android:hint="请输入要评论的内容"
+            android:textSize="15sp"
+            android:singleLine="true"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_toRightOf="@id/hide_down"
+            android:layout_marginLeft="20dp"/>
+        <Button
+            android:id="@+id/comment_send"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:text="发送"
+            android:textSize="13sp"
+            android:textColor="@color/white"
+            android:background="@color/mainColor"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="15dp"/>
+    </RelativeLayout>
 </LinearLayout>

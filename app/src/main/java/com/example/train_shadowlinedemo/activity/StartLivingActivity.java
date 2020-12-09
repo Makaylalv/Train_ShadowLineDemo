@@ -1,5 +1,6 @@
 package com.example.train_shadowlinedemo.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -22,23 +23,49 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.SmartSwipeWrapper;
+import com.billy.android.swipe.SwipeConsumer;
+import com.billy.android.swipe.consumer.DrawerConsumer;
+import com.billy.android.swipe.listener.SwipeListener;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.BulletChat;
+import com.example.train_shadowlinedemo.entity.Place;
+import com.example.train_shadowlinedemo.entity.PlaceAndFilm;
 import com.example.train_shadowlinedemo.view.LiveRoom.BulletChatRecyclerViewAdapter;
+import com.example.train_shadowlinedemo.view.LiveRoom.LiveRoomRecyclerViewAdapter;
+import com.example.train_shadowlinedemo.view.LiveRoom.NearPlaceRecyclerViewAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
+import cn.smssdk.gui.SmartVerifyPage;
 import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zegoexpress.callback.IZegoDestroyCompletionCallback;
 import im.zego.zegoexpress.callback.IZegoEventHandler;
+import im.zego.zegoexpress.callback.IZegoRoomSetRoomExtraInfoCallback;
 import im.zego.zegoexpress.constants.ZegoBeautifyFeature;
 import im.zego.zegoexpress.constants.ZegoRoomState;
 import im.zego.zegoexpress.constants.ZegoScenario;
@@ -46,6 +73,7 @@ import im.zego.zegoexpress.constants.ZegoUpdateType;
 import im.zego.zegoexpress.entity.ZegoBarrageMessageInfo;
 import im.zego.zegoexpress.entity.ZegoCanvas;
 import im.zego.zegoexpress.entity.ZegoRoomConfig;
+import im.zego.zegoexpress.entity.ZegoRoomExtraInfo;
 import im.zego.zegoexpress.entity.ZegoStream;
 import im.zego.zegoexpress.entity.ZegoUser;
 import okhttp3.Call;
@@ -76,6 +104,14 @@ public class StartLivingActivity extends AppCompatActivity{
     private boolean isFront=true;
     private boolean isVioce=false;
     private boolean isBeauty=false;
+    private LocationClient locationClient;
+    private TextView locationTV;
+    private ImageView locationIV;
+    private LinearLayout linearLayout;
+    private String loactionCity;
+    private RecyclerView placeRecyclerView;
+    private NearPlaceRecyclerViewAdapter nearPlaceRecyclerViewAdapter;
+    private List<PlaceAndFilm> placeAndFilms;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -84,6 +120,28 @@ public class StartLivingActivity extends AppCompatActivity{
                     myAdapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(myAdapter.getItemCount()-1);
                     break;
+                case 2:
+                    String string= (String) msg.obj;
+                    zegoExpressEngine.setRoomExtraInfo(LoginActivity.user.getUser_id()+"", "location", string, new IZegoRoomSetRoomExtraInfoCallback() {
+                        @Override
+                        public void onRoomSetRoomExtraInfoResult(int i) {
+                            Log.e("good",string);
+
+                        }
+                    });
+                    break;
+                case 3:
+
+                    LinearLayoutManager layout = new LinearLayoutManager(StartLivingActivity.this);
+                    layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    placeRecyclerView.setLayoutManager(layout);
+                    nearPlaceRecyclerViewAdapter =new NearPlaceRecyclerViewAdapter(placeAndFilms,StartLivingActivity.this);
+                    Log.e("data",nearPlaceRecyclerViewAdapter.getItemCount()+"");
+                    nearPlaceRecyclerViewAdapter.setOnItemClickListener(nearOnItemClickListener);
+                    placeRecyclerView.setAdapter(nearPlaceRecyclerViewAdapter);
+                    break;
+
+
             }
         }
     };
@@ -96,14 +154,9 @@ public class StartLivingActivity extends AppCompatActivity{
         getView();
 
         initLiving();
-
-
         //初始化bar
         //initBar();
-
-
         initRecyclerView();
-
     }
 
     private void initRecyclerView() {
@@ -130,10 +183,67 @@ public class StartLivingActivity extends AppCompatActivity{
         beautyIV=findViewById(R.id.beauty_img);
         beautyTV=findViewById(R.id.beauty_txt);
         beautyTV.setTextColor(Color.GRAY);
+        locationIV=findViewById(R.id.location_img);
+        locationTV=findViewById(R.id.location_txt);
+        linearLayout=findViewById(R.id.place_layout);
+        placeRecyclerView=findViewById(R.id.place_recyclerview);
+        SmartSwipe.wrap(this)
+                .addConsumer(new DrawerConsumer())    //抽屉效果
+                //可以设置横向(左右两侧)的抽屉为同一个view
+                //也可以为不同方向分别设置不同的view
+                .setBottomDrawerView(linearLayout)
+                .addListener(new SwipeListener() {
+                    @Override
+                    public void onConsumerAttachedToWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
+                        Log.e("Attached","Attached");
+                    }
+
+                    @Override
+                    public void onConsumerDetachedFromWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
+                        Log.e("Detached","Detached");
+                    }
+
+                    @Override
+                    public void onSwipeStateChanged(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int state, int direction, float progress) {
+                        Log.e("State","State");
+                    }
+
+                    @Override
+                    public void onSwipeStart(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+                        Log.e("Start","Start");
+                    }
+
+                    @Override
+                    public void onSwipeProcess(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, boolean settling, float progress) {
+                        Log.e("Process","Process");
+                    }
+
+                    @Override
+                    public void onSwipeRelease(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, float progress, float xVelocity, float yVelocity) {
+                        Log.e("Release","Release");
+                    }
+
+                    @Override
+                    public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+                        Log.e("Opened","Opened");
+                        //获取地点
+                        if(loactionCity!=null&&!locationClient.equals("")) {
+                            getLocationPlace();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onSwipeClosed(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+                        Log.e("Closed","Closed");
+
+                    }
+                });
+        //点击返回按钮，结束直播
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 finish();
             }
         });
@@ -198,13 +308,16 @@ public class StartLivingActivity extends AppCompatActivity{
     private void initLiving() {
         String[] permissionNeeded = {
                 "android.permission.CAMERA",
-                "android.permission.RECORD_AUDIO"};
+                "android.permission.RECORD_AUDIO",
+                Manifest.permission.ACCESS_FINE_LOCATION};
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, "android.permission.CAMERA") != PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(this, "android.permission.RECORD_AUDIO") != PackageManager.PERMISSION_GRANTED) {
+                    ContextCompat.checkSelfPermission(this, "android.permission.RECORD_AUDIO") != PackageManager.PERMISSION_GRANTED||
+                        ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(permissionNeeded, 101);
             }
         }
+
         zegoExpressEngine = ZegoExpressEngine.createEngine(	1365603232,
                 "985c35b21cfeede8e9b42b30d0ae79e623a9175493bc5f353e8d74508eff0808",
                 true, ZegoScenario.COMMUNICATION,
@@ -221,8 +334,6 @@ public class StartLivingActivity extends AppCompatActivity{
             @Override
             public void onRoomUserUpdate(String roomID, ZegoUpdateType updateType, ArrayList<ZegoUser> userList) {
                 /** 用户状态更新，登陆房间后，当房间内有用户新增或删除时，SDK会通过该回调通知 */
-
-
             }
 
             @Override
@@ -251,6 +362,7 @@ public class StartLivingActivity extends AppCompatActivity{
         /** 开始登陆房间 */
         ZegoRoomConfig zegoRoomConfig=new ZegoRoomConfig();
         zegoRoomConfig.isUserStatusNotify=true;
+
         zegoExpressEngine.loginRoom(""+LoginActivity.user.getUser_id(), user,zegoRoomConfig);
         //开始推流
         zegoExpressEngine.startPublishingStream(""+LoginActivity.user.getUser_id());
@@ -259,6 +371,7 @@ public class StartLivingActivity extends AppCompatActivity{
         zegoExpressEngine.startPreview(new ZegoCanvas(preview_view));
 
 
+        showLocation();
 
     }
 
@@ -311,6 +424,18 @@ public class StartLivingActivity extends AppCompatActivity{
         }
     };
 
+    NearPlaceRecyclerViewAdapter.OnItemClickListener nearOnItemClickListener=new NearPlaceRecyclerViewAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View v, NearPlaceRecyclerViewAdapter.ViewName viewName, int position) {
+
+        }
+
+        @Override
+        public void onItemLongClick(View v) {
+
+        }
+    };
+
 
     private void stopLiving(){
         //2.创建RequestBody（请求体）对象
@@ -339,4 +464,106 @@ public class StartLivingActivity extends AppCompatActivity{
         });
 
     }
+
+
+    private void  showLocation(){
+        locationClient=new LocationClient(getApplicationContext());
+        //3.创建LocationClientOption对象
+        LocationClientOption option=new LocationClientOption();
+        //配置一些定位的参数
+        //设置打开GPS
+        option.setIsNeedAddress(true);
+        option.setOpenGps(true);
+        //4.设置坐标系类型
+        option.setCoorType("bd09ll");
+        //设置定位模式(推荐使用低功耗的定位模式)
+        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
+        //将定位的参数应用到定位客户端
+        locationClient.setLocOption(option);
+        locationClient.registerLocationListener(new BDAbstractLocationListener() {
+            @Override
+            public void onReceiveLocation(BDLocation bdLocation) {
+                //定位成功后自动执行，定位成功后位置信息保存在BDLocation对象中
+                Double latitude=bdLocation.getLatitude();//纬度
+                Double longitude=bdLocation.getLongitude();//精度
+                int code=bdLocation.getLocType();//获取定位错误码
+                Log.e("定位成功",latitude+""+longitude);
+                //移动地图界面显示到当前位置
+                //把哪一个坐标点显示到地图中间
+                LatLng point=new LatLng(latitude,longitude);
+                locationTV.setText(bdLocation.getCity()+"");
+                loactionCity=bdLocation.getCity();
+                locationLiving();
+
+            }
+        });
+        locationClient.start();
+    }
+
+
+    private void getLocationPlace() {
+        //2.创建RequestBody（请求体）对象
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),loactionCity);
+        //3.创建请求对象
+        Request request = new Request.Builder()
+                .post(requestBody)//请求方式为POST
+                .url(ConfigUtil.SERVER_ADDR+"GetNearPlaceAndFilmServlet")
+                .build();
+        //4.创建Call对象，发送请求，并接受响应
+        OkHttpClient okHttpClient=new OkHttpClient();
+        final Call call = okHttpClient.newCall(request);
+        //异步网络请求（不需要创建子线程）
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
+                String str=response.body().string();
+                Gson gson=new Gson();
+                Type type = new TypeToken<ArrayList<PlaceAndFilm>>() {}.getType();
+                placeAndFilms=new ArrayList<>();
+                placeAndFilms=gson.fromJson(str,type);
+                Message message=new Message();
+                message.what=3;
+                handler.sendMessage(message);
+            }
+        });
+    }
+
+
+    private void locationLiving(){
+        //2.创建RequestBody（请求体）对象
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),""+ LoginActivity.user.getUser_id()+"&"+loactionCity);
+        //3.创建请求对象
+        Request request = new Request.Builder()
+                .post(requestBody)//请求方式为POST
+                .url(ConfigUtil.SERVER_ADDR+"LocationRoomServlet")
+                .build();
+        //4.创建Call对象，发送请求，并接受响应
+        OkHttpClient okHttpClient=new OkHttpClient();
+        final Call call = okHttpClient.newCall(request);
+        //异步网络请求（不需要创建子线程）
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
+                String str=response.body().string();
+            }
+        });
+
+    }
+
+
+
 }
