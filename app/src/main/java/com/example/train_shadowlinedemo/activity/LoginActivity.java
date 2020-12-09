@@ -46,6 +46,18 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
 
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class LoginActivity extends AppCompatActivity {
     private String reg = null;
     private String phone;
@@ -66,12 +78,18 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView infoIcon;
     //初始化腾讯服务
     private Tencent mTencent;
+    //QQname
+    private String Qname;
+    private String openid;
+    private int id = 0;
+    private OkHttpClient okHttpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        okHttpClient = new OkHttpClient();
         etPhone = findViewById(R.id.et_login_phone);
         etPwd = findViewById(R.id.et_login_password);
 
@@ -286,8 +304,9 @@ public class LoginActivity extends AppCompatActivity {
                     //头像
                     String avatar = ((JSONObject) object).getString("figureurl_2");
                     ////GlideUtils.showGlide(MainActivity.this, avatar, infoIcon);
-                    String nickName = ((JSONObject) object).getString("nickname");
-                    //infoName.setText(nickName);
+                    Qname = ((JSONObject) object).getString("nickname");
+                    insertQuser();
+                    infoName.setText(Qname);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -344,8 +363,29 @@ public class LoginActivity extends AppCompatActivity {
         }
         return is;
     }
+    public void insertQuser(){
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),Qname);
+        Request request = new Request.Builder().post(requestBody).url(ConfigUtil.SERVER_ADDR+"GetQnameServlet")
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
 
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String str=response.body().string();
+                Gson gson=new Gson();
+                user =gson.fromJson(str,User.class);
+            }
+        });
+    }
 }
+
+
 
 
 
