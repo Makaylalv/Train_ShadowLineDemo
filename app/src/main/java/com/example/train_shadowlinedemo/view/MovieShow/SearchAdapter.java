@@ -65,6 +65,7 @@ public class SearchAdapter extends BaseAdapter {
         SearchResult result=results.get(i);
         Glide.with(mContext)
                 .load(ConfigUtil.SERVER_ADDR+result.getImgUrl())
+                .fitCenter()
                 .into(holder.ivImg);
 
         holder.tvName.setText(result.getName());
