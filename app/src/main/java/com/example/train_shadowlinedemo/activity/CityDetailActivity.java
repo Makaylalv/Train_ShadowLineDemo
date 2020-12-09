@@ -101,7 +101,7 @@ public class CityDetailActivity extends AppCompatActivity {
 
 
 //    分享
-
+    //ShareDiaog shareDiaog;
     //分享标题
     private String share_title="百度一下";
     //分享链接
