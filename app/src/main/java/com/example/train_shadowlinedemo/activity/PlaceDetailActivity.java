@@ -112,7 +112,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         BitmapDescriptor descriptorSelect= BitmapDescriptorFactory.fromResource(R.drawable.marker_select);
         MarkerOptions optionsSelect=new MarkerOptions().position(movePoint).icon(descriptorSelect);
         baiduMap.addOverlay(optionsSelect);
-        
+
 
     }
 
