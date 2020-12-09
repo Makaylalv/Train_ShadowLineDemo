@@ -86,4 +86,7 @@ dependencies {
     implementation 'com.github.AppIntro:AppIntro:6.0.0'
     //样式
     implementation 'com.intuit.sdp:sdp-android:1.0.3'
+    //
+    implementation 'com.billy.android:smart-swipe:1.1.2'
+
 }

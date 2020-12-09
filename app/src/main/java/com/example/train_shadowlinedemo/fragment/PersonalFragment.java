@@ -1,9 +1,11 @@
 package com.example.train_shadowlinedemo.fragment;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -16,6 +18,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -36,6 +40,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.Personal.BlurTransformation;
 import com.example.train_shadowlinedemo.Personal.CityCollectionActivity;
 import com.example.train_shadowlinedemo.Personal.DeleteCommentPopupWindow;
@@ -43,9 +48,24 @@ import com.example.train_shadowlinedemo.Personal.MovieCollectionActivity;
 import com.example.train_shadowlinedemo.Personal.PhotoPopupWindow;
 import com.example.train_shadowlinedemo.Personal.PlaceCollectionActivity;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.LoginActivity;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
@@ -67,6 +87,28 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
     private static final int REQUEST_SMALL_IMAGE_CUTTING = 2;
     private static final int REQUEST_BIG_IMAGE_CUTTING = 3;
     private static final String IMAGE_FILE_NAME = "icon.jpg";
+    private OkHttpClient okHttpClient=new OkHttpClient();
+    private Drawable drawable;//用户头像
+    public Handler handler=new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    drawable= (Drawable) msg.obj;
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                    head = bitmapDrawable.getBitmap();
+                    Bitmap bitmap =  toRoundBitmap(head);
+                    img_head.setImageBitmap(bitmap);
+                    Glide.with(PersonalFragment.this)
+                            .load(bitmap)
+                            .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
+                            .into(mImg);
+                   // mImg.setImageBitmap(bitmap);
+                    break;
+            }
+        }
+    };
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,15 +141,18 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         //头像
         mImg = view.findViewById(R.id.mImage);
         img_head = view.findViewById(R.id.img_head);
-        Drawable drawable = getResources().getDrawable(R.drawable.head1);
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        Glide.with(PersonalFragment.this.getContext())
-                .load(R.drawable.head1)
-                .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
-                .into(mImg);
-        head = bitmapDrawable.getBitmap();
-        Bitmap bitmap =  toRoundBitmap(head);
-        img_head.setImageBitmap(bitmap);
+       //Drawable drawable = getResources().getDrawable(R.drawable.head1);
+        //获取到数据库中的图片
+        loadImageFromNetwork(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+ LoginActivity.user.getUser_id()+".jpg");
+       // BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+//        Glide.with(PersonalFragment.this.getContext())
+//                .load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+ LoginActivity.user.getUser_id()+".jpg")
+//                .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
+//                .into(mImg);
+
+       // head = bitmapDrawable.getBitmap();
+      //  Bitmap bitmap =  toRoundBitmap(head);
+       // img_head.setImageBitmap(bitmap);
         changePhoto(img_head);
         //设置字体
         //从asset 读取字体
@@ -318,6 +363,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
                     .into(mImg);
             Bitmap bitmap =  toRoundBitmap(photo);
             img_head.setImageBitmap(bitmap);
+            uploadUserImg(photo);
+
         }
     }
     /**
@@ -353,6 +400,61 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri); // 返回一个文件
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         startActivityForResult(intent, REQUEST_BIG_IMAGE_CUTTING);
+    }
+    /**
+     * 将用户头像上传到数据库
+     */
+    public void uploadUserImg(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+
+        RequestBody requestBody=RequestBody.create(MediaType.parse("application/octet-stream"),baos.toByteArray());
+        Request request=new Request.Builder()
+                .post(requestBody)
+                .url(ConfigUtil.SERVER_ADDR+"UploadUserImgServlet?filename="+ LoginActivity.user.getUser_id())
+                .build();
+        //创建Call对象,发送请求，并接受响应
+        Call call=okHttpClient.newCall(request);
+        //异步网络请求(不需要创建子线程)
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+                Log.e("登录失败","发布失败");
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.e("上传用户头像的结果",response.body().toString());
+
+            }
+        });
+    }
+    private void loadImageFromNetwork(String imageUrl) {
+
+       new Thread(){
+           @Override
+           public void run() {
+               super.run();
+               try {
+                   URL url=new URL(imageUrl);
+                   Log.e("aaaaa",imageUrl);
+                   HttpURLConnection httpURLConnection= (HttpURLConnection) url.openConnection();
+                   httpURLConnection.setRequestMethod("POST");
+                   InputStream in=url.openStream();
+                   Drawable drawable=new BitmapDrawable(BitmapFactory.decodeStream(in));
+                   Message message=handler.obtainMessage();
+                   message.what=1;
+                   message.obj=drawable;
+                   handler.sendMessage(message);
+
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+           }
+       }.start();
+
     }
 
 
