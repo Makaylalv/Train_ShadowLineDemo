@@ -55,10 +55,7 @@ public class SetActivity extends AppCompatActivity implements View.OnClickListen
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent backIntent = new Intent();
-                backIntent.setClass(SetActivity.this, PersonalFragment.class);
-                backIntent.putExtra("name",et_name.getText());
-                startActivity(backIntent);
+                finish();
             }
         });
 

@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
-import com.example.train_shadowlinedemo.ShareDiaog;
 import com.example.train_shadowlinedemo.adapter.ViewPagerAdapter;
 import com.example.train_shadowlinedemo.customerview.MyViewPager;
 import com.example.train_shadowlinedemo.entity.City;
@@ -102,7 +101,7 @@ public class CityDetailActivity extends AppCompatActivity {
 
 
 //    分享
-    ShareDiaog shareDiaog;
+
     //分享标题
     private String share_title="百度一下";
     //分享链接
