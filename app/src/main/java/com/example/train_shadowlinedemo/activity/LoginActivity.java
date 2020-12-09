@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etPwd;
     private boolean i = false;
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "LoginActivity";
     //QQ包名
     private static final String PACKAGE_QQ = "com.tencent.mobileqq";
 
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                         phone = intent.getStringExtra("Phone");
                         name = intent.getStringExtra("Name");
                         pwd = intent.getStringExtra("Pwd");
-                        URL url = new URL("http://192.168.43.175:8080/ShadowLine/AddUserServlet");
+                        URL url = new URL(ConfigUtil.SERVER_ADDR+"AddUserServlet");
                         Log.e("111","333");
                         HttpURLConnection connection = (HttpURLConnection)
                                 url.openConnection();
