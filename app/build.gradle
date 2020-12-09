@@ -11,6 +11,22 @@ MobSDK {
     appSecret "6f85a1db8d49d276ae98a88a7c30fef3"
     SMSSDK {}
     fp true //严格模式
+    //分享新加的
+    ShareSDK {
+        loopShare true
+        devInfo {
+            QQ {
+                appId "1111171437"
+                appKey "bwl5SrTCMMJgWtju"
+            }
+            QZone {
+                //tencent1111171437
+                appId "1111171437"
+                appKey "bwl5SrTCMMJgWtju"
+            }
+        }
+
+}
 }
 
 android {
@@ -52,6 +68,7 @@ dependencies {
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'com.youth.banner:banner:2.1.0'
     implementation files('libs\\BaiduLBS_Android.jar')
+
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'

@@ -14,20 +14,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//import com.ShareUtils;
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.ShareDiaog;
 import com.example.train_shadowlinedemo.adapter.ViewPagerAdapter;
 import com.example.train_shadowlinedemo.customerview.MyViewPager;
 import com.example.train_shadowlinedemo.entity.City;
+import com.example.train_shadowlinedemo.entity.Place;
 import com.example.train_shadowlinedemo.fragment.cityDetailsFragment.MovieFragment;
 import com.example.train_shadowlinedemo.fragment.cityDetailsFragment.SpotFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.mob.MobSDK;
+import com.tencent.tauth.Tencent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.tencent.qq.QQ;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -36,6 +52,7 @@ import okhttp3.Response;
 
 public class CityDetailActivity extends AppCompatActivity {
     private String userId="1";
+    private List<Place> places=new ArrayList<>();
     private String cityId="";
     private ImageView imageView;
     private ImageView imageView1;
@@ -49,7 +66,8 @@ public class CityDetailActivity extends AppCompatActivity {
     private OkHttpClient okHttpClient;
     TabLayout tabLayout;
     MyViewPager viewPager;
-
+    private ImageView cityMap;
+    private ImageView back;
 
     private Handler handler =new Handler(){
         @Override
@@ -78,12 +96,74 @@ public class CityDetailActivity extends AppCompatActivity {
             }
         }
     };
+    private Tencent mTencent;// 新建Tencent实例用于调用分享方法
     ArrayList<Fragment> fragments = new  ArrayList<>();
     ArrayList<String>  listTitle = new ArrayList<>();
+
+
+//    分享
+    ShareDiaog shareDiaog;
+    //分享标题
+    private String share_title="百度一下";
+    //分享链接
+    private String share_url="http://blog.csdn.net/qq_31390699";
+    //分享封面图片
+    private String share_img="http://img.zcool.cn/community/0183b855420c990000019ae98b9ce8.jpg@900w_1l_2o_100sh.jpg";
+    //分享描述
+    private String share_desc="不懂你就百度啊";
+
+    /**
+     * 各平台分享按钮点击事件
+     */
+//    private ShareDiaog.ShareClickListener shareClickListener=new ShareDiaog.ShareClickListener() {
+//        @Override
+//        public void shareWechat() {
+//            ShareUtils.shareWechat(share_title,share_url,share_desc,share_img,platformActionListener);
+//        }
+//        @Override
+//        public void sharePyq() {
+//            ShareUtils.sharepyq(share_title,share_url,share_desc,share_img,platformActionListener);
+//        }
+//        @Override
+//        public void shareQQ() {
+//            ShareUtils.shareQQ(share_title,share_url,share_desc,share_img,platformActionListener);
+//        }
+//        @Override
+//        public void shareQzone() {
+//            ShareUtils.shareQQzone(share_title,share_url,share_desc,share_img,platformActionListener);
+//        }
+//    };
+    /**
+     * 分享回调
+     */
+//    PlatformActionListener platformActionListener=new PlatformActionListener() {
+//        @Override
+//        public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+//            Log.e("kid","分享成功");
+//        }
+//        @Override
+//        public void onError(Platform platform, int i, Throwable throwable) {
+//            Log.e("kid","分享失败");
+//        }
+//
+//        @Override
+//        public void onCancel(Platform platform, int i) {
+//            Log.e("kid","分享取消");
+//        }
+//    };
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_detail);
+
+
+
+
+        EventBus.getDefault().register(this);
+        mTencent = Tencent.createInstance("1111171437",getApplicationContext());
         //初始化bar
         initBar();
         okHttpClient=new OkHttpClient();
@@ -93,7 +173,29 @@ public class CityDetailActivity extends AppCompatActivity {
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
         actionBar.setCustomView(R.layout.actionbar_layout);  //绑定自定义的布局：actionbar_layout.xml
         like=actionBar.getCustomView().findViewById(R.id.like);
+        cityMap=findViewById(R.id.cityMap);
+        back=actionBar.getCustomView().findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
+        cityMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1=new Intent();
+                if(places.size()!=0&&places!=null) {
+                    Gson gson = new Gson();
+                    String str = gson.toJson(places);
+                    Log.e("跳转地图",places.toString());
+                    intent1.putExtra("places", str);
+                    intent1.setClass(CityDetailActivity.this, DetailMapActivity.class);
+                    startActivity(intent1);
+                }
+            }
+        });
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,9 +206,11 @@ public class CityDetailActivity extends AppCompatActivity {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(CityDetailActivity.this,ChooseSpotActivity.class);
-                i.putExtra("cityId",cityId);
-                startActivity(i);
+                showShare();
+//                shareDiaog = new ShareDiaog(CityDetailActivity.this);
+//                shareDiaog.builder().show();
+//                shareDiaog.setShareClickListener(shareClickListener);
+
             }
         });
         choose=findViewById(R.id.chooseSpot);
@@ -136,6 +240,32 @@ public class CityDetailActivity extends AppCompatActivity {
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),fragments,listTitle));
 //
         getCityDetailedSync();
+    }
+
+    private void showShare() {
+        OnekeyShare oks = new OnekeyShare();
+// title标题，微信、QQ和QQ空间等平台使用
+        oks.setTitle("分享");
+// titleUrl QQ和QQ空间跳转链接
+        oks.setTitleUrl("http://sharesdk.cn");
+// text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+// setImageUrl是网络图片的url
+        oks.setImageUrl("https://hmls.hfbank.com.cn/hfapp-api/9.png");
+// url在微信、Facebook等平台中使用
+        oks.setUrl("http://sharesdk.cn");
+// 启动分享GUI
+        oks.show(MobSDK.getContext());
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    public void handMessage(List<Place> p){
+        //事件的订阅者 处理事件的方法
+
+        //访问权限修饰符必须是public
+        //方法名和返回值类型不限
+        //参数类型就是事件类型 必须使用引用类型
+        places.addAll(p);
+        Log.e("接收places",places.toString());
     }
     public void getCityDetailedSync(){
         //2.创建request请求对象
@@ -174,7 +304,12 @@ public class CityDetailActivity extends AppCompatActivity {
         });
 
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //注销
+        EventBus.getDefault().unregister(this);
+    }
     public void upCityLikeSync(){
         //2.创建request请求对象
         Request request=new Request.Builder()

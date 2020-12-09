@@ -78,6 +78,7 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="250dp"
+                            android:id="@+id/cityMap"
                             android:src="@drawable/citymap"/>
                     </LinearLayout>
 
@@ -87,7 +88,7 @@
 
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.tabs.TabLayout
@@ -95,19 +96,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:tabMode="fixed"
+                    android:layout_weight="7"
                     app:tabBackground="@android:color/transparent"
                     app:tabRippleColor="@android:color/transparent"
                     android:background="#fff">
                 </com.google.android.material.tabs.TabLayout>
                 <ImageView
+                    android:background="@color/white"
+                    android:layout_weight="1"
                     android:id="@+id/chooseSpot"
-                    android:layout_marginLeft="15dp"
-                    android:layout_toRightOf="@id/tab_main"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/chinese"/>
+                    android:layout_marginRight="15dp"
+                    android:layout_width="42dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/plan"/>
 
-            </RelativeLayout>
+            </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <RelativeLayout

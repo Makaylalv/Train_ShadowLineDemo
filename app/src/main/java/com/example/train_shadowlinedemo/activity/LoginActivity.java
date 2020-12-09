@@ -256,6 +256,11 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(TAG, "登录取消");
 
             }
+
+//            @Override
+//            public void onWarning(int i) {
+//
+//            }
         };
         //context上下文、第二个参数SCOPO 是一个String类型的字符串，表示一些权限
         //应用需要获得权限，由“,”分隔。例如：SCOPE = “get_user_info,add_t”；所有权限用“all”
@@ -295,6 +300,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
             }
+
+//            @Override
+//            public void onWarning(int i) {
+//
+//            }
         });
     }
 

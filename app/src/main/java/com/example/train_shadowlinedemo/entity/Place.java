@@ -66,6 +66,26 @@ public class Place {
         this.placeEnglishname = placeEnglishname;
     }
 
+    @Override
+    public String toString() {
+        return "Place{" +
+                "placeId=" + placeId +
+                ", placeName='" + placeName + '\'' +
+                ", placeEnglishname='" + placeEnglishname + '\'' +
+                ", placeLongitude=" + placeLongitude +
+                ", placeLatitude=" + placeLatitude +
+                ", placePhone='" + placePhone + '\'' +
+                ", placeReallyImg='" + placeReallyImg + '\'' +
+                ", placeFalseImg='" + placeFalseImg + '\'' +
+                ", placeDescribe='" + placeDescribe + '\'' +
+                ", placeFilmDescribe='" + placeFilmDescribe + '\'' +
+                ", placePosition='" + placePosition + '\'' +
+                ", placeTime='" + placeTime + '\'' +
+                ", placeType='" + placeType + '\'' +
+                ", placeMapImg='" + placeMapImg + '\'' +
+                '}';
+    }
+
     public double getPlaceLongitude() {
         return placeLongitude;
     }
