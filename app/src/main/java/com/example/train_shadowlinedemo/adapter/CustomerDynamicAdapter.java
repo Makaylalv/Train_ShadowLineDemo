@@ -9,26 +9,36 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
+import com.example.train_shadowlinedemo.Personal.DeleteCommentPopupWindow;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.LoginActivity;
+import com.example.train_shadowlinedemo.entity.Comment;
 import com.example.train_shadowlinedemo.entity.Dynamic;
 import com.example.train_shadowlinedemo.entity.DynamicLikeUser;
 import com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.DynamicFragment;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -46,21 +56,25 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
     private DynamicViewHolder holder=null;
     private OkHttpClient okHttpClient=new OkHttpClient();
     private DynamicFragment  dynamicFragment;
-    private String userName="张狗狗";
-    private int userId=2;
-
-  //  private List<View>  viewList=new ArrayList<>();
-//    public Handler handler=new Handler(){
-//      @Override
-//      public void handleMessage(@NonNull Message msg) {
-//          super.handleMessage(msg);
-//          switch(msg.what){
-//              case 30:
-//                  tv.setText(dynamics.get(Integer.parseInt(msg.obj.toString())).getLikeUser().toString()+"觉得很赞");
-//          }
-//      }
-//  };
-
+    private String userName= LoginActivity.user.getUser_name();
+    private int userId=LoginActivity.user.getUser_id();
+    private DeleteCommentPopupWindow deleteCommentPopupWindow;
+    public Handler handler=new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 2:
+                    Toast toast1=Toast.makeText(mContext,"评论失败",Toast.LENGTH_SHORT);
+                    toast1.show();
+                    break;
+                case 3:
+                    Toast toast2=Toast.makeText(mContext,"评论成功",Toast.LENGTH_SHORT);
+                    toast2.show();
+                    break;
+            }
+        }
+    };
 
     public CustomerDynamicAdapter(Context mContext, List<Dynamic> dynamics, int itemLayoutRes,DynamicFragment dynamicFragment) {
         this.mContext = mContext;
@@ -92,7 +106,6 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
     public void setItemLayoutRes(int itemLayoutRes) {
         this.itemLayoutRes = itemLayoutRes;
     }
-
     @Override
     public int getCount() {
         if(null!=dynamics){
@@ -115,7 +128,6 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
     }
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-
        // if(null==view){
             view= LayoutInflater.from(mContext).inflate(R.layout.item_dynamic,null);
             holder=new DynamicViewHolder();
@@ -124,6 +136,8 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
             holder.tvDynamicDynamicTime=view.findViewById(R.id.tv_dynamic_dynamictime);
             holder.tvDynmaicDynamicContent=view.findViewById(R.id.tv_dynamic_dynamiccontent);
             holder.gvDynamicDynamicImgs=view.findViewById(R.id.gv_dynamic_dynamicimgs);
+            GridView gvDynamicDynamicImgs =view.findViewById(R.id.gv_dynamic_dynamicimgs);
+            ListView lvDynamicComments=view.findViewById(R.id.lv_dynamic_comments);
             holder.btnDynamicLike=view.findViewById(R.id.btn_dynamic_like);
             holder.btnDynamicComment=view.findViewById(R.id.btn_dynamic_comment);
             holder.btnDynamicForward=view.findViewById(R.id.btn_dynamic_forward);
@@ -151,60 +165,92 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
         }
 
         Glide.with(mContext).load("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1528689441,659647338&fm=26&gp=0.jpg").circleCrop().into(holder.ivDynamicUserImg);
-        CustomerDynamicImgAdapter customerDynamicImgAdapter=new CustomerDynamicImgAdapter(mContext,dynamics.get(i).getDynamicImgs(),R.layout.item_dynamic_img);
-        holder.gvDynamicDynamicImgs.setAdapter(customerDynamicImgAdapter);
-        //为点赞按钮设置点击事件
+        CustomerDynamicImgAdapter customerDynamicImgAdapter=new CustomerDynamicImgAdapter(mContext,dynamics.get(i).getDynamicImgs(),R.layout.item_dynamic_img,dynamicFragment);
+        List<String> dynamicsimgs=dynamics.get(i).getDynamicImgs();
+        Log.e("我的动态1",dynamicsimgs.size()+""+dynamicsimgs.toString());
+        if(dynamicsimgs.size()==0){
+           gvDynamicDynamicImgs.setVisibility(View.GONE);
+        }
 
+        gvDynamicDynamicImgs.setAdapter(customerDynamicImgAdapter);
+        //为评论设置监听器
+        CustomerDynamicCommentAdapter customerDynamicCommentAdapter=new CustomerDynamicCommentAdapter(mContext,dynamics.get(i).getComments(),R.layout.item_comment,dynamicFragment);
+        Log.e("评论的内容是",dynamics.get(i).getComments().toString());
+        lvDynamicComments.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,70*dynamics.get(i).getComments().size()));
+
+        lvDynamicComments.setAdapter(customerDynamicCommentAdapter);
+
+        TextView hide_down = view.findViewById(R.id.hide_down);
+        EditText comment_content = view.findViewById(R.id.comment_content);
+        Button comment_send = view.findViewById(R.id.comment_send);
+        RelativeLayout rlComment=view.findViewById(R.id.rl_comment);
+        //为点赞按钮设置点击事件
         holder.btnDynamicLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-       //         View view1=viewList.get(i);
-
                 ImageView imageView=view.findViewById(R.id.btn_dynamic_like);
-
                 if(likeflag[0]==0){
                     imageView.setImageResource(R.drawable.share_like_true);
+                  //  holder.btnDynamicLike.setImageResource(R.drawable.share_like_true);
                     likeflag[0]=1;
                     DynamicLikeUser dynamicLikeUser=new DynamicLikeUser(dynamics.get(i).getDynamicId(),userId,userName);
                     dynamics.get(i).getLikeUser().add(userName);
-
                     insertDynamicLikeUser(dynamicLikeUser,i);
                     tv.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
-
-
-
                 }else if(likeflag[0]==1){
                     imageView.setImageResource(R.drawable.share_like_false);
+                  //  holder.btnDynamicLike.setImageResource(R.drawable.share_like_false);
                     DynamicLikeUser dynamicLikeUser=new DynamicLikeUser(dynamics.get(i).getDynamicId(),userId,userName);
-
                     dynamics.get(i).getLikeUser().remove(userName);
-
-
-                       likeflag[0]=0;
-                       deleteDynamicLikeUser(dynamicLikeUser,i);
-                       tv.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
-
+                    likeflag[0]=0;
+                    deleteDynamicLikeUser(dynamicLikeUser,i);
+                    tv.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
                 }
-
-
-                Log.e("333333333333333333",view.getId()+"");
-//                Drawable drawable=mContext.getResources().getDrawable(R.drawable.share_like_false);
-//                drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
-//
-//                holder.btnDynamicLike.setImageResource(R.drawable.share_like_true);
-//                Log.e("position",i+"");
-
-
+            }
+        });
+        //为评论按钮设置点击事件
+        holder.btnDynamicComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 弹出输入法
+                InputMethodManager imm = (InputMethodManager) mContext.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                rlComment.setVisibility(View.VISIBLE);
 
             }
         });
+        //为取消按钮设置点击事件
+        hide_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rlComment.setVisibility(View.GONE);
+                // 隐藏输入法，然后暂存当前输入框的内容，方便下次使用
+                InputMethodManager im = (InputMethodManager)mContext.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(comment_content.getWindowToken(), 0);
 
-
-
-   //     viewList.add(view);
+            }
+        });
+        //为发送按钮设置点击事件
+        comment_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(comment_content.getText().toString().equals("")){
+                    Toast toast=Toast.makeText(mContext,"不能评论空的内容",Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                    Comment comment =new Comment(dynamics.get(i).getDynamicId(),userId,userName,comment_content.getText().toString(),df.format(new Date()));
+                    insertDynamicComment(comment);
+                    comment_content.setText("");
+                    InputMethodManager im = (InputMethodManager)mContext.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    im.hideSoftInputFromWindow(comment_content.getWindowToken(), 0);
+                    dynamicFragment.notifyDataSetChanged();
+                }
+            }
+        });
         return view;
     }
-   static class DynamicViewHolder{
+    class DynamicViewHolder{
         ImageView ivDynamicUserImg;
         TextView tvDynamicUserName;
         TextView tvDynamicDynamicTime;
@@ -234,18 +280,12 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
                 //请求失败时回调
                 e.printStackTrace();
                 Log.e("点赞失败","点赞失败");
-
-
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.e("异步请求的结果",response.body().toString());
                 Log.e("点赞的的结果","点赞成功成功");
                 //
-//                Message message=handler.obtainMessage();
-//                message.what=30;
-//                message.obj=i;
-//                handler.sendMessage(message);
 
             }
         });
@@ -268,18 +308,50 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
                 //请求失败时回调
                 e.printStackTrace();
                 Log.e("取消点赞失败","取消点赞失败");
-
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.e("异步请求的结果",response.body().toString());
                 Log.e("取消点赞的的结果","取消点赞成功");
-//                Message message=handler.obtainMessage();
-//                message.what=30;
-//                message.obj=i;
-//                handler.sendMessage(message);
-
             }
         });
     }
+    public void insertDynamicComment(Comment comment){
+        RequestBody requestBody=RequestBody.create(MediaType.parse("text/plain;charset=utf-8"),new Gson().toJson(comment));
+        Log.e("评论请求的接口是",ConfigUtil.SERVER_ADDR+"InsertDynamicCommentServlet");
+        Request request=new Request.Builder()
+                .post(requestBody)
+                .url(ConfigUtil.SERVER_ADDR+"InsertDynamicCommentServlet")
+                .build();
+        //创建Call对象,发送请求，并接受响应
+        Call call=okHttpClient.newCall(request);
+        //异步网络请求(不需要创建子线程)
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+                Log.e("评论失败","评论失败");
+                Message message=handler.obtainMessage();
+                message.what=2;
+                handler.sendMessage(message);
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.e("异步请求的结果",response.body().toString());
+                Log.e("评论成功","评论成功");
+                Message message=handler.obtainMessage();
+                message.what=3;
+                handler.sendMessage(message);
+            }
+        });
+    }
+
+
+    public int DpToPx(Context context,float number){
+        float scale =context.getResources().getDisplayMetrics().density;
+        return Math.round(scale);
+    }
+
+
 }

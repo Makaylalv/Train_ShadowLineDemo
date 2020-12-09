@@ -79,12 +79,14 @@ dependencies {
     //刷新
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-12'
-    //QQ登录
+    //QQ登录a
+
     implementation 'com.github.BarefootBKK:QQLoginForAndroid:1.0.1'
     //启动页
     implementation 'com.github.AppIntro:AppIntro:6.0.0'
     //样式
     implementation 'com.intuit.sdp:sdp-android:1.0.3'
-
+    //
     implementation 'com.billy.android:smart-swipe:1.1.2'
+
 }

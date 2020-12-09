@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +37,8 @@ public class PlaceCollectionActivity extends AppCompatActivity {
     private List<PlaceCollection> checkedLists = new ArrayList<>();
     private List<PlaceCollection> unCheckedList = new ArrayList<>();
     private TextView place_tv_edit;
+    private ImageView no_cut;
+    private ImageView back;
     private boolean isOP;
     int i = 0;
     private PlaceCollectionAdapter placeCollectionAdapter;
@@ -44,8 +48,18 @@ public class PlaceCollectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_place_collection);
         place_tv_edit = findViewById(R.id.place_tv_edit);
+        lvPlace = findViewById(R.id.li_place);
+        no_cut = findViewById(R.id.nocut);
+        back = findViewById(R.id.lv_cut_title);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         //1.创建OkHttpClient对象,获取数据
         okHttpClient = new OkHttpClient();
         //获取数据
@@ -99,6 +113,13 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                             lvPlace = findViewById(R.id.li_place);
                             lvPlace.setAdapter(placeCollectionAdapter);
                             TextView tv_count = findViewById(R.id.place_count);
+                            //收藏数目为0
+                            if (placeCollectionAdapter.getCount()==0){
+                                Log.e("getCount为",placeCollectionAdapter.getCount()+"");
+                                lvPlace.setVisibility(View.GONE);
+                                no_cut.setVisibility(View.VISIBLE);
+                                placeCollectionAdapter.notifyDataSetChanged();
+                            }
                             tv_count.setText("收藏片场(" + placeCollectionAdapter.getCount() + ")");
                             lvPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
@@ -202,6 +223,13 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                         public void run() {
                             TextView textView = findViewById(R.id.place_count);
                             textView.setText("收藏片场(" + unCheckedList.size() + ")");
+                            //收藏数目为0
+                            if (unCheckedList.size()==0){
+                                Log.e("现有收藏数目为",unCheckedList.size()+"");
+                                lvPlace.setVisibility(View.GONE);
+                                no_cut.setVisibility(View.VISIBLE);
+                                placeCollectionAdapter.notifyDataSetChanged();
+                            }
                         }
                     });
                 }
