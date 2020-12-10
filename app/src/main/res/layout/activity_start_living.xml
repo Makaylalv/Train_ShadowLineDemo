@@ -49,14 +49,14 @@
     <LinearLayout
         android:layout_marginRight="5dp"
         android:id="@+id/camera"
-        android:layout_above="@+id/voice"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:layout_alignParentRight="true"
         android:layout_width="50dp"
         android:layout_height="70dp">
         <ImageView
             android:id="@+id/camera_img"
-            android:src="@drawable/camera_front"
+            android:src="@drawable/camera_behind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
@@ -67,13 +67,12 @@
             android:text="摄像头"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
     </LinearLayout>
     <LinearLayout
         android:layout_marginRight="5dp"
         android:layout_marginTop="20dp"
         android:id="@+id/voice"
-        android:layout_centerVertical="true"
+        android:layout_below="@id/camera"
         android:orientation="vertical"
         android:layout_alignParentRight="true"
         android:layout_width="50dp"
@@ -91,9 +90,7 @@
             android:text="混响"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
     </LinearLayout>
-
     <LinearLayout
         android:layout_marginTop="20dp"
         android:layout_marginRight="5dp"
@@ -116,7 +113,6 @@
             android:text="美颜"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
     </LinearLayout>
 
     <LinearLayout

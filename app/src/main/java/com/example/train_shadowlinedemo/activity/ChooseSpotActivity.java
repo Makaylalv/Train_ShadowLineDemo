@@ -52,6 +52,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
     private List<RouteSpot> routeSpots=new ArrayList<>();
     private Button like;
     private Button choose;
+    private List<Place> chosenPlaces;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -68,7 +69,14 @@ public class ChooseSpotActivity extends AppCompatActivity {
                         }
 
                         Log.e("routeSpots的清空的内容",routeSpots.toString());
-                        Toast.makeText(ChooseSpotActivity.this,"路线添加成功",Toast.LENGTH_SHORT);
+                        Toast.makeText(ChooseSpotActivity.this,"路线添加成功",Toast.LENGTH_SHORT).show();
+                    }
+                    Intent intent=new Intent(ChooseSpotActivity.this,PlanningRouteActivity.class);
+                    Gson gson=new Gson();
+                    String string=gson.toJson(chosenPlaces);
+                    intent.putExtra("places",string);
+                    if(string!=null&&!string.equals("[]")) {
+                        startActivity(intent);
                     }
                     break;
                 case 2:
@@ -83,7 +91,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
 
 
                         //Glide.with(this).load(R.drawable.like1).into(like);
-                        Toast.makeText(ChooseSpotActivity.this,"收藏成功",Toast.LENGTH_SHORT);
+                        Toast.makeText(ChooseSpotActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case 3:
@@ -100,7 +108,24 @@ public class ChooseSpotActivity extends AppCompatActivity {
 //        userId=sharedPreferences.getString("id","");
         okHttpClient=new OkHttpClient();
         Intent i=getIntent();
+
         cityId=i.getStringExtra("cityId");
+        if(cityId==null){
+            Gson gson=new Gson();
+            String str=i.getStringExtra("placeList");
+            Type type=new TypeToken<List<Place>>(){}.getType();
+            places=gson.fromJson(str,type);
+            Message msg = new Message();
+            //设置Message对象的参数
+            msg.what = 3;
+            msg.obj = "str";
+            //发送Message
+            handler.sendMessage(msg);
+
+        }else{
+            getCitySpotSync();
+
+        }
         like=findViewById(R.id.likeSpot);
         choose=findViewById(R.id.route_btn);
         allIn=findViewById(R.id.allIn);
@@ -122,12 +147,22 @@ public class ChooseSpotActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // noRepeat(spotHasChosen);
+                chosenPlaces=new ArrayList<>();
                 for(Integer i:spotHasChosen){
+                    for (int j=0;j<places.size();j++){
+                        if(places.get(j).getPlaceId()==i){
+                            chosenPlaces.add(places.get(j));
+                            break;
+                        }
+                    }
                     RouteSpot routeSpot=new RouteSpot(i,Integer.parseInt(userId));
                     routeSpots.add(routeSpot);
                 }
                 upRouteSync();
 //                spotHasChosen.clear();
+
+
+
 
             }
         });
@@ -150,7 +185,6 @@ public class ChooseSpotActivity extends AppCompatActivity {
 
             }
         });
-        getCitySpotSync();
 
     }
     public void upPlaceLikeSync(){
@@ -230,10 +264,6 @@ public class ChooseSpotActivity extends AppCompatActivity {
                 handler.sendMessage(msg);
             }
         });
-
-
-
-
 
     }
 

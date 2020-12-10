@@ -1,23 +1,24 @@
 package com.example.train_shadowlinedemo.activity;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
+//import com.ShareUtils;
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
-
 import com.example.train_shadowlinedemo.adapter.ViewPagerAdapter;
 import com.example.train_shadowlinedemo.customerview.MyViewPager;
 import com.example.train_shadowlinedemo.entity.City;
@@ -27,7 +28,6 @@ import com.example.train_shadowlinedemo.fragment.cityDetailsFragment.SpotFragmen
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.mob.MobSDK;
-import com.tencent.tauth.Tencent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,6 +36,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import okhttp3.Call;
@@ -44,13 +46,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-//import com.ShareUtils;
-
 public class CityDetailActivity extends AppCompatActivity {
     private String userId="1";
     private List<Place> places=new ArrayList<>();
     private String cityId="";
     private ImageView imageView;
+    private City city;
+    private TextView barTextView;
     private ImageView imageView1;
     private TextView textViewC;
     private TextView textViewE;
@@ -64,13 +66,52 @@ public class CityDetailActivity extends AppCompatActivity {
     MyViewPager viewPager;
     private ImageView cityMap;
     private ImageView back;
-
+    private Timer timer = new Timer();
     private Handler handler =new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    City city= (City) msg.obj;
+                    float a=barTextView.getAlpha();
+                    if(a>=1){
+                        timer.cancel();
+                        timer.purge();
+                    }else {
+                        a= (float) (a+0.02);
+                        barTextView.setAlpha(a);
+                    }
+                    break;
+                case 2:
+                    TimerTask task1 = new TimerTask() {
+                        @Override
+                        public void run() {
+                            Message message=new Message();
+                            message.what=1;
+                            handler.sendMessage(message);
+                        }
+                    };
+                    timer = new Timer();
+                    barTextView.setText(city.getCityTextChinese());
+                    barTextView.setAlpha(0);
+                    timer.schedule(task1, 0, 30);
+                    break;
+                case 3:
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    fragmenPlace.setData(places);
+//                    filmLocationNumTV.setText(places.size()+"");
+                    break;
+                case 4:
+                   // Toast.makeText(CityDetailActivity.this,(String)msg.obj,Toast.LENGTH_SHORT).show();
+                    break;
+                case 5:
+                    //filmLocationNumTV.setText("0");
+                    break;
+                case 8:
+                    city= (City) msg.obj;
                     Glide.with(CityDetailActivity.this).load(ConfigUtil.SERVER_ADDR+city.getCityImg()).into(imageView);
                     Log.e("图片地址",ConfigUtil.SERVER_ADDR+city.getCityImg());
                     textViewI.setText(city.getCityInfo());
@@ -79,34 +120,36 @@ public class CityDetailActivity extends AppCompatActivity {
                     textViewC.setText(city.getCityTextChinese());
                     Log.e("布尔类型",city.toString());
                     break;
-                case 2:
+                case 9:
                     String flag=msg.obj.toString();
                     if(flag.equals("1")){
                         Glide.with(CityDetailActivity.this).load(R.drawable.like1).into(like);
-                        Toast.makeText(CityDetailActivity.this,"收藏成功",Toast.LENGTH_SHORT);
+                        Toast.makeText(CityDetailActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
                     } else if(flag.equals("2")){
                         Glide.with(CityDetailActivity.this).load(R.drawable.like0).into(like);
-                        Toast.makeText(CityDetailActivity.this,"取消收藏成功",Toast.LENGTH_SHORT);
+                        Toast.makeText(CityDetailActivity.this,"取消收藏成功",Toast.LENGTH_SHORT).show();
                     }
                     break;
             }
         }
     };
-    private Tencent mTencent;// 新建Tencent实例用于调用分享方法
+    private ArrayList<MovieDetailActivity.ActivityTouchListener> myActivityTouchListeners = new ArrayList<>();
+
+    //private Tencent mTencent;// 新建Tencent实例用于调用分享方法
     ArrayList<Fragment> fragments = new  ArrayList<>();
     ArrayList<String>  listTitle = new ArrayList<>();
 
 
 //    分享
-
-    //分享标题
-    private String share_title="百度一下";
-    //分享链接
-    private String share_url="http://blog.csdn.net/qq_31390699";
-    //分享封面图片
-    private String share_img="http://img.zcool.cn/community/0183b855420c990000019ae98b9ce8.jpg@900w_1l_2o_100sh.jpg";
-    //分享描述
-    private String share_desc="不懂你就百度啊";
+//    ShareDiaog shareDiaog;
+//    //分享标题
+//    private String share_title="百度一下";
+//    //分享链接
+//    private String share_url="http://blog.csdn.net/qq_31390699";
+//    //分享封面图片
+//    private String share_img="http://img.zcool.cn/community/0183b855420c990000019ae98b9ce8.jpg@900w_1l_2o_100sh.jpg";
+//    //分享描述
+//    private String share_desc="不懂你就百度啊";
 
     /**
      * 各平台分享按钮点击事件
@@ -159,56 +202,49 @@ public class CityDetailActivity extends AppCompatActivity {
 
 
         EventBus.getDefault().register(this);
-        mTencent = Tencent.createInstance("1111171437",getApplicationContext());
+       // mTencent = Tencent.createInstance("1111171437",getApplicationContext());
         //初始化bar
-        initBar();
+       // initBar();
         okHttpClient=new OkHttpClient();
         Intent i=getIntent();
         cityId=i.getStringExtra("id");
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-        actionBar.setCustomView(R.layout.actionbar_layout);  //绑定自定义的布局：actionbar_layout.xml
-        like=actionBar.getCustomView().findViewById(R.id.like);
+        getCityDetailedSync();
         cityMap=findViewById(R.id.cityMap);
-        back=actionBar.getCustomView().findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        cityMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1=new Intent();
-                if(places.size()!=0&&places!=null) {
-                    Gson gson = new Gson();
-                    String str = gson.toJson(places);
-                    Log.e("跳转地图",places.toString());
-                    intent1.putExtra("places", str);
-                    intent1.setClass(CityDetailActivity.this, DetailMapActivity.class);
-                    startActivity(intent1);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
+            actionBar.setCustomView(R.layout.actionbar_layout);  //绑定自定义的布局：actionbar_layout.xml
+            like = actionBar.getCustomView().findViewById(R.id.like);
+            back = actionBar.getCustomView().findViewById(R.id.back);
+            barTextView = actionBar.getCustomView().findViewById(R.id.city_name0);
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    upCityLikeSync();
                 }
-            }
-        });
-        like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                upCityLikeSync();
-            }
-        });
-        more=actionBar.getCustomView().findViewById(R.id.more0);
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showShare();
+            });
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+
+
+            more = actionBar.getCustomView().findViewById(R.id.more0);
+            more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showShare();
 //                shareDiaog = new ShareDiaog(CityDetailActivity.this);
 //                shareDiaog.builder().show();
 //                shareDiaog.setShareClickListener(shareClickListener);
 
-            }
-        });
+                }
+            });
+        }else{
+            Log.e("actionbar","is null");
+        }
         choose=findViewById(R.id.chooseSpot);
         choose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,7 +254,20 @@ public class CityDetailActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+            cityMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent1=new Intent();
+                    if(places.size()!=0&&places!=null) {
+                        Gson gson = new Gson();
+                        String str = gson.toJson(places);
+                        Log.e("跳转地图",places.toString());
+                        intent1.putExtra("places", str);
+                        intent1.setClass(CityDetailActivity.this, DetailMapActivity.class);
+                        startActivity(intent1);
+                    }
+                }
+            });
         imageView=findViewById(R.id.cityImg);
         textViewC=findViewById(R.id.cityTextChinese);
         textViewE=findViewById(R.id.cityTextEnglish);
@@ -235,7 +284,100 @@ public class CityDetailActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),fragments,listTitle));
 //
-        getCityDetailedSync();
+
+        (this).registerFragmentTouchListener(touchListener);
+    }
+    //自定义滑动监听
+    private MovieDetailActivity.ActivityTouchListener touchListener = new MovieDetailActivity.ActivityTouchListener() {
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            switch(event.getAction())
+            {
+                case MotionEvent.ACTION_DOWN:
+                {
+                    int[] location = new int[2];
+                    textViewE.getLocationOnScreen(location);
+                    if(location[1]<=0&&!barTextView.getText().toString().equals(city.getCityTextChinese())){
+                        Message message=new Message();
+                        message.what=2;
+                        handler.sendMessage(message);
+                    }
+                    if(location[1]>=0&&!barTextView.getText().toString().equals("")){
+                        barTextView.setText("");
+                    }
+                }
+                break;
+                case MotionEvent.ACTION_UP:
+                {
+                    int[] location = new int[2];
+                    textViewE.getLocationOnScreen(location);
+                    if(location[1]<=0&&!barTextView.getText().toString().equals(city.getCityTextChinese())){
+                        Message message=new Message();
+                        message.what=2;
+                        handler.sendMessage(message);
+                    }
+                    if(location[1]>=0&&!barTextView.getText().toString().equals("")){
+                        barTextView.setText("");
+                    }
+
+
+                }
+                break;
+                case MotionEvent.ACTION_MOVE:
+                {
+                    int[] location = new int[2];
+                    textViewE.getLocationOnScreen(location);
+                    if(location[1]<=0&&!barTextView.getText().toString().equals(city.getCityTextChinese())){
+                        Message message=new Message();
+                        message.what=2;
+                        handler.sendMessage(message);
+                    }
+                    if(location[1]>=0&&!barTextView.getText().toString().equals("")){
+                        barTextView.setText("");
+                    }
+
+                }
+                break;
+
+            }
+            return false;
+        }
+    };
+
+    /**
+            *注册滑动事件
+     */
+    public void registerFragmentTouchListener(MovieDetailActivity.ActivityTouchListener listener) {
+        myActivityTouchListeners.add(listener);
+    }
+
+    /**注销滑动事件
+     */
+    public void unRegisterFragmentTouchListener(MovieDetailActivity.ActivityTouchListener listener) {
+        myActivityTouchListeners.remove(listener);
+    }
+
+    /**
+     *分配滑动事件(不被子控件吃掉)
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        for (MovieDetailActivity.ActivityTouchListener listener : myActivityTouchListeners) {
+            listener.onTouchEvent(event);
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    /**
+     * 定义滑动接口
+     */
+    public interface ActivityTouchListener {
+        boolean onTouchEvent(MotionEvent event);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void showShare() {
@@ -292,7 +434,7 @@ public class CityDetailActivity extends AppCompatActivity {
 //                        EventBus.getDefault().postSticky(city);
                 Message msg = new Message();
                 //设置Message对象的参数
-                msg.what = 1;
+                msg.what = 8;
                 msg.obj = city;
                 //发送Message
                 handler.sendMessage(msg);
@@ -306,6 +448,7 @@ public class CityDetailActivity extends AppCompatActivity {
         //注销
         EventBus.getDefault().unregister(this);
     }
+
     public void upCityLikeSync(){
         //2.创建request请求对象
         Request request=new Request.Builder()
@@ -330,7 +473,7 @@ public class CityDetailActivity extends AppCompatActivity {
 //                        EventBus.getDefault().postSticky(flag);
                         Message msg = new Message();
                         //设置Message对象的参数
-                        msg.what = 2;
+                        msg.what = 9;
                         msg.obj = flag;
                         //发送Message
                         handler.sendMessage(msg);

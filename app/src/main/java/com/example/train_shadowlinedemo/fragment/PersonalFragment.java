@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,8 +48,14 @@ import com.example.train_shadowlinedemo.Personal.DeleteCommentPopupWindow;
 import com.example.train_shadowlinedemo.Personal.MovieCollectionActivity;
 import com.example.train_shadowlinedemo.Personal.PhotoPopupWindow;
 import com.example.train_shadowlinedemo.Personal.PlaceCollectionActivity;
+import com.example.train_shadowlinedemo.Personal.RouteCollectionActivity;
+import com.example.train_shadowlinedemo.Personal.SetActivity;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.LoginActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -82,6 +89,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
     private TextView city;
     private TextView cut;
     private TextView route;
+    private TextView tv_talk;
+    private TextView tv_agreement;
+    private TextView tv_setting;
+    private TextView tv_about;
+    public boolean login;
+    private String name_update;
     private static final int REQUEST_IMAGE_GET = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_SMALL_IMAGE_CUTTING = 2;
@@ -130,6 +143,15 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         rv_city.setOnClickListener(PersonalFragment.this);
         RelativeLayout rv_place = view.findViewById(R.id.rv_cut);
         rv_place.setOnClickListener(PersonalFragment.this);
+        RelativeLayout rv_route = view.findViewById(R.id.rv_route);
+        rv_route.setOnClickListener(PersonalFragment.this);
+        Button quit = view.findViewById(R.id.quit);
+        quit.setOnClickListener(PersonalFragment.this);
+        RelativeLayout tv_set = view.findViewById(R.id.rv_set);
+        tv_set.setOnClickListener(PersonalFragment.this);
+        RelativeLayout rv_about = view.findViewById(R.id.rv_about);
+        RelativeLayout rv_agreement = view.findViewById(R.id.rv_agreement);
+        RelativeLayout rv_talk = view.findViewById(R.id.rv_talk);
         username = view.findViewById(R.id.username);
         name = view.findViewById(R.id.tv_name);
         type = view.findViewById(R.id.tv_signature);
@@ -138,6 +160,20 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         cut = view.findViewById(R.id.tv_cut);
         city = view.findViewById(R.id.tv_city);
         route = view.findViewById(R.id.tv_route);
+        tv_talk = view.findViewById(R.id.tv_talk);
+        tv_about = view.findViewById(R.id.tv_about);
+        tv_agreement = view.findViewById(R.id.tv_agreement);
+        tv_setting = view.findViewById(R.id.tv_setting);
+
+        if(!LoginActivity.user.getUser_sign().equals("")){
+            type.setText(LoginActivity.user.getUser_sign());
+        }
+        name.setText(LoginActivity.user.getUser_name());
+        rv_about.setOnClickListener(PersonalFragment.this);
+        rv_agreement.setOnClickListener(PersonalFragment.this);
+        rv_talk.setOnClickListener(PersonalFragment.this);
+        //登录状态
+        login=true;
         //头像
         mImg = view.findViewById(R.id.mImage);
         img_head = view.findViewById(R.id.img_head);
@@ -167,26 +203,125 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         cut.setTypeface(tf);
         city.setTypeface(tf);
         route.setTypeface(tf);
+        tv_talk.setTypeface(tf);
+        tv_setting.setTypeface(tf);
+        tv_agreement.setTypeface(tf);
+        tv_about.setTypeface(tf);
+
+
+        Intent request = PersonalFragment.this.getActivity().getIntent();
+        name_update = request.getStringExtra("name");
+        username.setText(name_update);
+
+        //注册监听器
+        EventBus.getDefault().register(this);
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleUpdateUser(String str){
+        if(str.equals("updateUser")){
+            name.setText(LoginActivity.user.getUser_name());
+            type.setText(LoginActivity.user.getUser_sign());
+        }
     }
     //处理点击事件
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rv_movie:
-                Intent movieIntent = new Intent();
-                movieIntent.setClass(PersonalFragment.this.getContext(), MovieCollectionActivity.class);
-                startActivity(movieIntent);
+                if (login) {
+                    Intent movieIntent = new Intent();
+                    movieIntent.setClass(PersonalFragment.this.getContext(), MovieCollectionActivity.class);
+                    startActivity(movieIntent);
+                }else {
+                    Toast.makeText(PersonalFragment.this.getContext(), "请先登录",
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.rv_city:
-                Intent cityIntent = new Intent();
-                cityIntent.setClass(PersonalFragment.this.getContext(), CityCollectionActivity.class);
-                startActivity(cityIntent);
+                if (login) {
+                    Intent cityIntent = new Intent();
+                    cityIntent.setClass(PersonalFragment.this.getContext(), CityCollectionActivity.class);
+                    startActivity(cityIntent);
+                }else {
+                    Toast.makeText(PersonalFragment.this.getContext(), "请先登录",
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
-            case R.id.rv_cut:
-                Intent placeIntent = new Intent();
-                placeIntent.setClass(PersonalFragment.this.getContext(), PlaceCollectionActivity.class);
-                startActivity(placeIntent);
+            case R.id.rv_cut://收藏片场
+                if (login) {
+                    Intent placeIntent = new Intent();
+                    placeIntent.setClass(PersonalFragment.this.getContext(), PlaceCollectionActivity.class);
+                    startActivity(placeIntent);
+                }else {
+                    Toast.makeText(PersonalFragment.this.getContext(), "请先登录",
+                            Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.rv_route://收藏路线
+                if (login) {
+                    Intent routeIntent = new Intent();
+                    routeIntent.setClass(PersonalFragment.this.getContext(), RouteCollectionActivity.class);
+                    startActivity(routeIntent);
+                }else {
+                    Toast.makeText(PersonalFragment.this.getContext(), "请先登录",
+                            Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.rv_talk:
+
+                break;
+            case R.id.rv_agreement:
+
+                break;
+            case R.id.rv_set://设置
+                if (login){
+                    Intent setIntent = new Intent();
+                    setIntent.setClass(PersonalFragment.this.getContext(), SetActivity.class);
+                    setIntent.putExtra("name",name.getText().toString());
+                    setIntent.putExtra("signature",type.getText().toString());
+                    startActivity(setIntent);
+                }else {
+                    Toast.makeText(PersonalFragment.this.getContext(), "请先登录",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+            case R.id.rv_about:
+
+                break;
+            case R.id.quit://退出登录
+                Drawable drawable = getResources().getDrawable(R.drawable.dafault_head);
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                Glide.with(PersonalFragment.this.getContext())
+                        .load(R.drawable.bac1)
+                        .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),25,2)))
+                        .into(mImg);
+                head = bitmapDrawable.getBitmap();
+                Bitmap bitmap =  toRoundBitmap(head);
+                img_head.setImageBitmap(bitmap);
+
+                username.setText("未登录");
+                login = false;
+                name.setVisibility(View.GONE);
+                type.setVisibility(View.GONE);
+
+
+                img_head.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setClass(PersonalFragment.this.getActivity(), LoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
         }
     }

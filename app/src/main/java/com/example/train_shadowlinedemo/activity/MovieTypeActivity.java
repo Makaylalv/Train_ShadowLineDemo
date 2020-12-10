@@ -131,7 +131,6 @@ public class MovieTypeActivity extends AppCompatActivity {
                 textView.setTextColor(Color.WHITE);
                 rvOutCountry.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
-
         });
         rvFilmType.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -157,12 +156,10 @@ public class MovieTypeActivity extends AppCompatActivity {
                                 }
                             };
                            timer.schedule(timerTask,20);
-
                             break;
                         }
                     }
                 }
-
             }
         });
         lvFilmResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
