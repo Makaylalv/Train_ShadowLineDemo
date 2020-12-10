@@ -13,6 +13,14 @@
         android:layout_width="25dp"
         android:id="@+id/back"
         android:layout_height="25dp"/>
+    <TextView
+        android:id="@+id/city_name0"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/black"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <ImageView
         android:layout_marginRight="15dp"
         android:src="@drawable/like0"
