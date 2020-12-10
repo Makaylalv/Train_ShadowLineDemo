@@ -448,6 +448,7 @@ public class CityDetailActivity extends AppCompatActivity {
         //注销
         EventBus.getDefault().unregister(this);
     }
+
     public void upCityLikeSync(){
         //2.创建request请求对象
         Request request=new Request.Builder()
