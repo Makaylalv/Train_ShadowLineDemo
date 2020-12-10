@@ -105,6 +105,7 @@ public class EditDynamicActivity extends AppCompatActivity {
     private GridView gvEditImgs;
     public LocationClient mLocationClient=null;
     private CustomerEditImgAdapter customerEditImgAdapter;
+    //初始化定位的监听器
 
     private MyLocationListener myListener=new MyLocationListener();
     public Handler handler=new Handler(){
