@@ -1,5 +1,6 @@
 package com.example.train_shadowlinedemo.fragment.cityDetailsFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.PlaceDetailActivity;
 import com.example.train_shadowlinedemo.adapter.SpotListAdapter;
 import com.example.train_shadowlinedemo.entity.Place;
 import com.google.gson.Gson;
@@ -73,7 +75,13 @@ public class SpotFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
+                Place place=new Place();
+                place=places.get(position);
+                Gson gson=new Gson();
+                String str=gson.toJson(place);
+                Intent intent=new Intent(getActivity(), PlaceDetailActivity.class);
+                intent.putExtra("place",str);
+                startActivity(intent);
             }
         });
     }
@@ -86,9 +94,12 @@ public class SpotFragment extends Fragment {
         EventBus.getDefault().register(this);
         okHttpClient=new OkHttpClient();
         getCitySpotSync();
+
         //downloadStr(ConfigUtil.SERVER_ADDR + "DownUserOrderServlet");
         return root;
+
     }
+
 
     public void getCitySpotSync(){
         //2.创建request请求对象
@@ -142,4 +153,6 @@ public class SpotFragment extends Fragment {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+    
+    
 }
