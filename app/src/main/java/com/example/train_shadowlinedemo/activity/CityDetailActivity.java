@@ -1,9 +1,5 @@
 package com.example.train_shadowlinedemo.activity;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.ShareUtils;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
-import com.example.train_shadowlinedemo.ShareDiaog;
+
 import com.example.train_shadowlinedemo.adapter.ViewPagerAdapter;
 import com.example.train_shadowlinedemo.customerview.MyViewPager;
 import com.example.train_shadowlinedemo.entity.City;
@@ -36,19 +35,16 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
-import cn.sharesdk.tencent.qq.QQ;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+//import com.ShareUtils;
 
 public class CityDetailActivity extends AppCompatActivity {
     private String userId="1";
@@ -102,7 +98,7 @@ public class CityDetailActivity extends AppCompatActivity {
 
 
 //    分享
-    ShareDiaog shareDiaog;
+
     //分享标题
     private String share_title="百度一下";
     //分享链接

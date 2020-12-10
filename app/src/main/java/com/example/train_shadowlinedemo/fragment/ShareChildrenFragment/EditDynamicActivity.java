@@ -96,9 +96,6 @@ public class EditDynamicActivity extends AppCompatActivity {
     private ImageView ivAddPicture;
     private EditText etShareText;
     private DisplayMetrics dm;
-    private ImageView ivAddImg1;
-    private ImageView ivAddImg2;
-    private ImageView ivAddImg3;
     private LinearLayout llUserLocation;
     private Button btnConfirmPublish;
     private OkHttpClient okHttpClient;
@@ -107,6 +104,7 @@ public class EditDynamicActivity extends AppCompatActivity {
     private TextView tvPersonalLocation;
     private GridView gvEditImgs;
     public LocationClient mLocationClient=null;
+    private CustomerEditImgAdapter customerEditImgAdapter;
 
     private MyLocationListener myListener=new MyLocationListener();
     public Handler handler=new Handler(){
@@ -128,9 +126,7 @@ public class EditDynamicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
-            tvPersonalLocation.setText(savedInstanceState.getString("addr"));
-        }
+
         setContentView(R.layout.activity_edit_dynamic);
         initView();
         setOnclickListener();
@@ -206,7 +202,6 @@ public class EditDynamicActivity extends AppCompatActivity {
                         .imageEngine(new GlideEngine())
                         .theme(R.style.Matisse_Zhihu) //主题
                         .capture(true)
-
                                 .captureStrategy(new CaptureStrategy(true,"com.example.train_shadowlinedemo.SharedFragment.MyFileProvider"))
                         .forResult(REQUEST_CODE_CHOOSE);
                     }
@@ -216,12 +211,34 @@ public class EditDynamicActivity extends AppCompatActivity {
         btnConfirmPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //跳转到动态页面
-                Intent intent=new Intent();
-                intent.putExtra("skipDynamic","skipDynamic");
-                intent.setClass(EditDynamicActivity.this, MainActivity.class);
-                addDynamic();
-                startActivity(intent);
+                //将目前布局中的图片保存到数据库
+                ContentResolver contentResolver = getContentResolver();
+                List<Uri> selected2=customerEditImgAdapter.getSelected();
+                if(selected2==null){
+                    //跳转到动态页面
+                    Intent intent=new Intent();
+                    intent.putExtra("skipDynamic","skipDynamic");
+                    intent.setClass(EditDynamicActivity.this, MainActivity.class);
+                    addDynamic();
+                }else{
+                    Log.e("剩下的图片有","数量有"+selected2.size());
+                    imagePaths.clear();
+                    for(int i=0;i<selected2.size();i++){
+                        Cursor cursor=contentResolver.query(selected2.get(i),null,null,null,null);
+                        if(cursor.moveToFirst()){
+                            String imagePath = cursor.getString(cursor.getColumnIndex("_data"));
+                            imagePaths.add(imagePath);
+                        }
+                    }
+                    //跳转到动态页面
+                    Intent intent=new Intent();
+                    intent.putExtra("skipDynamic","skipDynamic");
+                    intent.setClass(EditDynamicActivity.this, MainActivity.class);
+                    addDynamic();
+                    startActivity(intent);
+
+                }
+
             }
         });
         //为定位按钮获取点击事件
@@ -241,16 +258,9 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
     if (requestCode == 10 && resultCode == RESULT_OK) {
         List<Uri> selected = Matisse.obtainResult(data);
         ContentResolver contentResolver = getContentResolver();
-        CustomerEditImgAdapter customerEditImgAdapter=new CustomerEditImgAdapter(EditDynamicActivity.this,selected,R.layout.item_edit_dynamic_img);
+         customerEditImgAdapter=new CustomerEditImgAdapter(EditDynamicActivity.this,selected,R.layout.item_edit_dynamic_img);
         gvEditImgs.setAdapter(customerEditImgAdapter);
-        imagePaths.clear();
-        for(int i=0;i<selected.size();i++){
-            Cursor cursor=contentResolver.query(selected.get(i),null,null,null,null);
-            if(cursor.moveToFirst()){
-                String imagePath = cursor.getString(cursor.getColumnIndex("_data"));
-              imagePaths.add(imagePath);
-            }
-        }
+
     }
 }
 //动态申请权限
@@ -266,6 +276,7 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
     private void addDynamic(){
         Dynamic dynamic =new Dynamic();
         dynamic.setUserName(LoginActivity.user.getUser_name());
+        dynamic.setUserId(LoginActivity.user.getUser_id());
         dynamic.setLikeUser(null);
         dynamic.setDynamicPlace(tvPersonalLocation.getText().toString());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -281,6 +292,7 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
         dynamic.setDynamicImgs(imgs);
         //创建RequestBody（请求体对象）
         RequestBody requestBody=RequestBody.create(MediaType.parse("text/plain;charset=utf-8"),new Gson().toJson(dynamic));
+        Log.e("dddddddddd",dynamic.toString());
         Request request=new Request.Builder()
                 .post(requestBody)
                 .url(ConfigUtil.SERVER_ADDR+"AddDynamicServlet")
@@ -391,6 +403,7 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
         // 设置参数
         listView.setLayoutParams(params);
     }
+
 }
  class MyLocationListener extends BDAbstractLocationListener {
     @Override
