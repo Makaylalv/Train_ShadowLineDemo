@@ -55,10 +55,11 @@
         android:layout_width="50dp"
         android:layout_height="70dp">
         <ImageView
+            android:layout_gravity="center_horizontal"
             android:id="@+id/camera_img"
             android:src="@drawable/camera_behind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
         <TextView
             android:id="@+id/camera_txt"
             android:textColor="#C8C5C5"
@@ -78,10 +79,11 @@
         android:layout_width="50dp"
         android:layout_height="70dp">
         <ImageView
+            android:layout_gravity="center_horizontal"
             android:id="@+id/voice_img"
             android:src="@drawable/microphone_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
         <TextView
             android:id="@+id/voice_txt"
             android:textColor="#C8C5C5"
@@ -101,10 +103,11 @@
         android:layout_width="50dp"
         android:layout_height="70dp">
         <ImageView
+            android:layout_gravity="center_horizontal"
             android:id="@+id/beauty_img"
             android:src="@drawable/beauty_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
         <TextView
             android:id="@+id/beauty_txt"
             android:textColor="#C8C5C5"

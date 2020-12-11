@@ -8,14 +8,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.LoginActivity;
 import com.example.train_shadowlinedemo.adapter.CustomerDynamicAdapter;
 import com.example.train_shadowlinedemo.entity.Dynamic;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,6 +52,7 @@ public class DynamicFragment extends Fragment {
     private Gson gson=new Gson();
     private CustomerDynamicAdapter customerDynamicAdapter;
     private SmartRefreshLayout refreshLayout;
+    private ImageView ivUserImg;
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -77,12 +82,15 @@ public class DynamicFragment extends Fragment {
 //        CustomerDynamicAdapter customerDynamicAdapter=new CustomerDynamicAdapter(getContext(),dynamics,R.layout.item_dynamic);
 //        ListView lvDynamics=view.findViewById(R.id.lv_dynamics);
 //        lvDynamics.setAdapter(customerDynamicAdapter);
+        Glide.with(DynamicFragment.this).load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg").diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().error(R.drawable.add_dynamic).into(ivUserImg);
+        Log.e("8888888",ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg");
         return view;
     }
     //初始化布局控件
     private void initView(){
         fabAddDynamic=view.findViewById(R.id.fab_add_dynamic);
         refreshLayout=view.findViewById(R.id.rl_dynamic);
+        ivUserImg=view.findViewById(R.id.iv_personaluserimg);
     }
     //为布局控件设置点击事件
     private void setOnClickListener(){

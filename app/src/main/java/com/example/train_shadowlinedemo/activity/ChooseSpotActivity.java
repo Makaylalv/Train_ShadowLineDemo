@@ -75,7 +75,9 @@ public class ChooseSpotActivity extends AppCompatActivity {
                     Gson gson=new Gson();
                     String string=gson.toJson(chosenPlaces);
                     intent.putExtra("places",string);
-                    startActivity(intent);
+                    if(string!=null&&!string.equals("[]")) {
+                        startActivity(intent);
+                    }
                     break;
                 case 2:
                     String str0= (String) msg.obj;

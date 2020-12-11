@@ -1,11 +1,14 @@
 package com.example.train_shadowlinedemo.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -17,10 +20,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.baidu.mapapi.common.Logger;
 import com.bumptech.glide.Glide;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
@@ -102,7 +109,25 @@ public class FilmFragment  extends Fragment {
         initHotMovie();//初始化热门电影
         initNewFilmData();//初始化最新电影数据
 
-
+        PagerSnapHelper pagerSnapHelper=new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(rvNewFilmList);
+        rvNewFilmList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @RequiresApi(api = Build.VERSION_CODES.Q)
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int childCount=rvNewFilmList.getChildCount();
+                for(int i=0;i<childCount;i++){
+                    View child=rvNewFilmList.getChildAt(i);
+                    int left=child.getLeft();
+                    // 遍历recyclerView子项，以中间项左侧偏移量为基准进行缩放
+                    float bl = Math.min(1, Math.abs(left)* 1f / child.getWidth());
+                    float scale = (float) (1 - bl *(1 - 0.8));
+                    child.setScaleY(scale);
+                    child.setScaleX(scale);
+                }
+            }
+        });
         //点击跳转
         gvHotFilm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -186,7 +211,6 @@ public class FilmFragment  extends Fragment {
                     List<Film> filmList=fromToJson(filmJson,type);
                     //修改数据源
                     hotFilmList.addAll(filmList);
-
                     //使用EventBus 发布事件更新adapter
                     EventBus.getDefault().post("hotfilmupdate");
                 }

@@ -13,19 +13,22 @@
             android:layout_height="200dp">
             <LinearLayout
                 android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <Button
                     android:id="@+id/btn_back_dynamic"
-                    android:layout_width="35dp"
+                    android:layout_width="30dp"
                     android:background="@drawable/back_dynamic"
-                    android:layout_height="35dp"/>
+                    android:layout_height="30dp"/>
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:layout_marginLeft="120dp"
                     android:gravity="center"
+                    android:layout_marginRight="15dp"
+
+
                     android:textSize="25sp"
                     android:text="发布动态"/>
             </LinearLayout>
@@ -94,8 +97,8 @@
                     android:textColor="@color/mainColor"
                     android:text="你在哪里?"/>
                 <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginLeft="200dp"
                     android:src="@drawable/share_youjiantou"/>
             </LinearLayout>
@@ -117,8 +120,8 @@
                     android:textColor="@color/mainColor"
                     android:text="谁可以看?"/>
                 <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginLeft="200dp"
                     android:src="@drawable/share_youjiantou"/>
             </LinearLayout>
@@ -140,8 +143,8 @@
                     android:textColor="@color/mainColor"
                     android:text="提醒谁看?"/>
                 <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginLeft="200dp"
                     android:src="@drawable/share_youjiantou"/>
             </LinearLayout>
