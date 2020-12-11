@@ -215,14 +215,18 @@ public class EditDynamicActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //将目前布局中的图片保存到数据库
                 ContentResolver contentResolver = getContentResolver();
-                List<Uri> selected2=customerEditImgAdapter.getSelected();
-                if(selected2==null){
+               // int count=customerEditImgAdapter.getCount();
+
+
+                if(customerEditImgAdapter==null){
                     //跳转到动态页面
                     Intent intent=new Intent();
                     intent.putExtra("skipDynamic","skipDynamic");
                     intent.setClass(EditDynamicActivity.this, MainActivity.class);
                     addDynamic();
+                    startActivity(intent);
                 }else{
+                    List<Uri> selected2=customerEditImgAdapter.getSelected();
                     Log.e("剩下的图片有","数量有"+selected2.size());
                     imagePaths.clear();
                     for(int i=0;i<selected2.size();i++){
