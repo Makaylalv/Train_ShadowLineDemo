@@ -103,6 +103,7 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                                     collection.setPlace_english(jsonObject.getString("place_english"));
                                     collection.setPlace_position(jsonObject.getString("place_position"));
                                     collection.setFilm(jsonObject.getString("film"));
+                                    collection.setImg(jsonObject.getString("img"));
                                     collections.add(collection);
                                 }
                             } catch (JSONException e) {
