@@ -101,6 +101,7 @@ public class EditDynamicActivity extends AppCompatActivity {
     private OkHttpClient okHttpClient;
     private List<String> imagePaths=new ArrayList<>();
     //百度地图定位功能
+    //a
     private TextView tvPersonalLocation;
     private GridView gvEditImgs;
     public LocationClient mLocationClient=null;
