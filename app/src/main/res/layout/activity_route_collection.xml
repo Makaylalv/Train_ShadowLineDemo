@@ -57,8 +57,42 @@
         </RelativeLayout>
 
     </RelativeLayout>
+    <ImageView
+        android:id="@+id/noroute"
+        android:layout_below="@id/route_top"
+        android:onClick="routeClicked"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:src="@drawable/noroute"/>
     <ListView
+        android:focusableInTouchMode="true"
+        android:id="@+id/list_route"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/route"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/route_delete"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="deleteRoute"
+            android:id="@+id/route_all_checked"
+            android:textSize="20sp"
+            android:text="全选"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/routedelete"
+            android:layout_marginLeft="20dp"
+            android:text="删除"
+            android:onClick="deleteRoute"
+            android:layout_alignParentRight="true" />
+    </LinearLayout>
 </RelativeLayout>
