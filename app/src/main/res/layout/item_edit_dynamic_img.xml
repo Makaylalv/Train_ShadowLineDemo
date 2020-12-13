@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/lv_cancel"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+
+
+            android:id="@+id/iv_cancle"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+
+            android:src="@drawable/img_cancel">
+        </ImageView>
+
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/iv_item_edit_img"
-        android:layout_gravity="center"
+        android:layout_below="@id/lv_cancel"
         android:layout_width="100dp"
+
         android:scaleType="centerCrop"
         android:layout_height="100dp">
 
     </ImageView>
-    <ImageView
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:src="@drawable/img_cancel">
 
-    </ImageView>
-</LinearLayout>
+</RelativeLayout>

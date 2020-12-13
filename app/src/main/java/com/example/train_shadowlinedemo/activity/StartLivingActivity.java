@@ -54,6 +54,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -251,12 +252,12 @@ public class StartLivingActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if(isFront==true){
-                    cameraIV.setImageResource(R.drawable.camera_behind);
+                    cameraIV.setImageResource(R.drawable.camera_front);
                     cameraTV.setTextColor(Color.BLACK);
                     isFront=false;
                     zegoExpressEngine.useFrontCamera(isFront);
                 }else {
-                    cameraIV.setImageResource(R.drawable.camera_front);
+                    cameraIV.setImageResource(R.drawable.camera_behind);
                     cameraTV.setTextColor(Color.GRAY);
                     isFront=true;
                     zegoExpressEngine.useFrontCamera(isFront);
@@ -400,9 +401,11 @@ public class StartLivingActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         stopLiving();
+
         zegoExpressEngine.useFrontCamera(true);
         zegoExpressEngine.stopPublishingStream();
         zegoExpressEngine.logoutRoom(""+LoginActivity.user.getUser_id());
+        EventBus.getDefault().post("updateAdapter");
         super.onStop();
     }
 
@@ -413,12 +416,10 @@ public class StartLivingActivity extends AppCompatActivity{
             //viewName可区分item及item内部控件
             switch (v.getId()){
                 default:
-                    Toast.makeText(StartLivingActivity.this,"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(StartLivingActivity.this,"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
                     break;
             }
-
         }
-
         @Override
         public void onItemLongClick(View v) {
         }
@@ -462,7 +463,6 @@ public class StartLivingActivity extends AppCompatActivity{
                 String str=response.body().string();
             }
         });
-
     }
 
 
@@ -491,9 +491,11 @@ public class StartLivingActivity extends AppCompatActivity{
                 //移动地图界面显示到当前位置
                 //把哪一个坐标点显示到地图中间
                 LatLng point=new LatLng(latitude,longitude);
-                locationTV.setText(bdLocation.getCity()+"");
                 loactionCity=bdLocation.getCity();
-                locationLiving();
+                locationTV.setText(loactionCity+"");
+                if(loactionCity!=null) {
+                    locationLiving();
+                }
 
             }
         });
@@ -528,9 +530,11 @@ public class StartLivingActivity extends AppCompatActivity{
                 Type type = new TypeToken<ArrayList<PlaceAndFilm>>() {}.getType();
                 placeAndFilms=new ArrayList<>();
                 placeAndFilms=gson.fromJson(str,type);
-                Message message=new Message();
-                message.what=3;
-                handler.sendMessage(message);
+                if(placeAndFilms.size()!=0) {
+                    Message message = new Message();
+                    message.what = 3;
+                    handler.sendMessage(message);
+                }
             }
         });
     }

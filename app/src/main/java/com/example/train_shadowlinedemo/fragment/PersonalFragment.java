@@ -53,6 +53,10 @@ import com.example.train_shadowlinedemo.Personal.SetActivity;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.LoginActivity;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -160,17 +164,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         tv_about = view.findViewById(R.id.tv_about);
         tv_agreement = view.findViewById(R.id.tv_agreement);
         tv_setting = view.findViewById(R.id.tv_setting);
-        Log.e("username",LoginActivity.user.getUser_name());
-        name.setText(LoginActivity.user.getUser_name());
 
-        if (SetActivity.update){
-            Log.e("nameupdate","1111");
-            name.setText(SetActivity.nameupdate);
-
-        }else {
-            Log.e("111","1111");
-            name.setText(LoginActivity.user.getUser_name());
+        if(!LoginActivity.user.getUser_sign().equals("")){
+            type.setText(LoginActivity.user.getUser_sign());
         }
+        name.setText(LoginActivity.user.getUser_name());
         rv_about.setOnClickListener(PersonalFragment.this);
         rv_agreement.setOnClickListener(PersonalFragment.this);
         rv_talk.setOnClickListener(PersonalFragment.this);
@@ -214,7 +212,24 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         Intent request = PersonalFragment.this.getActivity().getIntent();
         name_update = request.getStringExtra("name");
         username.setText(name_update);
+
+        //注册监听器
+        EventBus.getDefault().register(this);
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleUpdateUser(String str){
+        if(str.equals("updateUser")){
+            name.setText(LoginActivity.user.getUser_name());
+            type.setText(LoginActivity.user.getUser_sign());
+        }
     }
     //处理点击事件
     @Override

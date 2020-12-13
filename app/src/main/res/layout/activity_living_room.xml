@@ -29,12 +29,13 @@
         <ImageView
             android:id="@+id/location_img"
             android:src="@drawable/living_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
         <TextView
             android:layout_marginLeft="5dp"
             android:textSize="18sp"
             android:layout_gravity="center_vertical"
+            android:textColor="@color/black"
             android:id="@+id/location_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -70,7 +71,7 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/linear"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:orientation="horizontal">
         <EditText
             android:layout_marginLeft="10dp"
@@ -111,6 +112,7 @@
                 android:textSize="15sp"
                 android:text="附近的片场"
                 android:layout_marginLeft="5dp"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"/>

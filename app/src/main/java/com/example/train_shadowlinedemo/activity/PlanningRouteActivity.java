@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -53,7 +55,13 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.entity.CustomMarker;
 import com.example.train_shadowlinedemo.entity.Distance;
+import com.example.train_shadowlinedemo.entity.Place;
+import com.example.train_shadowlinedemo.view.LiveRoom.NearPlaceRecyclerViewAdapter;
+import com.example.train_shadowlinedemo.view.MovieDetail.PlaningPlaceRecyclerViewAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,13 +82,18 @@ public class PlanningRouteActivity extends AppCompatActivity {
     private List<Double> doubleList;
     private List<CustomMarker> markerList;
     private ImageView imageView;
+    private RecyclerView recyclerView;
     private int flag=0;
+    private int tag=0;
     private int n=0;
+    private PlaningPlaceRecyclerViewAdapter planingPlaceRecyclerViewAdapter;
+    private List<Place> places;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what){
                 case 1:
+                    baiduMap.clear();
                     LatLng point=new LatLng(latitude,longitude);
                     //在当前位置添加标注覆盖物
                     BitmapDescriptor descriptor= BitmapDescriptorFactory.fromResource(R.drawable.marker);
@@ -93,7 +106,12 @@ public class PlanningRouteActivity extends AppCompatActivity {
                         search.drivingSearch(new DrivingRoutePlanOption().from(planNodeList2.get(n)).to(planNodeList2.get(n + 1)));
                         n++;
                     }
-
+                    break;
+                case 3:
+                    Log.e("size",places.size()+"");
+                    planingPlaceRecyclerViewAdapter=new PlaningPlaceRecyclerViewAdapter(places,PlanningRouteActivity.this);
+                    recyclerView.setAdapter(planingPlaceRecyclerViewAdapter);
+                    planingPlaceRecyclerViewAdapter.setOnItemClickListener(onItemClickListener);
                     break;
 
             }
@@ -338,9 +356,14 @@ public class PlanningRouteActivity extends AppCompatActivity {
     }
 
     private void getView() {
+        LinearLayoutManager layout = new LinearLayoutManager(PlanningRouteActivity.this);
+        layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView=findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(layout);
         mMapView=findViewById(R.id.map_view);
         baiduMap=mMapView.getMap();
         button=findViewById(R.id.button);
+        baiduMap.setMaxAndMinZoomLevel(20,5);
 
       /*  button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -351,9 +374,16 @@ public class PlanningRouteActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Message message=new Message();
-                message.what=1;
-                handler.sendMessage(message);
+                LatLng point=new LatLng(latitude,longitude);
+                MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(point);
+                //移动地图界面
+                baiduMap.animateMapStatus(update);
+                if(tag!=1) {
+                    tag = 1;
+                    Message message = new Message();
+                    message.what = 1;
+                    handler.sendMessage(message);
+                }
             }
         });
 
@@ -603,22 +633,28 @@ public class PlanningRouteActivity extends AppCompatActivity {
                     longitude=bdLocation.getLongitude();//精度
                     int code=bdLocation.getLocType();//获取定位错误码
                     Log.e("定位成功","维度"+latitude+"精度"+longitude+"定位结果"+code);
+                    places=new ArrayList<>();
+                    Type type=new TypeToken<List<Place>>(){}.getType();
+                    Intent intent=getIntent();
+                    String string=intent.getStringExtra("places");
+                    Gson gson=new Gson();
+                    places=gson.fromJson(string,type);
+                    Log.e("size",places.size()+"");
                     PlanNode node = PlanNode.withLocation(new LatLng(latitude, longitude));
-                    PlanNode node1 = PlanNode.withLocation(new LatLng(29.41041, 106.554545));
-                    PlanNode node2= PlanNode.withLocation(new LatLng(29.562098, 106.591978));
-                    PlanNode node3 = PlanNode.withLocation(new LatLng(29.549486, 106.594493));
-                    PlanNode node4 = PlanNode.withLocation(new LatLng(29.530622, 106.577894));
                     planNodeList1.add(node);
-                    planNodeList1.add(node1);
-                    planNodeList1.add(node2);
-                    planNodeList1.add(node3);
-                    planNodeList1.add(node4);
+                    for(int i=0;i<places.size();i++){
+                        PlanNode node1 = PlanNode.withLocation(new LatLng(places.get(i).getPlaceLatitude(), places.get(i).getPlaceLongitude()));
+                        planNodeList1.add(node1);
+                    }
                     //移动地图界面显示到当前位置
                     //把哪一个坐标点显示到地图中间
                     LatLng point=new LatLng(latitude,longitude);
                     MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(point);
                     //移动地图界面
                     baiduMap.animateMapStatus(update);
+                    Message message=new Message();
+                    message.what=3;
+                    handler.sendMessage(message);
 
                 }
             });
@@ -687,5 +723,36 @@ public class PlanningRouteActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
+
+    PlaningPlaceRecyclerViewAdapter.OnItemClickListener onItemClickListener=new PlaningPlaceRecyclerViewAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View v, PlaningPlaceRecyclerViewAdapter.ViewName viewName, int position) {
+            switch (v.getId()){
+                default:
+
+                    Place place=places.get(position);
+                    LatLng point=new LatLng(place.getPlaceLatitude(),place.getPlaceLongitude());
+                    MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(point);
+
+                    baiduMap.setMaxAndMinZoomLevel(18,16);
+                    //移动地图界面
+                    baiduMap.animateMapStatus(update);
+                    if(tag==0) {
+                        baiduMap.clear();
+                        //在当前位置添加标注覆盖物
+                        BitmapDescriptor descriptor = BitmapDescriptorFactory.fromResource(R.drawable.marker);
+                        MarkerOptions options = new MarkerOptions().position(point).icon(descriptor);
+                        baiduMap.addOverlay(options);
+                    }
+                    baiduMap.setMaxAndMinZoomLevel(20,5);
+                    break;
+            }
+        }
+
+        @Override
+        public void onItemLongClick(View v) {
+
+        }
+    };
 
 }
