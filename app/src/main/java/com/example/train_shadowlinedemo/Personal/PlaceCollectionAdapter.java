@@ -7,9 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 
 import java.util.ArrayList;
@@ -61,13 +64,14 @@ public class PlaceCollectionAdapter extends BaseAdapter {
         TextView place_english=view.findViewById(R.id.place_english);
         TextView place_city=view.findViewById(R.id.place_city);
         TextView place_film=view.findViewById(R.id.place_film);
+        ImageView place_img = view.findViewById(R.id.place_img);
         CheckBox cb_op = view.findViewById(R.id.place_op);
 
         place_name.setText(collections.get(i).getPlace_name());
         place_english.setText(collections.get(i).getPlace_english());
         place_city.setText(collections.get(i).getPlace_position());
         place_film.setText(collections.get(i).getFilm());
-
+        Glide.with(context).load(ConfigUtil.SERVER_ADDR+collections.get(i).getImg()).into(place_img);
         if (isOP){
             cb_op.setVisibility(View.VISIBLE);
             RelativeLayout.LayoutParams lps = (RelativeLayout.LayoutParams) view.findViewById(R.id.place_head).getLayoutParams();

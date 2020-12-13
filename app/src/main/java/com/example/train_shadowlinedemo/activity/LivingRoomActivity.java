@@ -168,6 +168,7 @@ public class LivingRoomActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
                 String str=response.body().string();
                 loactionCity=str;
+                Log.e("city",str+"    "+loactionCity);
             }
         });
 
@@ -470,10 +471,13 @@ public class LivingRoomActivity extends AppCompatActivity {
                 Gson gson=new Gson();
                 Type type = new TypeToken<ArrayList<PlaceAndFilm>>() {}.getType();
                 placeAndFilms=new ArrayList<>();
-                placeAndFilms=gson.fromJson(str,type);
-                Message message=new Message();
-                message.what=3;
-                handler.sendMessage(message);
+                if(str!=null&&!str.equals("[]")) {
+                    placeAndFilms = gson.fromJson(str, type);
+                    Message message = new Message();
+                    message.what = 3;
+                    handler.sendMessage(message);
+                }
+
             }
         });
     }

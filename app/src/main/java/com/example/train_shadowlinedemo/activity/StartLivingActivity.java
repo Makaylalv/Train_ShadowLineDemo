@@ -54,6 +54,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -400,9 +401,11 @@ public class StartLivingActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         stopLiving();
+
         zegoExpressEngine.useFrontCamera(true);
         zegoExpressEngine.stopPublishingStream();
         zegoExpressEngine.logoutRoom(""+LoginActivity.user.getUser_id());
+        EventBus.getDefault().post("updateAdapter");
         super.onStop();
     }
 
@@ -488,9 +491,11 @@ public class StartLivingActivity extends AppCompatActivity{
                 //移动地图界面显示到当前位置
                 //把哪一个坐标点显示到地图中间
                 LatLng point=new LatLng(latitude,longitude);
-                locationTV.setText(bdLocation.getCity()+"");
                 loactionCity=bdLocation.getCity();
-                locationLiving();
+                locationTV.setText(loactionCity+"");
+                if(loactionCity!=null) {
+                    locationLiving();
+                }
 
             }
         });
@@ -525,9 +530,11 @@ public class StartLivingActivity extends AppCompatActivity{
                 Type type = new TypeToken<ArrayList<PlaceAndFilm>>() {}.getType();
                 placeAndFilms=new ArrayList<>();
                 placeAndFilms=gson.fromJson(str,type);
-                Message message=new Message();
-                message.what=3;
-                handler.sendMessage(message);
+                if(placeAndFilms.size()!=0) {
+                    Message message = new Message();
+                    message.what = 3;
+                    handler.sendMessage(message);
+                }
             }
         });
     }
