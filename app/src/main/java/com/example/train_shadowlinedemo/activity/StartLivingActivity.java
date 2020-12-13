@@ -252,12 +252,12 @@ public class StartLivingActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if(isFront==true){
-                    cameraIV.setImageResource(R.drawable.camera_behind);
+                    cameraIV.setImageResource(R.drawable.camera_front);
                     cameraTV.setTextColor(Color.BLACK);
                     isFront=false;
                     zegoExpressEngine.useFrontCamera(isFront);
                 }else {
-                    cameraIV.setImageResource(R.drawable.camera_front);
+                    cameraIV.setImageResource(R.drawable.camera_behind);
                     cameraTV.setTextColor(Color.GRAY);
                     isFront=true;
                     zegoExpressEngine.useFrontCamera(isFront);
@@ -416,7 +416,7 @@ public class StartLivingActivity extends AppCompatActivity{
             //viewName可区分item及item内部控件
             switch (v.getId()){
                 default:
-                    Toast.makeText(StartLivingActivity.this,"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(StartLivingActivity.this,"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
                     break;
             }
         }
