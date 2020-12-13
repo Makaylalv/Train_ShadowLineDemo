@@ -288,10 +288,12 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                     Comment comment =new Comment(dynamics.get(i).getDynamicId(),userId,userName,comment_content.getText().toString(),df.format(new Date()));
                     insertDynamicComment(comment);
+                   // dynamics.get(i).getComments().add(comment);
+
                     comment_content.setText("");
                     InputMethodManager im = (InputMethodManager)mContext.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     im.hideSoftInputFromWindow(comment_content.getWindowToken(), 0);
-                    notifyDataSetChanged();
+
                 }
             }
         });
