@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/search_et_input"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/search_edit"
+            android:drawableLeft="@drawable/edit_search"
+            android:drawablePadding="5dp"
+            android:hint="请输入关键字"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/search_et_input"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
-                android:drawableLeft="@drawable/edit_search"
-                android:background="@drawable/search_edit"
-                android:drawablePadding="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:textSize="16sp"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:hint="请输入关键字"/>
-
-            <ImageView
-                android:visibility="gone"
-                android:layout_marginRight="20dp"
-                android:src="@drawable/edit_delete"
-                android:id="@+id/search_iv_delete"
-                android:layout_gravity="right|center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </FrameLayout>
-
-    </LinearLayout>
-
+        <ImageView
+            android:id="@+id/search_iv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/edit_delete"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/tv_tip"
             android:visibility="gone"
@@ -53,17 +44,14 @@
             android:padding="10dp"
             android:text="热搜榜:"
             android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
         <ListView
             android:visibility="gone"
             android:id="@+id/search_lv_tips"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-        </ListView>
+            android:layout_marginBottom="10dp"/>
     </LinearLayout>
-
-
 </LinearLayout>

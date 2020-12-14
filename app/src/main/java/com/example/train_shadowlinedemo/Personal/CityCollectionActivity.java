@@ -2,6 +2,7 @@ package com.example.train_shadowlinedemo.Personal;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +19,9 @@ import android.widget.TextView;
 
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.CityDetailActivity;
 import com.example.train_shadowlinedemo.activity.LoginActivity;
+import com.example.train_shadowlinedemo.activity.SearchActivity;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -71,6 +74,15 @@ public class CityCollectionActivity extends AppCompatActivity {
         okHttpClient = new OkHttpClient();
         //获取数据
         getAsync();
+        lvCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                CityCollection cityCollection=cityCollections.get(i);
+                Intent intent=new Intent(CityCollectionActivity.this, CityDetailActivity.class);
+                intent.putExtra("id",cityCollection.getCity_id()+"");
+                startActivity(intent);
+            }
+        });
     }
     public void getAsync() {
         //2.创建Request请求对象(默认使用get请求)
@@ -96,13 +108,11 @@ public class CityCollectionActivity extends AppCompatActivity {
                 //不能直接修改UI，如果需要修改UI，需要使用Handler或者EventBus
                 if (response.isSuccessful()) {
                     String message = response.body().string();
-                    Log.e("message", message);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 JSONArray jsonArray = new JSONArray(message);
-                                Log.e("jsonObject", jsonArray.toString());
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     CityCollection collection = new CityCollection();
@@ -115,7 +125,6 @@ public class CityCollectionActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            Log.e("cityCollections", cityCollections.toString());
                             cityCollectionAdapter = new CityCollectionAdapter(CityCollectionActivity.this, cityCollections, R.layout.item_city_collection);
                             lvCity = findViewById(R.id.li_city);
                             lvCity.setAdapter(cityCollectionAdapter);
@@ -126,12 +135,7 @@ public class CityCollectionActivity extends AppCompatActivity {
                                 lvCity.setVisibility(View.GONE);
                             }
                             tv_count.setText("收藏城市(" + cityCollectionAdapter.getCount() + ")");
-                            lvCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                                }
-                            });
                         }
                     });
                 }
@@ -143,7 +147,6 @@ public class CityCollectionActivity extends AppCompatActivity {
     public void cityClicked(View view) {
         switch (view.getId()) {
             case R.id.rv_edit:
-                Log.e("edit", "edit");
                 isOP = !isOP;
 
                 if (isOP) {
@@ -183,7 +186,6 @@ public class CityCollectionActivity extends AppCompatActivity {
                 break;
             case R.id.delete:
                 //删除
-                Log.e("delete","delete");
                 checkedLists = new ArrayList<CityCollection>();
                 unCheckedList = new ArrayList<CityCollection>();
                 for (CityCollection cityCollection : cityCollections) {
@@ -196,10 +198,7 @@ public class CityCollectionActivity extends AppCompatActivity {
                 cityCollections.clear();
                 cityCollections.addAll(unCheckedList);
                 deleteData();
-
                 cityCollectionAdapter.notifyDataSetChanged();
-                Log.e("","check list:" + checkedLists.size());
-                Log.e("","uncheck list:" + unCheckedList.size());
             break;
         }
     }
@@ -221,7 +220,6 @@ public class CityCollectionActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     //请求成功时回调
-                    Log.e("异步请求的结果",response.body().string());
                     //不能直接修改UI，如果需要修改UI，需要使用Handler或者EventBus
                     handler.post(new Runnable() {
                         @Override

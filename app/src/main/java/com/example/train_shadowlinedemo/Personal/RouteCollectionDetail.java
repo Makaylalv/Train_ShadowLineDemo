@@ -54,8 +54,6 @@ public class RouteCollectionDetail extends AppCompatActivity {
         Intent idIntent = getIntent();
         id = idIntent.getIntExtra("route_id",0);
         name = idIntent.getStringExtra("name");
-        Log.e("点击了",name+id);
-//        fname.setText(name);
         getData();
     }
     public void getData(){
@@ -89,8 +87,8 @@ public class RouteCollectionDetail extends AppCompatActivity {
                                     place.setPlaceId(jsonObject.getInt("placeId"));
                                     place.setPlaceName(jsonObject.getString("placeName"));
                                     place.setPlaceEnglishname(jsonObject.getString("placeEnglishname"));
-                                    place.setPlaceLatitude(jsonObject.getDouble("placeLongitude"));
-                                    place.setPlaceLongitude(jsonObject.getDouble("placeLatitude"));
+                                    place.setPlaceLatitude(jsonObject.getDouble("placeLatitude"));
+                                    place.setPlaceLongitude(jsonObject.getDouble("placeLongitude"));
                                     place.setPlacePhone(jsonObject.getString("placePhone"));
                                     place.setPlaceReallyImg(jsonObject.getString("placeReallyImg"));
                                     place.setPlaceFalseImg(jsonObject.getString("placeFalseImg"));

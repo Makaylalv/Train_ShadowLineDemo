@@ -1,6 +1,7 @@
 package com.example.train_shadowlinedemo.view.MovieShow;
 
 import android.content.Context;
+import android.telephony.gsm.GsmCellLocation;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -111,7 +112,6 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
             lvTips.setAdapter(mHintAdapter);
         }
     }
-
     //设置搜索结果adapter
     public void setmResultAdapter(SearchAdapter adapter){
         this.mResultAdapter=adapter;
@@ -138,7 +138,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
             if (!"".equals(charSequence.toString())) {//输入不为空
                 ivDelete.setVisibility(VISIBLE);
                 lvTips.setVisibility(VISIBLE);
-                textView.setVisibility(VISIBLE);
+                textView.setVisibility(GONE);
                 if (mAutoCompleteAdapter != null && lvTips.getAdapter() != mAutoCompleteAdapter) {
                     lvTips.setAdapter(mAutoCompleteAdapter);
                 }
@@ -147,21 +147,21 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
                     mListener.onRefreshAutoComplete(charSequence.toString());
                 }
             } else {//输入框为空时
+                textView.setVisibility(GONE);
                 ivDelete.setVisibility(GONE);
                 if (mHintAdapter != null) {
                     lvTips.setAdapter(mHintAdapter);
                 }
                 lvTips.setVisibility(GONE);
-                textView.setVisibility(GONE);
                 if (mResultAdapter!=null){
                     mListener.onSearchAgain(charSequence.toString());
                 }
-
             }
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
+
         }
     }
 
@@ -175,6 +175,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
             case R.id.search_iv_delete:
                 etInput.setText("");
                 ivDelete.setVisibility(GONE);
+                textView.setVisibility(GONE);
                 break;
         }
     }

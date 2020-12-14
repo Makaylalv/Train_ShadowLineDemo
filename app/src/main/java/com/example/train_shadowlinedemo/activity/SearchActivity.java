@@ -157,7 +157,6 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
                 String json=response.body().string();
                 Type type=new TypeToken<Place>(){}.getType();//获取实际类型
                 Place place=fromToJson(json,type);
-                Log.e("ddddddd",json);
                 //修改数据源
                 EventBus.getDefault().post(place);
             }
@@ -514,14 +513,20 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
             //更新搜索数据
             resultAdapter.notifyDataSetChanged();
         }
-        customSearchView.setmResultAdapter(resultAdapter);
+        if(resultData!=null&&resultData.size()>0){
+            customSearchView.setmResultAdapter(resultAdapter);
+            Toast.makeText(this, "完成搜索", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "未搜索到", Toast.LENGTH_SHORT).show();
+            lvResults.setVisibility(View.GONE);
+        }
         addHistoryData(text);
-        Toast.makeText(this, "完成搜索", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onSearchAgain(String text) {
-        if (text==null || text.equals("")){
+        if (text.equals("")){
             if (resultAdapter!=null){
                 resultData.clear();
                 resultAdapter.notifyDataSetChanged();

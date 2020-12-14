@@ -157,6 +157,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
                     }
                     RouteSpot routeSpot=new RouteSpot(i,userId);
                     routeSpots.add(routeSpot);
+                    Log.e("placeId",routeSpot.getPlaceId()+"");
                 }
                 upRouteSync();
 //                spotHasChosen.clear();
@@ -226,7 +227,6 @@ public class ChooseSpotActivity extends AppCompatActivity {
         RequestBody requestBody = RequestBody.create(MediaType.parse(
                 "text/plain;charset=utf-8"),new Gson().toJson(routeSpots));
         routeSpots.clear();
-        Log.e("routeSpots的内容",routeSpots.toString());
         //3.创建请求对象
         Request request = new Request.Builder()
                 .post(requestBody)//请求方式为POST

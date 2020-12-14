@@ -204,7 +204,6 @@ public class LoginActivity extends AppCompatActivity {
                     String content = new String(buffer,0,len);
                     outputStream.close();
                     inputStream.close();
-                    Log.e("cccccccc",content);
                     if (!content.equals("登陆失败")){
                         Log.e("登陆结果","登录成功");
                         Gson gson=new Gson();
@@ -213,6 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent();
                         intent.setClass(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     }else{
                         Log.e("登陆结果","登录失败");
                     }
@@ -248,12 +248,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     mTencent.setAccessToken(token, expires);
                     mTencent.setOpenId(openId);
-                    Log.e(TAG, "token: " + token);
-                    Log.e(TAG, "expires: " + expires);
-                    Log.e(TAG, "openId: " + openId);
 
                     //获取个人信息
                     getQQInfo();
+                    finish();
                 } catch (Exception e) {
                 }
             }

@@ -22,7 +22,7 @@
 
         <ImageView
             android:id="@+id/route_img"
-            android:layout_width="70dp"
+            android:layout_width="100dp"
             android:layout_height="100dp"
             android:padding="@dimen/_4sdp"
             android:scaleType="fitXY"

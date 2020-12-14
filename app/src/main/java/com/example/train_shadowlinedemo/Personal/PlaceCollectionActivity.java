@@ -2,6 +2,7 @@ package com.example.train_shadowlinedemo.Personal;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -16,17 +17,26 @@ import android.widget.TextView;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.LoginActivity;
+import com.example.train_shadowlinedemo.activity.PlaceDetailActivity;
+import com.example.train_shadowlinedemo.entity.Place;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -60,10 +70,49 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //注册事件订阅者
+        EventBus.getDefault().register(this);
         //1.创建OkHttpClient对象,获取数据
         okHttpClient = new OkHttpClient();
         //获取数据
         getAsync();
+        lvPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                getPlaceByid(collections.get(i).getPlace_id());
+            }
+        });
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleJumpToPlace(Place place){
+        Intent intent=new Intent(this, PlaceDetailActivity.class);
+        intent.putExtra("place",new Gson().toJson(place));
+        startActivity(intent);
+    }
+    private void getPlaceByid(int id) {
+        FormBody formBody=new FormBody.Builder()
+                .add("id",id+"")
+                .build();
+        Request request=new Request.Builder()
+                .post(formBody)
+                .url(ConfigUtil.SERVER_ADDR+"ClientGetPlaceById")
+                .build();
+        Call call=okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("onFailure","发生错误");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //获取轮播图列表数据
+                String json=response.body().string();
+                Type type=new TypeToken<Place>(){}.getType();//获取实际类型
+                Place place=new Gson().fromJson(json,type);
+                //修改数据源
+                EventBus.getDefault().post(place);
+            }
+        });
     }
     //初始化数据
     //异步的get请求
@@ -89,7 +138,6 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                 //不能直接修改UI，如果需要修改UI，需要使用Handler或者EventBus
                 if (response.isSuccessful()) {
                     String message = response.body().string();
-                    Log.e("message", message);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -109,7 +157,6 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            Log.e("collections", collections.toString());
                             placeCollectionAdapter = new PlaceCollectionAdapter(PlaceCollectionActivity.this, collections, R.layout.item_place_collection);
                             lvPlace = findViewById(R.id.li_place);
                             lvPlace.setAdapter(placeCollectionAdapter);
@@ -122,12 +169,7 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                                 placeCollectionAdapter.notifyDataSetChanged();
                             }
                             tv_count.setText("收藏片场(" + placeCollectionAdapter.getCount() + ")");
-                            lvPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                                }
-                            });
                         }
                     });
                 }
@@ -138,7 +180,6 @@ public class PlaceCollectionActivity extends AppCompatActivity {
     public void placeClicked(View view) {
         switch (view.getId()) {
             case R.id.rv_place_edit:
-                Log.e("edit", "edit");
                 isOP = !isOP;
 
                 if (isOP) {
@@ -154,7 +195,6 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                 }
                 placeCollectionAdapter.setOP(isOP);
                 placeCollectionAdapter.notifyDataSetChanged();
-
                 break;
         }
     }
@@ -178,7 +218,6 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                 break;
             case R.id.placedelete:
                 //删除
-                Log.e("delete","delete");
                 checkedLists = new ArrayList<PlaceCollection>();
                 unCheckedList = new ArrayList<PlaceCollection>();
                 for (PlaceCollection placeCollection : collections) {
@@ -191,10 +230,7 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                 collections.clear();
                 collections.addAll(unCheckedList);
                 deleteData();
-
                 placeCollectionAdapter.notifyDataSetChanged();
-                Log.e("","check list:" + checkedLists.size());
-                Log.e("","uncheck list:" + unCheckedList.size());
                 break;
         }
     }
@@ -217,7 +253,6 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     //请求成功时回调
-                    Log.e("异步请求的结果",response.body().string());
                     //不能直接修改UI，如果需要修改UI，需要使用Handler或者EventBus
                     handler.post(new Runnable() {
                         @Override
@@ -226,7 +261,6 @@ public class PlaceCollectionActivity extends AppCompatActivity {
                             textView.setText("收藏片场(" + unCheckedList.size() + ")");
                             //收藏数目为0
                             if (unCheckedList.size()==0){
-                                Log.e("现有收藏数目为",unCheckedList.size()+"");
                                 lvPlace.setVisibility(View.GONE);
                                 no_cut.setVisibility(View.VISIBLE);
                                 placeCollectionAdapter.notifyDataSetChanged();

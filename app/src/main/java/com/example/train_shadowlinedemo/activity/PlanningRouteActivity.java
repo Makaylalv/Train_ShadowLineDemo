@@ -643,7 +643,7 @@ public class PlanningRouteActivity extends AppCompatActivity {
                     String string=intent.getStringExtra("places");
                     Gson gson=new Gson();
                     places=gson.fromJson(string,type);
-                    Log.e("size",places.size()+"");
+                    Log.e("size",string+"");
                     PlanNode node = PlanNode.withLocation(new LatLng(latitude, longitude));
                     planNodeList1.add(node);
                     for(int i=0;i<places.size();i++){

@@ -29,6 +29,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,17 +88,51 @@ public class DynamicFragment extends Fragment {
 //        lvDynamics.setAdapter(customerDynamicAdapter);
         String us=LoginActivity.user.getUser_password();
 
-      //  if(us.equals("")){
-        //   Glide.with(DynamicFragment.this).load(R.drawable.head1).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).error(R.drawable.head1).circleCrop().into(ivUserImg);
-      //  }else{
+        if(us.equals("")){
+           Glide.with(DynamicFragment.this).load(R.drawable.head1).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).error(R.drawable.head1).circleCrop().into(ivUserImg);
+        }else{
 
-        Glide.with(DynamicFragment.this).load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg").diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().into(ivUserImg);
-            Log.e("图片的地址是aaaaaaaaaaaaaaa",ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg");
-      //  }
+        Glide.with(DynamicFragment.this)
+                .load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg")
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .circleCrop()
+                .into(ivUserImg);
+        }
 
 
-        Log.e("8888888",ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg");
+
+        //注册
+        EventBus.getDefault().register(this);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+   /* @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+*/
+
+    @Subscribe(sticky = true,threadMode =ThreadMode.MAIN)
+    public void handleChangePhoto(String str){
+        if(str.equals("changePhoto")){
+
+            Glide.with(DynamicFragment.this)
+                    .load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg")
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .circleCrop()
+                    .into(ivUserImg);
+
+            Log.e("11111111111",ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg");
+        }
     }
     //初始化布局控件
     private void initView(){

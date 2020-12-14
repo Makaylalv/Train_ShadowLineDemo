@@ -170,6 +170,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
                             .into(mImg);
                    // mImg.setImageBitmap(bitmap);
                     break;
+                case 2:
+                    EventBus.getDefault().postSticky("changePhoto");
+                    break;
             }
         }
     };
@@ -552,6 +555,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
             }
         });
 
+
     }
 
 
@@ -641,6 +645,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
             img_head.setImageBitmap(bitmap);
             uploadUserImg(photo);
 
+
         }
     }
     /**
@@ -703,6 +708,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.e("上传用户头像的结果",response.body().toString());
+                Message message=new Message();
+                message.what=2;
+                handler.sendMessage(message);
 
             }
         });

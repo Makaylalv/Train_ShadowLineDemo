@@ -2,6 +2,7 @@ package com.example.train_shadowlinedemo.Personal;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -16,15 +17,24 @@ import android.widget.TextView;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.LoginActivity;
+import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
+import com.example.train_shadowlinedemo.activity.PlaceDetailActivity;
+import com.example.train_shadowlinedemo.entity.Film;
+import com.example.train_shadowlinedemo.entity.Place;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -34,6 +44,7 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -70,9 +81,20 @@ public class MovieCollectionActivity extends AppCompatActivity {
         okHttpClient = new OkHttpClient();
         //获取数据
         getAsync();
+        lvFilm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //跳转电影详情
+               getFilmByid(collections.get(i).getFilm_id());
+
+            }
+        });
+        //注册事件订阅者
+        EventBus.getDefault().register(this);
 
 
     }
+
     //初始化数据
     //异步的get请求
     public void getAsync(){
@@ -129,12 +151,7 @@ public class MovieCollectionActivity extends AppCompatActivity {
                                 movieCollectionAdapter.notifyDataSetChanged();
                             }
                             tv_count.setText("收藏电影("+movieCollectionAdapter.getCount()+")");
-                            lvFilm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                                }
-                            });
                         }
                     });
                 }
@@ -142,6 +159,39 @@ public class MovieCollectionActivity extends AppCompatActivity {
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleJump(Film film){
+        Intent intent=new Intent(this,MovieDetailActivity.class);
+        intent.putExtra("film",new Gson().toJson(film));
+        startActivity(intent);
+    }
+
+    private void getFilmByid(int id) {
+        FormBody formBody=new FormBody.Builder()
+                .add("id",id+"")
+                .build();
+        Request request=new Request.Builder()
+                .post(formBody)
+                .url(ConfigUtil.SERVER_ADDR+"ClientGetFilmById")
+                .build();
+        Call call=okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("onFailure","searchDataBySelectedType发生错误");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //获取轮播图列表数据
+                String json=response.body().string();
+                Type type=new TypeToken<List<Film>>(){}.getType();//获取实际类型
+                List<Film> list=new Gson().fromJson(json,type);
+                //修改数据源
+                EventBus.getDefault().post(list.get(0));
+            }
+        });
+
+    }
     public void movieClicked(View view) {
         switch (view.getId()) {
             case R.id.movie_edit:
