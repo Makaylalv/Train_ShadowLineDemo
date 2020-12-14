@@ -48,7 +48,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
     private OkHttpClient okHttpClient;
     private CheckBox allIn;
     String cityId="";
-    String userId="1";
+    int userId=LoginActivity.user.getUser_id();
     private List<RouteSpot> routeSpots=new ArrayList<>();
     private Button like;
     private Button choose;
@@ -155,7 +155,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
                             break;
                         }
                     }
-                    RouteSpot routeSpot=new RouteSpot(i,Integer.parseInt(userId));
+                    RouteSpot routeSpot=new RouteSpot(i,userId);
                     routeSpots.add(routeSpot);
                 }
                 upRouteSync();
@@ -166,9 +166,7 @@ public class ChooseSpotActivity extends AppCompatActivity {
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("userId",userId);
-                Log.e("spotHasChosen",spotHasChosen.toString());
-                int id=Integer.parseInt(userId);
+                int id=userId;
                 //noRepeat(spotHasChosen);
                 Log.e("spotHasChosen",spotHasChosen.toString());
                 for(Integer i:spotHasChosen){
