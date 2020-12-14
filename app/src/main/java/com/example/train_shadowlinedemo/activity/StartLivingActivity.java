@@ -113,6 +113,8 @@ public class StartLivingActivity extends AppCompatActivity{
     private RecyclerView placeRecyclerView;
     private NearPlaceRecyclerViewAdapter nearPlaceRecyclerViewAdapter;
     private List<PlaceAndFilm> placeAndFilms;
+    private ZegoUser user;
+    private  ZegoRoomConfig zegoRoomConfig;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -304,7 +306,18 @@ public class StartLivingActivity extends AppCompatActivity{
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        zegoExpressEngine.loginRoom(""+LoginActivity.user.getUser_id(), user,zegoRoomConfig);
 
+        //开始推流
+        zegoExpressEngine.startPublishingStream(""+LoginActivity.user.getUser_id());
+
+        //开始自我预览
+        zegoExpressEngine.startPreview(new ZegoCanvas(preview_view));
+        showLocation();
+    }
 
     private void initLiving() {
         String[] permissionNeeded = {
@@ -359,20 +372,11 @@ public class StartLivingActivity extends AppCompatActivity{
         });
 
         /** 创建用户 */
-        ZegoUser user = new ZegoUser(""+LoginActivity.user.getUser_id(),LoginActivity.user.getUser_name());
+        user = new ZegoUser(""+LoginActivity.user.getUser_id(),LoginActivity.user.getUser_name());
         /** 开始登陆房间 */
-        ZegoRoomConfig zegoRoomConfig=new ZegoRoomConfig();
+        zegoRoomConfig=new ZegoRoomConfig();
         zegoRoomConfig.isUserStatusNotify=true;
 
-        zegoExpressEngine.loginRoom(""+LoginActivity.user.getUser_id(), user,zegoRoomConfig);
-        //开始推流
-        zegoExpressEngine.startPublishingStream(""+LoginActivity.user.getUser_id());
-
-        //开始自我预览
-        zegoExpressEngine.startPreview(new ZegoCanvas(preview_view));
-
-
-        showLocation();
 
     }
 

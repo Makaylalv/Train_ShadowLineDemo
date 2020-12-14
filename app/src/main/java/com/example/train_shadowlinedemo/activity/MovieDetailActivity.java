@@ -218,10 +218,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     Message message = new Message();
                     message.what = 3;
                     handler.sendMessage(message);
-                    //打印测试
-                    for (Place i : places) {
-                        System.out.println(i.getPlaceMapImg());
-                    }
+
                 }else {
                     Message message=new Message();
                     message.what=5;
@@ -239,7 +236,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         okHttpClient=new OkHttpClient();
         Intent intent=getIntent();
         String filmJsonStr=intent.getStringExtra("film");
-        Log.e("eeeeee",filmJsonStr);
         Gson gson = new GsonBuilder()
                 .serializeNulls()//允许序列化空值
                 .setPrettyPrinting()//格式化输出
