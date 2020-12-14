@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/bg">
 
     <EditText
         android:id="@+id/et_login_phone"
@@ -13,7 +14,7 @@
         android:drawableLeft="@drawable/p1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="107dp"
+        android:layout_marginTop="147dp"
         android:ems="10"
         android:hint="请输入手机号"
         android:inputType="phone" />
@@ -27,7 +28,7 @@
         android:drawableLeft="@drawable/p2"
         android:layout_alignLeft="@+id/et_login_phone"
         android:layout_below="@+id/et_login_phone"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="50dp"
         android:hint="请输入密码"
         android:inputType="textPassword" >
     </EditText>
@@ -39,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/et_login_password"
         android:layout_below="@+id/et_login_password"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="61dp"
         android:layout_marginLeft="10dp"
         android:text="登录"
         android:textSize="@dimen/_14sdp"
@@ -52,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="新用户？注册"
         android:textSize="17sp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="305dp"
         android:layout_marginLeft="210dp"/>
 
     <ImageView
