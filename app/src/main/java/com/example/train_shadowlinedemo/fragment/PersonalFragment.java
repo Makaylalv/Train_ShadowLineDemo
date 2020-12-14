@@ -116,7 +116,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
                 case 2:
                     Log.e("uri","uri");
                     loadImageFromNetwork(ConfigUtil.SERVER_ADDR + "imgs/user/userimgs/" + LoginActivity.user.getUser_id() + ".jpg");
-                    type.setText("请输入自己的签名");
+                    type.setText("请更换自己的签名");
                     break;
                 case 0:
                     Log.e("默认","mor");
@@ -130,7 +130,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
                     Bitmap bitmap =  toRoundBitmap(head);
                     img_head.setImageBitmap(bitmap);
                     changePhoto(img_head);
-                    type.setText("请输入自己的签名");
+                    type.setText("请更换自己的签名");
                     break;
                 case 1:
                     Drawable drawable2 = getResources().getDrawable(R.drawable.head1);
@@ -311,26 +311,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
                             imgHandler.sendMessage(message);
                         }
                     });
-
-//                    imgHandler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//
-//                            Message message=handler.obtainMessage();
-//                            try {
-//                                if (!(response.body().string().equals("null"))){
-//                                    Log.e("img","not");
-//                                    message.what = 1;
-//                                }else {
-//                                    Log.e("img","null");
-//                                    message.what = 0;
-//                                }
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                            imgHandler.sendMessage(message);
-//                        }
-//                    });
                 }
 
             }

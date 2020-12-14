@@ -18,8 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.PlaceDetailActivity;
+import com.example.train_shadowlinedemo.activity.PlanningRouteActivity;
 import com.example.train_shadowlinedemo.entity.Film;
 import com.example.train_shadowlinedemo.entity.MyRoute;
+import com.example.train_shadowlinedemo.entity.Place;
+import com.example.train_shadowlinedemo.entity.RouteSpot;
 import com.example.train_shadowlinedemo.view.MovieDetail.PlaceRecyclerViewAdapter;
 import com.example.train_shadowlinedemo.view.MovieDetail.RouteRecyclerViewAdapter;
 import com.google.gson.Gson;
@@ -31,12 +34,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class FragmentCity extends androidx.fragment.app.Fragment {
     private ArrayList<MyRoute> myRoutes= new ArrayList<>();
+    private List<Place> places=new ArrayList<>();
+    private List<Place> ps=new ArrayList<>();
+    private List<List<Integer>> ids=new ArrayList<List<Integer>>();
     private View view;
     private String filmId;
     private RecyclerView recyclerView;
@@ -47,6 +56,17 @@ public class FragmentCity extends androidx.fragment.app.Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
+                    for(MyRoute i:myRoutes){
+                        String str=i.getPlaceIds();
+                        String[] s=str.split("&");
+                        List<Integer> is=new ArrayList<>();
+                        for(String ss:s){
+                            is.add(Integer.parseInt(ss));
+                        }
+                        ids.add(is);
+
+                    }
+                    Log.e("拿到的ids",ids.toString());
                     initView();
                     break;
                 case 2:
@@ -77,45 +97,101 @@ public class FragmentCity extends androidx.fragment.app.Fragment {
         super.onCreate(savedInstanceState);
 
         okHttpClient=new OkHttpClient();
+        getAllPlace();
         getCityMovieSync();
 
     }
 
-    RouteRecyclerViewAdapter.OnItemClickListener onItemClickListener=new RouteRecyclerViewAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(View v, RouteRecyclerViewAdapter.ViewName viewName, int position) {
-            //viewName可区分item及item内部控件
-            switch (v.getId()){
-                default:
-                    Gson gson=new Gson();
-                    String routeJson=gson.toJson(myRoutes.get(position));
-                    Intent intent=new Intent();
-                    intent.setClass(getContext(), PlaceDetailActivity.class);
-                    intent.putExtra("route",routeJson);
-                    startActivity(intent);
-                    Toast.makeText(getContext(),"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-
-        @Override
-        public void onItemLongClick(View v) {
-        }
-    };
+//    RouteRecyclerViewAdapter.OnItemClickListener onItemClickListener=new RouteRecyclerViewAdapter.OnItemClickListener() {
+//        @Override
+//        public void onItemClick(View v, RouteRecyclerViewAdapter.ViewName viewName, int position) {
+//            //viewName可区分item及item内部控件
+//            switch (v.getId()){
+//                default:
+//                    Gson gson=new Gson();
+//                    String routeJson=gson.toJson(myRoutes.get(position));
+//                    Intent intent=new Intent();
+//                    intent.setClass(getContext(), FragmentCity.class);
+//                    intent.putExtra("route",routeJson);
+//                    startActivity(intent);
+//                    Toast.makeText(getContext(),"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
+//                    break;
+//            }
+//        }
+//
+//        @Override
+//        public void onItemLongClick(View v) {
+//        }
+//    };
     public void initView(){
         routeRecyclerViewAdapter = new RouteRecyclerViewAdapter(myRoutes,getContext());
-        routeRecyclerViewAdapter.setOnItemClickListener(onItemClickListener);
+        routeRecyclerViewAdapter.setOnItemClickListener(e);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(routeRecyclerViewAdapter);
 
     }
+    private void getAllPlace() {
+        //2.创建RequestBody（请求体）对象
+        RequestBody requestBody = RequestBody.create(MediaType.parse(
+                "text/plain;charset=utf-8"),filmId+"");
+        //3.创建请求对象
+        Request request = new Request.Builder()
+                .post(requestBody)//请求方式为POST
+                .url(ConfigUtil.SERVER_ADDR+"GetAllPlaceServlet")
+                .build();
+        okHttpClient=new OkHttpClient();
+        //4.创建Call对象，发送请求，并接受响应
+        final Call call = okHttpClient.newCall(request);
+        //异步网络请求（不需要创建子线程）
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+            }
 
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String str=response.body().string();
+                if(!str.equals("[]")&&str!=null&&!str.equals("")) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<ArrayList<Place>>() {
+                    }.getType();
+                    places = gson.fromJson(str, type);
+                    Message message = new Message();
+                    message.what = 2;
+                    handler.sendMessage(message);
+                    //打印测试
+                    for (Place i : places) {
+                        System.out.println(i.getPlaceMapImg());
+                    }
+                }
+            }
+        });
+    }
     RouteRecyclerViewAdapter.OnItemClickListener e=new RouteRecyclerViewAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View v, RouteRecyclerViewAdapter.ViewName viewName, int position) {
             switch (v.getId()){
                 default:
+                    for(Place p:places){
+                        for (int j=0;j<ids.get(position).size();j++){
+                            if(p.getPlaceId()==ids.get(position).get(j).intValue()){
+                                if(!ps.contains(p.getPlaceId())) {
+                                    ps.add(p);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    Gson gson=new Gson();
+                    String placeJson=gson.toJson(ps);
+                    Log.e("传递的数据",placeJson);
+                    Intent intent=new Intent();
+                    intent.setClass(getContext(), PlanningRouteActivity.class);
+                    intent.putExtra("places",placeJson);
+                    startActivity(intent);
                     break;
             }
         }

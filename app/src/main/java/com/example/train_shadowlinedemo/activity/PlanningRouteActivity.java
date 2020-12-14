@@ -373,17 +373,21 @@ public class PlanningRouteActivity extends AppCompatActivity {
         });*/
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                LatLng point=new LatLng(latitude,longitude);
-                MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(point);
-                //移动地图界面
-                baiduMap.animateMapStatus(update);
-                if(tag!=1) {
-                    tag = 1;
-                    Message message = new Message();
-                    message.what = 1;
-                    handler.sendMessage(message);
+            public void  onClick(View v) {
+                synchronized (this) {
+                    if (tag != 1) {
+                        tag = 1;
+                        Message message = new Message();
+                        message.what = 1;
+                        handler.sendMessage(message);
+                    }
+                    LatLng point=new LatLng(latitude,longitude);
+                    MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(point);
+                    //移动地图界面
+                    baiduMap.animateMapStatus(update);
                 }
+
+
             }
         });
 
