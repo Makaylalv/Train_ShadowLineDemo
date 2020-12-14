@@ -79,7 +79,7 @@
         <activity android:name=".Personal.RouteCollectionActivity" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="UGreORh3iebNAtlF94fhfv6smUTWNmaw" />
+            android:value="9RinesBdOwWrBIuFEs0I2y6SPavIzWoz" />
 
         <service
             android:name="com.baidu.location.f"

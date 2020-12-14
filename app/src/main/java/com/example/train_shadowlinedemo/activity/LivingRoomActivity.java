@@ -93,6 +93,8 @@ public class LivingRoomActivity extends AppCompatActivity {
     private RecyclerView placeRecyclerView;
     private NearPlaceRecyclerViewAdapter nearPlaceRecyclerViewAdapter;
     private List<PlaceAndFilm> placeAndFilms;
+    private ZegoUser user;
+    private ZegoRoomConfig zegoRoomConfig;
 
     private Handler handler=new Handler(){
         @Override
@@ -275,12 +277,11 @@ public class LivingRoomActivity extends AppCompatActivity {
         });
       ;
         /** 创建用户 */
-        ZegoUser user = new ZegoUser(""+LoginActivity.user.getUser_id(),LoginActivity.user.getUser_name());
+        user = new ZegoUser(""+LoginActivity.user.getUser_id(),LoginActivity.user.getUser_name());
         /** 开始登陆房间 */
-        ZegoRoomConfig zegoRoomConfig=new ZegoRoomConfig();
+        zegoRoomConfig=new ZegoRoomConfig();
         zegoRoomConfig.isUserStatusNotify=true;
-        zegoExpressEngine.loginRoom(""+roomId, user,zegoRoomConfig);
-        zegoExpressEngine.startPlayingStream(""+roomId, new ZegoCanvas(preview_view));
+
 
 
     }
@@ -444,6 +445,14 @@ public class LivingRoomActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    protected void onResume() {
+        zegoExpressEngine.loginRoom(""+roomId, user,zegoRoomConfig);
+        zegoExpressEngine.startPlayingStream(""+roomId, new ZegoCanvas(preview_view));
+        super.onResume();
+
+    }
 
     private void getLocationPlace() {
         //2.创建RequestBody（请求体）对象

@@ -23,15 +23,12 @@ public class AppIntroActivity extends AppIntro {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         addSlide(new FirstFragment());
         addSlide(new SecondFragment());
         addSlide(new ThirdFragment());
         addSlide(new ForthFragment());
-        setVibrateDuration(3000);
-        setVibrate(true);
-
+        setVibrateDuration(2000);
+        setVibrate(false);
 
     }
 

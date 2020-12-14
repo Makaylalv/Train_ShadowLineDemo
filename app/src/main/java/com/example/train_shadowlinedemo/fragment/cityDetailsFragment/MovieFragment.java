@@ -131,10 +131,5 @@ public class MovieFragment extends Fragment {
         }.start();
 
     }
-//    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
-//    //注意设置sticky属性 默认是false
-//    public void onMessage(Boolean flag){
-////        Toast.makeText(this,flag,Toast.LENGTH_LONG).show();
-//        initView();
-//    }
+
 }

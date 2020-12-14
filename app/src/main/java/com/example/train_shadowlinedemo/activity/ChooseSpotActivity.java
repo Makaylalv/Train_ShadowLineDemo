@@ -81,17 +81,17 @@ public class ChooseSpotActivity extends AppCompatActivity {
                     break;
                 case 2:
                     String str0= (String) msg.obj;
+                    Log.e("change的spotHasChosen",spotHasChosen.toString()+"%%"+spotHasChosen.size());
+                    spotChooseAdapter.changeCheckState();
+                    if(allIn.isChecked()){
+                        allIn.setText("全选");
+                        allIn.setChecked(false);
+                    }
                     if(str0.equals("1")){
-                        Log.e("change的spotHasChosen",spotHasChosen.toString()+"%%"+spotHasChosen.size());
-                        spotChooseAdapter.changeCheckState();
-                        if(allIn.isChecked()){
-                            allIn.setText("全选");
-                            allIn.setChecked(false);
-                        }
-
-
                         //Glide.with(this).load(R.drawable.like1).into(like);
                         Toast.makeText(ChooseSpotActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(ChooseSpotActivity.this,"已被收藏",Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case 3:
@@ -160,10 +160,6 @@ public class ChooseSpotActivity extends AppCompatActivity {
                 }
                 upRouteSync();
 //                spotHasChosen.clear();
-
-
-
-
             }
         });
         //收藏

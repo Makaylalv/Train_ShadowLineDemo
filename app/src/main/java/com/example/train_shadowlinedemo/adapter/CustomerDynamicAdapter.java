@@ -47,6 +47,7 @@ import com.example.train_shadowlinedemo.entity.Dynamic;
 import com.example.train_shadowlinedemo.entity.DynamicLikeUser;
 import com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.DynamicFragment;
 import com.google.gson.Gson;
+import com.mob.MobSDK;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +57,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -177,7 +181,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
             ImageView ivDynamicManage=view.findViewById(R.id.iv_dynamicmanage);
             holder.btnDynamicLike=view.findViewById(R.id.btn_dynamic_like);
             holder.btnDynamicComment=view.findViewById(R.id.btn_dynamic_comment);
-            holder.btnDynamicForward=view.findViewById(R.id.btn_dynamic_forward);
+            holder.btnDynamicShare=view.findViewById(R.id.btn_dynamic_share);
             holder.tvDynamicLikeUsers=view.findViewById(R.id.tv_dynamic_likeusers);
             holder.lvDynamicComments=view.findViewById(R.id.lv_dynamic_comments);
             holder.tvUserLocation=view.findViewById(R.id.tv_user_location);
@@ -194,7 +198,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
 
         holder.tvDynamicUserName.setText(dynamics.get(i).getUserName());
         holder.tvDynamicDynamicTime.setText(dynamics.get(i).getDynamicTime());
-        holder.tvDynmaicDynamicContent.setText(dynamics.get(i).getDynamicContent());
+        holder.tvDynmaicDynamicContent.setText(decode(dynamics.get(i).getDynamicContent()));
         AssetManager mgr = mContext.getResources().getAssets();
         //根据路径得到Typeface
         Typeface tf = Typeface.createFromAsset(mgr, "Regular.ttf");//仿宋
@@ -286,12 +290,14 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
                     toast.show();
                 }else{
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-                    Comment comment =new Comment(dynamics.get(i).getDynamicId(),userId,userName,comment_content.getText().toString(),df.format(new Date()));
+                    Comment comment =new Comment(dynamics.get(i).getDynamicId(),userId,userName,encode(comment_content.getText().toString()),df.format(new Date()));
                     insertDynamicComment(comment);
+                   // dynamics.get(i).getComments().add(comment);
+
                     comment_content.setText("");
                     InputMethodManager im = (InputMethodManager)mContext.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     im.hideSoftInputFromWindow(comment_content.getWindowToken(), 0);
-                    notifyDataSetChanged();
+
                 }
             }
         });
@@ -325,6 +331,13 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
                 }
             }
         });
+        //为分享按钮设置点击事件
+        holder.btnDynamicShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShare();
+            }
+        });
         return view;
     }
     class DynamicViewHolder{
@@ -335,7 +348,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
         GridView gvDynamicDynamicImgs;
         ImageView btnDynamicLike;
         Button btnDynamicComment;
-        Button btnDynamicForward;
+        Button btnDynamicShare;
         TextView tvDynamicLikeUsers;
         ListView lvDynamicComments;
         TextView tvUserLocation;
@@ -520,5 +533,62 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
             }
         });
     }
+    //QQ分享功能
+    private void showShare() {
+        OnekeyShare oks = new OnekeyShare();
+// title标题，微信、QQ和QQ空间等平台使用
+        oks.setTitle("影行");
+// titleUrl QQ和QQ空间跳转链接
+        oks.setTitleUrl("http://baidu.com");
+// text是分享文本，所有平台都需要这个字段
+        oks.setText(dynamics.get(3).getDynamicContent());
+// setImageUrl是网络图片的url
+       // oks.setImageUrl("https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3684536465,3063644397&fm=26&gp=0.jpg");
+        String []imgs={"https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3684536465,3063644397&fm=26&gp=0.jpg","https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3684536465,3063644397&fm=26&gp=0.jpg"};
+        oks.setImageArray(imgs);
+
+// url在微信、Facebook等平台中使用
+        oks.setUrl("http://sharesdk.cn");
+// 启动分享GUI
+        oks.show(MobSDK.getContext());
+    }
+    /**
+     * 将输入的内容编码
+     * @param content
+     * @return
+     */
+    public static String encode(String content) {
+        StringBuilder sb = new StringBuilder(content.length() * 3);
+        for (char c : content.toCharArray()) {
+            if (c < 256) {
+                sb.append(c);
+            } else {
+                sb.append("\\u");
+                sb.append(Character.forDigit((c >>> 12) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 8) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 4) & 0xf, 16));
+                sb.append(Character.forDigit((c) & 0xf, 16));
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 将取出内容解码
+     * @param content
+     * @return
+     */
+    public static String decode(String content) {
+        final Pattern reUnicode = Pattern.compile("\\\\u([0-9a-zA-Z]{4})");
+        Matcher sMatcher = reUnicode.matcher(content);
+        StringBuffer sb = new StringBuffer(content.length());
+        while (sMatcher.find()) {
+            sMatcher.appendReplacement(sb,
+                    Character.toString((char) Integer.parseInt(sMatcher.group(1), 16)));
+        }
+        sMatcher.appendTail(sb);
+        return sb.toString();
+    }
+
 
 }
