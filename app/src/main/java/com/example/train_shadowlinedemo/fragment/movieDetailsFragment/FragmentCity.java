@@ -102,27 +102,6 @@ public class FragmentCity extends androidx.fragment.app.Fragment {
 
     }
 
-//    RouteRecyclerViewAdapter.OnItemClickListener onItemClickListener=new RouteRecyclerViewAdapter.OnItemClickListener() {
-//        @Override
-//        public void onItemClick(View v, RouteRecyclerViewAdapter.ViewName viewName, int position) {
-//            //viewName可区分item及item内部控件
-//            switch (v.getId()){
-//                default:
-//                    Gson gson=new Gson();
-//                    String routeJson=gson.toJson(myRoutes.get(position));
-//                    Intent intent=new Intent();
-//                    intent.setClass(getContext(), FragmentCity.class);
-//                    intent.putExtra("route",routeJson);
-//                    startActivity(intent);
-//                    Toast.makeText(getContext(),"你点击了item按钮"+(position+1),Toast.LENGTH_SHORT).show();
-//                    break;
-//            }
-//        }
-//
-//        @Override
-//        public void onItemLongClick(View v) {
-//        }
-//    };
     public void initView(){
         routeRecyclerViewAdapter = new RouteRecyclerViewAdapter(myRoutes,getContext());
         routeRecyclerViewAdapter.setOnItemClickListener(e);
