@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -103,12 +102,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                     timer.schedule(task1, 0, 30);
                     break;
                 case 3:
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    fragmenPlace.setData(places);
                     filmLocationNumTV.setText(places.size()+"");
                     break;
                 case 4:
@@ -241,9 +234,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
 
         listTitle.add("片场"); //标题
-        listTitle.add("片场");//标题
-        fragmenPlace=new FragmenPlace();
-        fragmentCity=new FragmentCity();
+        listTitle.add("路线");//标题
+        fragmenPlace=new FragmenPlace(film.getFilmId());
+        fragmentCity=new FragmentCity(film.getFilmId()+"");
         fragments.add(fragmenPlace);
         fragments.add(fragmentCity);
         tabLayout.setupWithViewPager(viewPager);
