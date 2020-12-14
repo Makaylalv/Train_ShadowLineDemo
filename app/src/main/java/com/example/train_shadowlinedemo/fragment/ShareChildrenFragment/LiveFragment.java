@@ -40,6 +40,10 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -71,7 +75,6 @@ public class LiveFragment extends Fragment {
                     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
                     myAdapter =new LiveRoomRecyclerViewAdapter(roomList,getContext());
                     myAdapter.setOnItemClickListener(onItemClickListener);
-
                     recyclerView.setAdapter(myAdapter);
                     refreshLayout.finishRefresh();
                     myAdapter.notifyDataSetChanged();
@@ -98,6 +101,7 @@ public class LiveFragment extends Fragment {
         });
         refreshLayout.setEnableLoadMore(false);//是否启用上拉加载功能
         getLivingRoom();
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -105,6 +109,19 @@ public class LiveFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleAdapter(String update){
+        if(update.equals("updateAdapter")){
+            getLivingRoom();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

@@ -47,7 +47,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class CityDetailActivity extends AppCompatActivity {
-    private String userId="1";
+    private String userId=""+LoginActivity.user.getUser_id();
     private List<Place> places=new ArrayList<>();
     private String cityId="";
     private ImageView imageView;

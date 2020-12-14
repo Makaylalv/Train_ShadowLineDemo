@@ -83,6 +83,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
     private PhotoPopupWindow popupWindow;
     private TextView username;
     private TextView name;
+    private boolean tag = false;
     private TextView type;
     private TextView collection;
     private TextView movie;
@@ -167,6 +168,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
 
         if(!LoginActivity.user.getUser_sign().equals("")){
             type.setText(LoginActivity.user.getUser_sign());
+        }else {
+            type.setText("请更换自己的签名");
         }
         name.setText(LoginActivity.user.getUser_name());
         rv_about.setOnClickListener(PersonalFragment.this);
@@ -179,16 +182,30 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         img_head = view.findViewById(R.id.img_head);
        //Drawable drawable = getResources().getDrawable(R.drawable.head1);
         //获取到数据库中的图片
-        loadImageFromNetwork(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+ LoginActivity.user.getUser_id()+".jpg");
+        judge();
+        if (!tag){
+            Drawable drawable = getResources().getDrawable(R.drawable.head1);
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            Glide.with(PersonalFragment.this.getContext())
+                .load(drawable)
+                .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
+                .into(mImg);
+            head = bitmapDrawable.getBitmap();
+            Bitmap bitmap =  toRoundBitmap(head);
+            img_head.setImageBitmap(bitmap);
+            changePhoto(img_head);
+        }else {
+            loadImageFromNetwork(ConfigUtil.SERVER_ADDR + "imgs/user/userimgs/" + LoginActivity.user.getUser_id() + ".jpg");
+        }
        // BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
 //        Glide.with(PersonalFragment.this.getContext())
 //                .load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+ LoginActivity.user.getUser_id()+".jpg")
 //                .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
 //                .into(mImg);
 
-       // head = bitmapDrawable.getBitmap();
-      //  Bitmap bitmap =  toRoundBitmap(head);
-       // img_head.setImageBitmap(bitmap);
+//        head = bitmapDrawable.getBitmap();
+//        Bitmap bitmap =  toRoundBitmap(head);
+//        img_head.setImageBitmap(bitmap);
         changePhoto(img_head);
         //设置字体
         //从asset 读取字体
@@ -217,7 +234,34 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         EventBus.getDefault().register(this);
         return view;
     }
+    public boolean judge(){
 
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(ConfigUtil.SERVER_ADDR +
+                        "GetImgServlet?user_id=" + LoginActivity.user.getUser_id())//请求的地址
+                .build();
+        //3.创建Call对象，发送请求，并接受响应
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.e("img","111");
+                if (!(response.body().string().equals("null"))){
+                    tag = true;
+                    Log.e("tag",tag+"");
+                }
+
+            }
+        });
+        Log.e("tag",tag+"");
+        return tag;
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

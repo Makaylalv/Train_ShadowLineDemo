@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -33,6 +32,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.mob.MobSDK;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -71,6 +72,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private Film film;
     private ImageView imageView;
     private ImageView chooseSpotIV;
+    private ImageView imageViewShare;
     private ArrayList<Place> places= new ArrayList<>();
     private OkHttpClient okHttpClient;
     private ArrayList<ActivityTouchListener> myActivityTouchListeners = new ArrayList<>();
@@ -104,12 +106,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                     timer.schedule(task1, 0, 30);
                     break;
                 case 3:
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    fragmenPlace.setData(places);
                     filmLocationNumTV.setText(places.size()+"");
                     break;
                 case 4:
@@ -151,15 +147,38 @@ public class MovieDetailActivity extends AppCompatActivity {
             actionBar.setCustomView(R.layout.custom_bar);  //绑定自定义的布局：actionbar_layout.xml
             barTextView=actionBar.getCustomView().findViewById(R.id.film_name);
             imageView=actionBar.getCustomView().findViewById(R.id.back);
+            imageViewShare=actionBar.getCustomView().findViewById(R.id.share);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
                 }
             });
+            imageViewShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showShare();
+                }
+            });
         }else {
             Log.e("actionbar","is null");
         }
+    }
+
+    private void showShare() {
+        OnekeyShare oks = new OnekeyShare();
+// title标题，微信、QQ和QQ空间等平台使用
+        oks.setTitle("分享");
+// titleUrl QQ和QQ空间跳转链接
+        oks.setTitleUrl("http://sharesdk.cn");
+// text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+// setImageUrl是网络图片的url
+        oks.setImageUrl("https://hmls.hfbank.com.cn/hfapp-api/9.png");
+// url在微信、Facebook等平台中使用
+        oks.setUrl("http://sharesdk.cn");
+// 启动分享GUI
+        oks.show(MobSDK.getContext());
     }
 
     private void getAllPlace() {
@@ -252,9 +271,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
 
         listTitle.add("片场"); //标题
-        listTitle.add("片场");//标题
-        fragmenPlace=new FragmenPlace();
-        fragmentCity=new FragmentCity();
+        listTitle.add("路线");//标题
+        fragmenPlace=new FragmenPlace(film.getFilmId());
+        fragmentCity=new FragmentCity(film.getFilmId()+"");
         fragments.add(fragmenPlace);
         fragments.add(fragmentCity);
         tabLayout.setupWithViewPager(viewPager);

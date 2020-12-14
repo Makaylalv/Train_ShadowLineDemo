@@ -153,6 +153,7 @@
         <activity android:name=".Personal.CityCollectionActivity" />
         <activity android:name=".Personal.MovieCollectionActivity" /> <!-- 城市 -->
         <activity android:name=".activity.ChooseSpotActivity" />
+        <activity android:name=".Personal.RouteCollectionDetail"/>
         <activity
             android:name=".activity.CityDetailActivity"
             android:theme="@style/AppTheme"

@@ -6,8 +6,17 @@ public class PlaceCollection {
     private String place_english;
     private String place_position;
     private String film;
+    private String img;
     private boolean isChecked;
     public PlaceCollection() {
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     @Override
@@ -18,6 +27,7 @@ public class PlaceCollection {
                 ", place_english='" + place_english + '\'' +
                 ", place_position='" + place_position + '\'' +
                 ", film='" + film + '\'' +
+                ", img='" + img + '\'' +
                 '}';
     }
 

@@ -7,6 +7,7 @@ public class FilmCollection {
     private String film_type;
     private String film_city;
     private String film_place;//片场
+    private String img;
     private boolean isChecked;
     public FilmCollection() {
     }
@@ -37,8 +38,17 @@ public class FilmCollection {
                 ", film_type='" + film_type + '\'' +
                 ", film_city='" + film_city + '\'' +
                 ", film_place='" + film_place + '\'' +
+                ", img='" + img + '\'' +
                 ", isChecked=" + isChecked +
                 '}';
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public boolean isChecked() {

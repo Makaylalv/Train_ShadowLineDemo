@@ -29,6 +29,7 @@
                 android:backgroundTint="#ffffff"
                 android:src="@drawable/add_dynamic"
                 android:id="@+id/fab_add_dynamic"
+                android:background="@drawable/add_dynamic"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="300dp"
                 app:fabSize="mini"
@@ -36,10 +37,9 @@
             <ImageView android:layout_width="80dp"
                 android:layout_marginTop="100dp"
                 android:id="@+id/iv_personaluserimg"
-                android:src="@drawable/add_dynamic"
+                android:src="@drawable/head1"
                 android:layout_marginLeft="10dp"
                 android:layout_height="80dp">
-
             </ImageView>
 
             <com.example.train_shadowlinedemo.view.customerview.CustomerListView
@@ -49,20 +49,9 @@
                 android:layout_height="wrap_content"
                 android:divider="#ffffffff"
                 android:dividerHeight="1px"
-
                 android:layout_below="@id/iv_dynamic_background"
                 />
-
-
         </RelativeLayout>
-
-
-
-
-
-
-
-
 </ScrollView>
     <RelativeLayout
         android:id="@+id/rl_comment"

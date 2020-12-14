@@ -80,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
     private Tencent mTencent;
     //QQname
     private String Qname;
-    private String openid;
     private int id = 0;
     private OkHttpClient okHttpClient;
 
@@ -319,11 +318,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
             }
-
-//            @Override
-//            public void onWarning(int i) {
-//
-//            }
         });
     }
 

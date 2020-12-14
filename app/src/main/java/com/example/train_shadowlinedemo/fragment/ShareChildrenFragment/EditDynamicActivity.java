@@ -78,6 +78,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -215,14 +217,18 @@ public class EditDynamicActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //将目前布局中的图片保存到数据库
                 ContentResolver contentResolver = getContentResolver();
-                List<Uri> selected2=customerEditImgAdapter.getSelected();
-                if(selected2==null){
+               // int count=customerEditImgAdapter.getCount();
+
+
+                if(customerEditImgAdapter==null){
                     //跳转到动态页面
                     Intent intent=new Intent();
                     intent.putExtra("skipDynamic","skipDynamic");
                     intent.setClass(EditDynamicActivity.this, MainActivity.class);
                     addDynamic();
+                    startActivity(intent);
                 }else{
+                    List<Uri> selected2=customerEditImgAdapter.getSelected();
                     Log.e("剩下的图片有","数量有"+selected2.size());
                     imagePaths.clear();
                     for(int i=0;i<selected2.size();i++){
@@ -283,7 +289,7 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
         dynamic.setDynamicPlace(tvPersonalLocation.getText().toString());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         dynamic.setDynamicTime(df.format(new Date()));
-        dynamic.setDynamicContent(etShareText.getText().toString());
+        dynamic.setDynamicContent(encode(etShareText.getText().toString()));
         List<String> imgs=new ArrayList<>();
         long time=System.currentTimeMillis();
         for(int i=0;i<imagePaths.size();i++){
@@ -405,6 +411,40 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
         // 设置参数
         listView.setLayoutParams(params);
     }
+    //将文字编码
+    public static String encode(String content) {
+        StringBuilder sb = new StringBuilder(content.length() * 3);
+        for (char c : content.toCharArray()) {
+            if (c < 256) {
+                sb.append(c);
+            } else {
+                sb.append("\\u");
+                sb.append(Character.forDigit((c >>> 12) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 8) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 4) & 0xf, 16));
+                sb.append(Character.forDigit((c) & 0xf, 16));
+            }
+        }
+        return sb.toString();
+    }
+    /**
+     * 将取出内容解码
+     * @param content
+     * @return
+     */
+    public static String decode(String content) {
+        final Pattern reUnicode = Pattern.compile("\\\\u([0-9a-zA-Z]{4})");
+        Matcher sMatcher = reUnicode.matcher(content);
+        StringBuffer sb = new StringBuffer(content.length());
+        while (sMatcher.find()) {
+            sMatcher.appendReplacement(sb,
+                    Character.toString((char) Integer.parseInt(sMatcher.group(1), 16)));
+        }
+        sMatcher.appendTail(sb);
+        return sb.toString();
+    }
+
+
 
 }
  class MyLocationListener extends BDAbstractLocationListener {
@@ -448,5 +488,7 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
                 .radius(500));
         mCoder.destroy();
     }
+
+
 
  }

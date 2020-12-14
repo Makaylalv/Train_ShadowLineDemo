@@ -4,6 +4,7 @@ public class CityCollection {
     private int city_id;
     private String city_name;
     private String city_english;
+    private String img;
     private boolean isChecked;
 
     public CityCollection() {
@@ -15,8 +16,17 @@ public class CityCollection {
                 "city_id=" + city_id +
                 ", city_name='" + city_name + '\'' +
                 ", city_english='" + city_english + '\'' +
+                ", img='" + img + '\'' +
                 ", isChecked=" + isChecked +
                 '}';
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public CityCollection(int city_id, String city_name, String city_english) {

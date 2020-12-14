@@ -109,6 +109,7 @@ public class CityCollectionActivity extends AppCompatActivity {
                                     collection.setCity_name(jsonObject.getString("city_name"));
                                     collection.setCity_english(jsonObject.getString("city_english"));
                                     collection.setCity_id(jsonObject.getInt("city_id"));
+                                    collection.setImg(jsonObject.getString("img"));
                                     cityCollections.add(collection);
                                 }
                             } catch (JSONException e) {
