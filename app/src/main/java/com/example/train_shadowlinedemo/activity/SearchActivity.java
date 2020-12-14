@@ -127,7 +127,7 @@ public class SearchActivity extends AppCompatActivity implements CustomSearchVie
                         break;
                     case "城市":
                         //跳转到城市详情
-                        Log.e("444444",result.getId()+"");
+
                         Intent intent=new Intent(SearchActivity.this,CityDetailActivity.class);
                         intent.putExtra("id",result.getId()+"");
                         startActivity(intent);

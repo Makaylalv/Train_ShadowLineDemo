@@ -82,12 +82,12 @@ public class ShareFragment extends Fragment {
     private void changeColor(String str){
         switch (str){
             case "dynamic":
-                tvSharedDynamic.setTextColor(getResources().getColor(R.color.mainColor));
+                tvSharedDynamic.setTextColor(getResources().getColor(R.color.white));
                 tvSharedLive.setTextColor(getResources().getColor(R.color.black));
                 break;
             case "live":
                 tvSharedDynamic.setTextColor(getResources().getColor(R.color.black));
-                tvSharedLive.setTextColor(getResources().getColor(R.color.mainColor));
+                tvSharedLive.setTextColor(getResources().getColor(R.color.white));
                 break;
         }
 

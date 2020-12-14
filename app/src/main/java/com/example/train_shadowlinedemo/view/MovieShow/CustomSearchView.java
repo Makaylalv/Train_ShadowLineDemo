@@ -27,6 +27,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
     private EditText etInput;//输入框
     private ImageView ivDelete;//删除键
     private Context mContext;//上下文对象
+    private TextView textView;//热搜榜文字提示
     private ListView lvTips;//弹出列表
     private ArrayAdapter<String> mHintAdapter;//提示adapter
     private ArrayAdapter<String> mAutoCompleteAdapter;//自动补全
@@ -56,6 +57,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
         etInput = (EditText) findViewById(R.id.search_et_input);
         ivDelete = (ImageView) findViewById(R.id.search_iv_delete);
         lvTips = (ListView) findViewById(R.id.search_lv_tips);
+        textView=(TextView)findViewById(R.id.tv_tip);
         lvTips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -66,6 +68,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
                 etInput.setSelection(text.length());
                 //提示列表消失
                 lvTips.setVisibility(View.GONE);
+                textView.setVisibility(GONE);
                 notifyStartSearching(text);
             }
         });
@@ -78,6 +81,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     lvTips.setVisibility(GONE);
+                    textView.setVisibility(GONE);
                     notifyStartSearching(etInput.getText().toString());
                 }
                 return true;
@@ -134,6 +138,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
             if (!"".equals(charSequence.toString())) {//输入不为空
                 ivDelete.setVisibility(VISIBLE);
                 lvTips.setVisibility(VISIBLE);
+                textView.setVisibility(VISIBLE);
                 if (mAutoCompleteAdapter != null && lvTips.getAdapter() != mAutoCompleteAdapter) {
                     lvTips.setAdapter(mAutoCompleteAdapter);
                 }
@@ -147,6 +152,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
                     lvTips.setAdapter(mHintAdapter);
                 }
                 lvTips.setVisibility(GONE);
+                textView.setVisibility(GONE);
                 if (mResultAdapter!=null){
                     mListener.onSearchAgain(charSequence.toString());
                 }
@@ -164,6 +170,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
         switch (view.getId()) {
             case R.id.search_et_input:
                 lvTips.setVisibility(VISIBLE);
+                textView.setVisibility(VISIBLE);
                 break;
             case R.id.search_iv_delete:
                 etInput.setText("");
