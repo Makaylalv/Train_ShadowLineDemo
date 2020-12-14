@@ -82,7 +82,17 @@ public class DynamicFragment extends Fragment {
 //        CustomerDynamicAdapter customerDynamicAdapter=new CustomerDynamicAdapter(getContext(),dynamics,R.layout.item_dynamic);
 //        ListView lvDynamics=view.findViewById(R.id.lv_dynamics);
 //        lvDynamics.setAdapter(customerDynamicAdapter);
-        Glide.with(DynamicFragment.this).load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg").diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().error(R.drawable.add_dynamic).into(ivUserImg);
+        String us=LoginActivity.user.getUser_password();
+
+      //  if(us.equals("")){
+        //   Glide.with(DynamicFragment.this).load(R.drawable.head1).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).error(R.drawable.head1).circleCrop().into(ivUserImg);
+      //  }else{
+
+        Glide.with(DynamicFragment.this).load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg").diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().into(ivUserImg);
+            Log.e("图片的地址是aaaaaaaaaaaaaaa",ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg");
+      //  }
+
+
         Log.e("8888888",ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+LoginActivity.user.getUser_id()+".jpg");
         return view;
     }
@@ -183,4 +193,5 @@ public class DynamicFragment extends Fragment {
         getAllDynamics();
        
     }
+
 }
