@@ -7,7 +7,16 @@ public class RouteCollection {
     private String name;
     private String date;
     private int tag;
+    private String img;
     private boolean isChecked;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public int getTag() {
         return tag;
@@ -33,7 +42,9 @@ public class RouteCollection {
         return "RouteCollection{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", tag='" + tag + '\'' +
+                ", date='" + date + '\'' +
+                ", tag=" + tag +
+                ", img='" + img + '\'' +
                 '}';
     }
 

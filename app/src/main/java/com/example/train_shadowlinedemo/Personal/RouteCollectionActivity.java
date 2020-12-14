@@ -100,6 +100,7 @@ public class RouteCollectionActivity extends AppCompatActivity {
                                     collection.setId(jsonObject.getInt("route_id"));
                                     collection.setName(jsonObject.getString("name"));
                                     collection.setTag(jsonObject.getInt("tag"));
+                                    collection.setImg(jsonObject.getString("img"));
                                     routeCollections.add(collection);
                                 }
                             } catch (JSONException e) {

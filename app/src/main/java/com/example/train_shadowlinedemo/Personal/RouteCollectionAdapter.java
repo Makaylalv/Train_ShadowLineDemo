@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 
 import java.text.SimpleDateFormat;
@@ -64,6 +67,7 @@ public class RouteCollectionAdapter extends BaseAdapter {
         TextView route_data = view.findViewById(R.id.route_data);
         TextView tv_route_city = view.findViewById(R.id.tv_route_city);
         CheckBox cb_op = view.findViewById(R.id.route_op);
+        ImageView route_img = view.findViewById(R.id.route_img);
         Button bt_tag = view.findViewById(R.id.bt_tag);
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         String t=format.format(new Date());
@@ -72,7 +76,9 @@ public class RouteCollectionAdapter extends BaseAdapter {
         tv_route_city.setText(routeCollections.get(i).getName());
         if (routeCollections.get(i).getTag()==0){
             bt_tag.setText("城市");
+            Glide.with(context).load(ConfigUtil.SERVER_ADDR+routeCollections.get(i).getImg()).into(route_img);
         }else if (routeCollections.get(i).getTag()==1){
+            Glide.with(context).load(ConfigUtil.SERVER_ADDR+"imgs/film/filmImg/"+routeCollections.get(i).getImg()).into(route_img);
             bt_tag.setText("电影");
         }
         if (isOP){
