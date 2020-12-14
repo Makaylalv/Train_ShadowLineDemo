@@ -13,39 +13,55 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
-import com.example.train_shadowlinedemo.entity.Place;
-import com.example.train_shadowlinedemo.view.LiveRoom.NearPlaceRecyclerViewAdapter;
+import com.example.train_shadowlinedemo.entity.MyRoute;
+import com.example.train_shadowlinedemo.entity.RouteSpot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaningPlaceRecyclerViewAdapter extends RecyclerView.Adapter<PlaningPlaceRecyclerViewAdapter.ViewHolder> implements View.OnClickListener{
+public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecyclerViewAdapter.ViewHolder> implements View.OnClickListener{
 
-    private List<Place> places;
+    private ArrayList<MyRoute> myRoutes;
     private Context context;
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView placeImg;
-        TextView placeNameTV;
-        TextView placeDecTV;
+    private ImageView[] imgs=new  ImageView[5];
 
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        ImageView imgBig;
+        TextView textView_stance;
+        ImageView imgStar5;
+        ImageView imgStar1;
+        ImageView imgStar2;
+        ImageView imgStar3;
+        ImageView imgStar4;
         public ViewHolder (View view)
         {
             super(view);
-            placeImg=view.findViewById(R.id.place_img);
-            placeNameTV=view.findViewById(R.id.place_name);
-            placeDecTV=view.findViewById(R.id.place_dec);
-            itemView.setOnClickListener(PlaningPlaceRecyclerViewAdapter.this);
+            imgBig = view.findViewById(R.id.route_img);
+            imgStar5=view.findViewById(R.id.star5);
+            imgStar4=view.findViewById(R.id.star4);
+            imgStar3=view.findViewById(R.id.star3);
+            imgStar2=view.findViewById(R.id.star2);
+            imgStar1=view.findViewById(R.id.star1);
+            imgs[0]=imgStar1;
+            imgs[1]=imgStar2;
+            imgs[2]=imgStar3;
+            imgs[3]=imgStar4;
+            imgs[4]=imgStar5;
+            textView_stance=view.findViewById(R.id.romance_stance);
+            itemView.setOnClickListener(RouteRecyclerViewAdapter.this);
+
         }
 
     }
-    public PlaningPlaceRecyclerViewAdapter(List<Place> list,Context context){
-        places = list;
+
+    public RouteRecyclerViewAdapter(ArrayList<MyRoute> list,Context context){
+        myRoutes = list;
         this.context=context;
     }
     @Override
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_plan_place,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city,parent,false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -53,23 +69,29 @@ public class PlaningPlaceRecyclerViewAdapter extends RecyclerView.Adapter<Planin
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
 
-        Place place= places.get(position);
-        holder.placeNameTV.setText(place.getPlaceName());
-        holder.placeDecTV.setText(place.getPlaceFilmDescribe());
+        MyRoute myRoute= myRoutes.get(position);
+        holder.textView_stance.setText(myRoute.getWord());
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.glide_loading)//加载图片的过程中显示
                 .error(R.drawable.glide_error)//请求失败时显示
                 .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
         Glide.with(context)
-                .load(ConfigUtil.SERVER_ADDR +place.getPlaceReallyImg())
+                .load(ConfigUtil.SERVER_ADDR+"imgs/film/filmImg/"+myRoute.getImg()+".jpg")
                 .apply(options)//应用请求选项
-                .into(holder.placeImg);
+                .into(holder.imgBig);
+        for(int i=1;i<=myRoutes.get(position).getStar();i++){
+            ImageView m=imgs[i-1];
+            Glide.with(context)
+                    .load(R.drawable.yellow_star)
+                    .apply(options)//应用请求选项
+                    .into(m);
+        }
         holder.itemView.setTag(position);
     }
 
     @Override
     public int getItemCount(){
-        return places.size();
+        return myRoutes.size();
     }
 
 
