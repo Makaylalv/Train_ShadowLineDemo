@@ -48,6 +48,7 @@ import com.example.train_shadowlinedemo.Personal.DeleteCommentPopupWindow;
 import com.example.train_shadowlinedemo.Personal.MovieCollectionActivity;
 import com.example.train_shadowlinedemo.Personal.PhotoPopupWindow;
 import com.example.train_shadowlinedemo.Personal.PlaceCollectionActivity;
+import com.example.train_shadowlinedemo.Personal.RouteCollection;
 import com.example.train_shadowlinedemo.Personal.RouteCollectionActivity;
 import com.example.train_shadowlinedemo.Personal.SetActivity;
 import com.example.train_shadowlinedemo.R;
@@ -56,6 +57,9 @@ import com.example.train_shadowlinedemo.activity.LoginActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -83,7 +87,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
     private PhotoPopupWindow popupWindow;
     private TextView username;
     private TextView name;
-    private boolean tag = false;
+    private boolean tag;
     private TextView type;
     private TextView collection;
     private TextView movie;
@@ -95,6 +99,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
     private TextView tv_setting;
     private TextView tv_about;
     public boolean login;
+    private String signn = null;
     private String name_update;
     private static final int REQUEST_IMAGE_GET = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -103,6 +108,51 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
     private static final String IMAGE_FILE_NAME = "icon.jpg";
     private OkHttpClient okHttpClient=new OkHttpClient();
     private Drawable drawable;//用户头像
+    public Handler imgHandler = new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 2:
+                    Log.e("uri","uri");
+                    loadImageFromNetwork(ConfigUtil.SERVER_ADDR + "imgs/user/userimgs/" + LoginActivity.user.getUser_id() + ".jpg");
+                    type.setText("请输入自己的签名");
+                    break;
+                case 0:
+                    Log.e("默认","mor");
+                    Drawable drawable = getResources().getDrawable(R.drawable.head1);
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                    Glide.with(PersonalFragment.this.getContext())
+                            .load(drawable)
+                            .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
+                            .into(mImg);
+                    head = bitmapDrawable.getBitmap();
+                    Bitmap bitmap =  toRoundBitmap(head);
+                    img_head.setImageBitmap(bitmap);
+                    changePhoto(img_head);
+                    type.setText("请输入自己的签名");
+                    break;
+                case 1:
+                    Drawable drawable2 = getResources().getDrawable(R.drawable.head1);
+                    BitmapDrawable bitmapDrawable2 = (BitmapDrawable) drawable2;
+                    Glide.with(PersonalFragment.this.getContext())
+                            .load(drawable2)
+                            .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
+                            .into(mImg);
+                    head = bitmapDrawable2.getBitmap();
+                    Bitmap bitmap2 =  toRoundBitmap(head);
+                    img_head.setImageBitmap(bitmap2);
+                    changePhoto(img_head);
+                    type.setText(signn);
+                    break;
+                case 3:
+                    Log.e("uri","uri");
+                    loadImageFromNetwork(ConfigUtil.SERVER_ADDR + "imgs/user/userimgs/" + LoginActivity.user.getUser_id() + ".jpg");
+                    type.setText(signn);
+                    break;
+            }
+        }
+    };
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -166,11 +216,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         tv_agreement = view.findViewById(R.id.tv_agreement);
         tv_setting = view.findViewById(R.id.tv_setting);
 
-        if(!LoginActivity.user.getUser_sign().equals("")){
-            type.setText(LoginActivity.user.getUser_sign());
-        }else {
-            type.setText("请更换自己的签名");
-        }
         name.setText(LoginActivity.user.getUser_name());
         rv_about.setOnClickListener(PersonalFragment.this);
         rv_agreement.setOnClickListener(PersonalFragment.this);
@@ -182,21 +227,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         img_head = view.findViewById(R.id.img_head);
        //Drawable drawable = getResources().getDrawable(R.drawable.head1);
         //获取到数据库中的图片
-        judge();
-        if (!tag){
-            Drawable drawable = getResources().getDrawable(R.drawable.head1);
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            Glide.with(PersonalFragment.this.getContext())
-                .load(drawable)
-                .apply(bitmapTransform(new BlurTransformation(PersonalFragment.this.getContext(),20,2)))
-                .into(mImg);
-            head = bitmapDrawable.getBitmap();
-            Bitmap bitmap =  toRoundBitmap(head);
-            img_head.setImageBitmap(bitmap);
-            changePhoto(img_head);
-        }else {
-            loadImageFromNetwork(ConfigUtil.SERVER_ADDR + "imgs/user/userimgs/" + LoginActivity.user.getUser_id() + ".jpg");
-        }
+        judgeImg();
        // BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
 //        Glide.with(PersonalFragment.this.getContext())
 //                .load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+ LoginActivity.user.getUser_id()+".jpg")
@@ -234,8 +265,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         EventBus.getDefault().register(this);
         return view;
     }
-    public boolean judge(){
-
+    public void judgeImg(){
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(ConfigUtil.SERVER_ADDR +
@@ -251,16 +281,103 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.e("img","111");
-                if (!(response.body().string().equals("null"))){
-                    tag = true;
-                    Log.e("tag",tag+"");
+                if (response.isSuccessful()){
+                    String message = response.body().string();
+                    Log.e("img",message);
+                    imgHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String[] strings = message.split(",");
+                            String img = strings[0];
+                            String sign = strings[1];
+                            Message message=handler.obtainMessage();
+                            if (img.equals("null")){
+                                Log.e("img","null");
+                                if (sign.equals("null")){
+                                    message.what = 0;
+                                }else {
+                                    signn = sign;
+                                    message.what = 1;
+                                }
+                            }else {
+                                Log.e("img","not");
+                                if (sign.equals("null")){
+                                    message.what = 2;
+                                }else {
+                                    signn = sign;
+                                    message.what = 3;
+                                }
+                            }
+                            imgHandler.sendMessage(message);
+                        }
+                    });
+
+//                    imgHandler.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            Message message=handler.obtainMessage();
+//                            try {
+//                                if (!(response.body().string().equals("null"))){
+//                                    Log.e("img","not");
+//                                    message.what = 1;
+//                                }else {
+//                                    Log.e("img","null");
+//                                    message.what = 0;
+//                                }
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                            imgHandler.sendMessage(message);
+//                        }
+//                    });
                 }
 
             }
         });
-        Log.e("tag",tag+"");
-        return tag;
+
+    }
+    public void judgeSign(){
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(ConfigUtil.SERVER_ADDR +
+                        "GetImgServlet?user_id=" + LoginActivity.user.getUser_id())//请求的地址
+                .build();
+        //3.创建Call对象，发送请求，并接受响应
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()){
+//                    Log.e("img",response.body().string());
+                    imgHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Message message=handler.obtainMessage();
+                            try {
+                                if (!(response.body().string().equals("null"))){
+                                    Log.e("img","not");
+                                    message.what = 1;
+                                }else {
+                                    Log.e("img","null");
+                                    message.what = 0;
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            imgHandler.sendMessage(message);
+                        }
+                    });
+                }
+
+            }
+        });
     }
     @Override
     public void onDestroy() {
