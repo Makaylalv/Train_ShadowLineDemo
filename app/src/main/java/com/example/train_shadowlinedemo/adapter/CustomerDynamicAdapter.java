@@ -2,10 +2,21 @@ package com.example.train_shadowlinedemo.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +36,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.Personal.DeleteCommentPopupWindow;
+import com.example.train_shadowlinedemo.Personal.DeleteDynamicPopupWindow;
 import com.example.train_shadowlinedemo.R;
 import com.example.train_shadowlinedemo.activity.LoginActivity;
 import com.example.train_shadowlinedemo.entity.Comment;
@@ -34,13 +47,20 @@ import com.example.train_shadowlinedemo.entity.Dynamic;
 import com.example.train_shadowlinedemo.entity.DynamicLikeUser;
 import com.example.train_shadowlinedemo.fragment.ShareChildrenFragment.DynamicFragment;
 import com.google.gson.Gson;
+import com.mob.MobSDK;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -58,19 +78,38 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
     private DynamicFragment  dynamicFragment;
     private String userName= LoginActivity.user.getUser_name();
     private int userId=LoginActivity.user.getUser_id();
-    private DeleteCommentPopupWindow deleteCommentPopupWindow;
+    private DeleteDynamicPopupWindow deleteDynamicPopupWindow;
+    private ImageView ivUserImg;
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
+                case 1:
+                    Drawable drawable= (Drawable) msg.obj;
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                    Bitmap head = bitmapDrawable.getBitmap();
+                    Bitmap bitmap =  toRoundBitmap(head);
+                    Glide.with(mContext).load(bitmap).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).
+                    into(ivUserImg);//跳过内存缓存;
+                    break;
                 case 2:
                     Toast toast1=Toast.makeText(mContext,"评论失败",Toast.LENGTH_SHORT);
                     toast1.show();
                     break;
                 case 3:
+                    dynamicFragment.notifyDataSetChanged();
                     Toast toast2=Toast.makeText(mContext,"评论成功",Toast.LENGTH_SHORT);
                     toast2.show();
+                    break;
+                case 4:
+                    dynamicFragment.notifyDataSetChanged();
+                    Toast toast3=Toast.makeText(mContext,"删除成功",Toast.LENGTH_SHORT);
+                    toast3.show();
+                    break;
+                case 5:
+                    Toast toast4=Toast.makeText(mContext,"删除失败",Toast.LENGTH_SHORT);
+                    toast4.show();
                     break;
             }
         }
@@ -132,15 +171,17 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
             view= LayoutInflater.from(mContext).inflate(R.layout.item_dynamic,null);
             holder=new DynamicViewHolder();
             holder.ivDynamicUserImg=view.findViewById(R.id.iv_dynamic_userimg);
+            ivUserImg=view.findViewById(R.id.iv_dynamic_userimg);
             holder.tvDynamicUserName=view.findViewById(R.id.tv_dynamic_username);
             holder.tvDynamicDynamicTime=view.findViewById(R.id.tv_dynamic_dynamictime);
             holder.tvDynmaicDynamicContent=view.findViewById(R.id.tv_dynamic_dynamiccontent);
             holder.gvDynamicDynamicImgs=view.findViewById(R.id.gv_dynamic_dynamicimgs);
             GridView gvDynamicDynamicImgs =view.findViewById(R.id.gv_dynamic_dynamicimgs);
             ListView lvDynamicComments=view.findViewById(R.id.lv_dynamic_comments);
+            ImageView ivDynamicManage=view.findViewById(R.id.iv_dynamicmanage);
             holder.btnDynamicLike=view.findViewById(R.id.btn_dynamic_like);
             holder.btnDynamicComment=view.findViewById(R.id.btn_dynamic_comment);
-            holder.btnDynamicForward=view.findViewById(R.id.btn_dynamic_forward);
+            holder.btnDynamicShare=view.findViewById(R.id.btn_dynamic_share);
             holder.tvDynamicLikeUsers=view.findViewById(R.id.tv_dynamic_likeusers);
             holder.lvDynamicComments=view.findViewById(R.id.lv_dynamic_comments);
             holder.tvUserLocation=view.findViewById(R.id.tv_user_location);
@@ -150,10 +191,18 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
 //            holder= (DynamicViewHolder) view.getTag();
 //        }
         final int[] likeflag = {0};
-        Glide.with(mContext).load(dynamics.get(i).getUserImg()).circleCrop().into(holder.ivDynamicUserImg);
+        //diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).
+        Glide.with(mContext).load(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+dynamics.get(i).getUserId()+".jpg").diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().into(holder.ivDynamicUserImg);
+      //  loadImageFromNetwork(ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+ dynamics.get(i).getUserId()+".jpg");
+        Log.e("动态中用户的头像是",ConfigUtil.SERVER_ADDR+"imgs/user/userimgs/"+ dynamics.get(i).getUserId()+".jpg");
+
         holder.tvDynamicUserName.setText(dynamics.get(i).getUserName());
         holder.tvDynamicDynamicTime.setText(dynamics.get(i).getDynamicTime());
-        holder.tvDynmaicDynamicContent.setText(dynamics.get(i).getDynamicContent());
+        holder.tvDynmaicDynamicContent.setText(decode(dynamics.get(i).getDynamicContent()));
+        AssetManager mgr = mContext.getResources().getAssets();
+        //根据路径得到Typeface
+        Typeface tf = Typeface.createFromAsset(mgr, "Regular.ttf");//仿宋
+        holder.tvDynmaicDynamicContent.setTypeface(tf);
         holder.tvDynamicLikeUsers.setText(dynamics.get(i).getLikeUser().toString()+"觉得很赞");
         holder.tvUserLocation.setText(dynamics.get(i).getDynamicPlace()+" ");
         if(dynamics.get(i).getLikeUser().contains(userName)){
@@ -164,7 +213,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
             likeflag[0]=0;
         }
 
-        Glide.with(mContext).load("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1528689441,659647338&fm=26&gp=0.jpg").circleCrop().into(holder.ivDynamicUserImg);
+
         CustomerDynamicImgAdapter customerDynamicImgAdapter=new CustomerDynamicImgAdapter(mContext,dynamics.get(i).getDynamicImgs(),R.layout.item_dynamic_img,dynamicFragment);
         List<String> dynamicsimgs=dynamics.get(i).getDynamicImgs();
         Log.e("我的动态1",dynamicsimgs.size()+""+dynamicsimgs.toString());
@@ -216,6 +265,8 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
                 InputMethodManager imm = (InputMethodManager) mContext.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                 rlComment.setVisibility(View.VISIBLE);
+                comment_content.requestFocus();
+
 
             }
         });
@@ -239,13 +290,52 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
                     toast.show();
                 }else{
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-                    Comment comment =new Comment(dynamics.get(i).getDynamicId(),userId,userName,comment_content.getText().toString(),df.format(new Date()));
+                    Comment comment =new Comment(dynamics.get(i).getDynamicId(),userId,userName,encode(comment_content.getText().toString()),df.format(new Date()));
                     insertDynamicComment(comment);
+                   // dynamics.get(i).getComments().add(comment);
+
                     comment_content.setText("");
                     InputMethodManager im = (InputMethodManager)mContext.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     im.hideSoftInputFromWindow(comment_content.getWindowToken(), 0);
-                    dynamicFragment.notifyDataSetChanged();
+
                 }
+            }
+        });
+        //为管理动态按钮设置点击事件
+        ivDynamicManage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dynamics.get(i).getUserId()==LoginActivity.user.getUser_id()&&dynamics.get(i).getUserName().equals(LoginActivity.user.getUser_name())){
+                    Log.e("点击的动态是",dynamics.get(i).toString());
+                    deleteDynamicPopupWindow=new DeleteDynamicPopupWindow(dynamicFragment.getActivity(), new View.OnClickListener(){
+                        @Override
+                        public void onClick(View view) {
+                            deleteDynamicPopupWindow.dismiss();
+
+
+                            deleteDynamicById(dynamics.get(i));
+
+                        }
+                    },
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    deleteDynamicPopupWindow.dismiss();
+                                }
+                            });
+                    View rootView = LayoutInflater.from(mContext).inflate(R.layout.fragment_shared_dynamic_fragment,null);
+                    deleteDynamicPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
+                    Log.e("啊啊","a");
+                }else{
+
+                }
+            }
+        });
+        //为分享按钮设置点击事件
+        holder.btnDynamicShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShare();
             }
         });
         return view;
@@ -258,7 +348,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
         GridView gvDynamicDynamicImgs;
         ImageView btnDynamicLike;
         Button btnDynamicComment;
-        Button btnDynamicForward;
+        Button btnDynamicShare;
         TextView tvDynamicLikeUsers;
         ListView lvDynamicComments;
         TextView tvUserLocation;
@@ -351,6 +441,150 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
     public int DpToPx(Context context,float number){
         float scale =context.getResources().getDisplayMetrics().density;
         return Math.round(scale);
+    }
+    private void loadImageFromNetwork(String imageUrl) {
+
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    URL url=new URL(imageUrl);
+                    Log.e("aaaaa",imageUrl);
+                    HttpURLConnection httpURLConnection= (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    InputStream in=url.openStream();
+                    Drawable drawable=new BitmapDrawable(BitmapFactory.decodeStream(in));
+                    Message message=handler.obtainMessage();
+                    message.what=1;
+                    message.obj=drawable;
+                    handler.sendMessage(message);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
+    }
+    //将图片设置为圆形
+    public Bitmap toRoundBitmap(Bitmap bitmap) {
+        //圆形图片宽高
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        //正方形的边长
+        int r = 0;
+        //取最短边做边长
+        if (width > height) {
+            r = height;
+        } else {
+            r = width;
+        }
+        //构建一个bitmap
+        Bitmap backgroundBmp = Bitmap.createBitmap(width,
+                height, Bitmap.Config.ARGB_8888);
+        //new一个Canvas，在backgroundBmp上画图
+        Canvas canvas = new Canvas(backgroundBmp);
+        Paint paint = new Paint();
+        //设置边缘光滑，去掉锯齿
+        paint.setAntiAlias(true);
+        //宽高相等，即正方形
+        RectF rect = new RectF(0, 0, r, r);
+        //通过制定的rect画一个圆角矩形，当圆角X轴方向的半径等于Y轴方向的半径时，
+        //且都等于r/2时，画出来的圆角矩形就是圆形
+        canvas.drawRoundRect(rect, r / 2, r / 2, paint);
+        //设置当两个图形相交时的模式，SRC_IN为取SRC图形相交的部分，多余的将被去掉
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        //canvas将bitmap画在backgroundBmp上
+        canvas.drawBitmap(bitmap, null, rect, paint);
+        //返回已经绘画好的backgroundBmp
+        return backgroundBmp;
+    }
+    //删除动态
+    //删除评论
+    public void deleteDynamicById(Dynamic dynamic) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain;charset=utf-8"), new Gson().toJson(dynamic));
+        Log.e("删除动态请求的接口是", ConfigUtil.SERVER_ADDR + "DeleteDynamicByIdServlet");
+        Request request = new Request.Builder()
+                .post(requestBody)
+                .url(ConfigUtil.SERVER_ADDR + "DeleteDynamicByIdServlet")
+                .build();
+        //创建Call对象,发送请求，并接受响应
+
+        Call call = okHttpClient.newCall(request);
+        //异步网络请求(不需要创建子线程)
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败时回调
+                e.printStackTrace();
+                Message message = handler.obtainMessage();
+                message.what = 5;
+                handler.sendMessage(message);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.e("异步请求的结果", response.body().toString());
+                Log.e("取消点赞的的结果", "取消点赞成功");
+                Message message = handler.obtainMessage();
+                message.what = 4;
+                handler.sendMessage(message);
+            }
+        });
+    }
+    //QQ分享功能
+    private void showShare() {
+        OnekeyShare oks = new OnekeyShare();
+// title标题，微信、QQ和QQ空间等平台使用
+        oks.setTitle("分享");
+// titleUrl QQ和QQ空间跳转链接
+        oks.setTitleUrl("http://sharesdk.cn");
+// text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+// setImageUrl是网络图片的url
+        oks.setImageUrl("https://hmls.hfbank.com.cn/hfapp-api/9.png");
+// url在微信、Facebook等平台中使用
+        oks.setUrl("http://sharesdk.cn");
+// 启动分享GUI
+        oks.show(MobSDK.getContext());
+    }
+    /**
+     * 将输入的内容编码
+     * @param content
+     * @return
+     */
+    public static String encode(String content) {
+        StringBuilder sb = new StringBuilder(content.length() * 3);
+        for (char c : content.toCharArray()) {
+            if (c < 256) {
+                sb.append(c);
+            } else {
+                sb.append("\\u");
+                sb.append(Character.forDigit((c >>> 12) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 8) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 4) & 0xf, 16));
+                sb.append(Character.forDigit((c) & 0xf, 16));
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 将取出内容解码
+     * @param content
+     * @return
+     */
+    public static String decode(String content) {
+        final Pattern reUnicode = Pattern.compile("\\\\u([0-9a-zA-Z]{4})");
+        Matcher sMatcher = reUnicode.matcher(content);
+        StringBuffer sb = new StringBuffer(content.length());
+        while (sMatcher.find()) {
+            sMatcher.appendReplacement(sb,
+                    Character.toString((char) Integer.parseInt(sMatcher.group(1), 16)));
+        }
+        sMatcher.appendTail(sb);
+        return sb.toString();
     }
 
 

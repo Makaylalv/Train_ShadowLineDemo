@@ -30,6 +30,8 @@ import com.google.gson.internal.$Gson$Preconditions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -134,7 +136,7 @@ public class CustomerDynamicCommentAdapter extends BaseAdapter {
             dynamicCommentViewHolder = (DynamicCommentViewHolder) view.getTag();
         }
         dynamicCommentViewHolder.tvCommentUserName.setText(comments.get(i).getUsername());
-        dynamicCommentViewHolder.tvCommentContent.setText(comments.get(i).getCommentContent());
+        dynamicCommentViewHolder.tvCommentContent.setText(decode(comments.get(i).getCommentContent()));
         dynamicCommentViewHolder.llComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,6 +171,7 @@ public class CustomerDynamicCommentAdapter extends BaseAdapter {
 
 
        return view;
+
     }
 
     class DynamicCommentViewHolder{
@@ -208,4 +211,21 @@ public class CustomerDynamicCommentAdapter extends BaseAdapter {
             }
         });
     }
+    /**
+     * 将取出内容解码
+     * @param content
+     * @return
+     */
+    public static String decode(String content) {
+        final Pattern reUnicode = Pattern.compile("\\\\u([0-9a-zA-Z]{4})");
+        Matcher sMatcher = reUnicode.matcher(content);
+        StringBuffer sb = new StringBuffer(content.length());
+        while (sMatcher.find()) {
+            sMatcher.appendReplacement(sb,
+                    Character.toString((char) Integer.parseInt(sMatcher.group(1), 16)));
+        }
+        sMatcher.appendTail(sb);
+        return sb.toString();
+    }
+
 }

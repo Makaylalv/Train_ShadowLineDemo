@@ -112,6 +112,7 @@ public class MovieCollectionActivity extends AppCompatActivity {
                                     collection.setFilm_type(jsonObject.getString("type"));
                                     collection.setFilm_place(jsonObject.getString("place"));
                                     collection.setFilm_id(jsonObject.getInt("film_id"));
+                                    collection.setImg(jsonObject.getString("img"));
                                     collections.add(collection);
                                 }
                             } catch (JSONException e) {

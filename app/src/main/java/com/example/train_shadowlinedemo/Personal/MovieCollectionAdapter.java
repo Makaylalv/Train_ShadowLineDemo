@@ -7,21 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovieCollectionAdapter extends BaseAdapter {
-    private Context Context;
+    private Context context;
     private int itemLayoutRes;
     private List<FilmCollection> filmCollections = new ArrayList<>();
     private boolean isOP;
     public MovieCollectionAdapter(Context context, List<FilmCollection> filmCollections, int itemLayoutRes){
-        this.Context = context;
+        this.context = context;
         this.itemLayoutRes = itemLayoutRes;
         this.filmCollections = filmCollections;
     }
@@ -54,10 +57,10 @@ public class MovieCollectionAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Log.e("filmCollections",filmCollections.toString());
-        LayoutInflater inflater = LayoutInflater.from(Context);
+        LayoutInflater inflater = LayoutInflater.from(context);
         view = inflater.inflate(R.layout.item_movie_collection, null);
 
-
+        ImageView movie_img = view.findViewById(R.id.movie_img);
         TextView tv_name = view.findViewById(R.id.movie_name);
         TextView tv_englishName = view.findViewById(R.id.movie_english);
         TextView tv_tostar = view.findViewById(R.id.movie_type);
@@ -69,7 +72,7 @@ public class MovieCollectionAdapter extends BaseAdapter {
         tv_tostar.setText(filmCollections.get(i).getFilm_type());
         tv_city.setText(filmCollections.get(i).getFilm_city());
         tv_cut.setText(filmCollections.get(i).getFilm_place());
-
+        Glide.with(context).load(ConfigUtil.SERVER_ADDR+"imgs/film/filmImg/"+filmCollections.get(i).getImg()).into(movie_img);
         if (isOP){
             cb_op.setVisibility(View.VISIBLE);
             RelativeLayout.LayoutParams lps = (RelativeLayout.LayoutParams) view.findViewById(R.id.movie).getLayoutParams();

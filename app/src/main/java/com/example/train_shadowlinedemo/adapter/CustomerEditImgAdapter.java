@@ -2,6 +2,7 @@ package com.example.train_shadowlinedemo.adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +77,17 @@ public class CustomerEditImgAdapter extends BaseAdapter {
       View view = LayoutInflater.from(mContext).inflate(R.layout.item_edit_dynamic_img,null);
         ImageView  ivEditImg=view.findViewById(R.id.iv_item_edit_img);
         Glide.with(mContext).load(selected.get(position)).into(ivEditImg);
+        ImageView ivCancle=view.findViewById(R.id.iv_cancle);
+        ivCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selected.remove(position);
+                notifyDataSetChanged();
+
+            }
+        });
       return view;
     }
+
 
 }

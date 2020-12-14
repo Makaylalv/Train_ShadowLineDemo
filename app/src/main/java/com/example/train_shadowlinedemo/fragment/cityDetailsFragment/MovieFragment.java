@@ -1,5 +1,6 @@
 package com.example.train_shadowlinedemo.fragment.cityDetailsFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
+import com.example.train_shadowlinedemo.activity.MovieDetailActivity;
 import com.example.train_shadowlinedemo.adapter.MovieListAdapter;
 import com.example.train_shadowlinedemo.entity.Film;
 import com.google.gson.Gson;
@@ -67,12 +69,12 @@ public class MovieFragment extends Fragment {
         stuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent=new Intent(getContext(), DetailedCakeActivity.class);
-//                intent.putExtra("id",files.get(position).getFilmId());
-//                Log.e("id",files.get(position).getFilmId()+"");
-//                Log.e("跳转了","DetailedCakeActivity");
-//                startActivity(intent);
-
+                Gson gson=new Gson();
+                Film film=films.get(position);
+                String str=gson.toJson(film);
+                Intent intent=new Intent(getActivity(), MovieDetailActivity.class);
+                intent.putExtra("film",str);
+                startActivity(intent);
             }
         });
     }

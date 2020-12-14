@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="@dimen/_157sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="01"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:id="@+id/count"
+        android:textSize="40sp"/>
+
+    <TextView
+        android:id="@+id/route_place_name"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_27sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:background="@drawable/detail_type"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_toRightOf="@id/count"
+        android:text="重庆德普外国语学校"
+        android:textSize="@dimen/_20sdp" />
+    <TextView
+        android:id="@+id/route_place_englishname"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@id/route_place_name"
+        android:layout_toRightOf="@id/count"
+        android:text="Chongqing Depu Foreignschool"
+        android:textSize="@dimen/_12sdp"
+        android:layout_marginLeft="@dimen/_20sdp"/>
+    <ImageView
+        android:id="@+id/route_place_img"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:src="@drawable/shaonian"
+        android:layout_below="@id/route_place_englishname"
+        android:layout_marginBottom="@dimen/_10sdp"/>
+    <TextView
+        android:id="@+id/route_place_filmname"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="wrap_content"
+        android:text="少年的你"
+        android:layout_toRightOf="@id/route_place_img"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:textSize="@dimen/_15sdp"
+        android:layout_below="@id/route_place_englishname"/>
+    <TextView
+        android:id="@+id/route_place_describe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="陈念教英语的学校"
+        android:layout_below="@id/route_place_filmname"
+        android:paddingLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_toRightOf="@id/route_place_img"/>
+</RelativeLayout>

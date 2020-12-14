@@ -45,7 +45,6 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/username"
                     android:paddingTop="27dp"
-                    android:text="柴晓艺"
                     android:textColor="#ffffff"
                     android:textSize="15sp"
                     android:id="@+id/tv_name"/>

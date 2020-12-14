@@ -224,12 +224,12 @@ public class DetailMapActivity extends AppCompatActivity {
                 placeBigImgIV=findViewById(R.id.place_big_img);
                 placeMapImgIV=findViewById(R.id.place_big_map);
                 RequestOptions options = new RequestOptions()
-                        .placeholder(R.drawable.glide_loading)//加载图片的过程中显示
                         .error(R.drawable.glide_error)//请求失败时显示
                         .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
                 Glide.with(DetailMapActivity.this)
                         .load(ConfigUtil.SERVER_ADDR+place.getPlaceFalseImg())
                         .apply(options)//应用请求选项
+                        .thumbnail(Glide.with(placeImgIV).load(R.drawable.loadimg))
                         .into(placeImgIV);
                 Glide.with(DetailMapActivity.this)
                         .load(ConfigUtil.SERVER_ADDR+place.getPlaceReallyImg())

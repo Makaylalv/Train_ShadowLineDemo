@@ -7,26 +7,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.bumptech.glide.Glide;
+import com.example.train_shadowlinedemo.ConfigUtil;
 import com.example.train_shadowlinedemo.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CityCollectionAdapter extends BaseAdapter {
-    private android.content.Context Context;
+    private android.content.Context context;
     private int itemLayoutRes;
     private List<CityCollection> cityCollections = new ArrayList<>();
     private boolean isOP;
     public CityCollectionAdapter(Context context, List<CityCollection> cityCollections, int itemLayoutRes){
-        this.Context = context;
+        this.context = context;
         this.itemLayoutRes = itemLayoutRes;
         this.cityCollections = cityCollections;
     }
@@ -62,7 +61,7 @@ public class CityCollectionAdapter extends BaseAdapter {
         Log.e("cityCollections",cityCollections.toString());
         View view;
         ViewHolder holder;
-        LayoutInflater inflater = LayoutInflater.from(Context);
+        LayoutInflater inflater = LayoutInflater.from(context);
         if (convertView == null){
             view = inflater.inflate(R.layout.item_city_collection, null);
             holder = new ViewHolder();
@@ -70,6 +69,7 @@ public class CityCollectionAdapter extends BaseAdapter {
             holder.tv_name = view.findViewById(R.id.city_name);
             holder.tv_english = view.findViewById(R.id.city_english);
             holder.city = view.findViewById(R.id.city);
+            holder.city_img = view.findViewById(R.id.city_img);
             view.setTag(holder);
         }else {
             view = convertView;
@@ -96,6 +96,7 @@ public class CityCollectionAdapter extends BaseAdapter {
         }
         holder.tv_name.setText(c.getCity_name());
         holder.tv_english.setText(c.getCity_english());
+        Glide.with(context).load(ConfigUtil.SERVER_ADDR+cityCollections.get(i).getImg()).into(holder.city_img);
         holder.cb_op.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +113,6 @@ public class CityCollectionAdapter extends BaseAdapter {
         RelativeLayout city;
         TextView tv_name;
         TextView tv_english;
-
+        ImageView city_img;
     }
 }

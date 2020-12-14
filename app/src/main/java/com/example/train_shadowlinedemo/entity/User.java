@@ -7,6 +7,16 @@ public class User {
     private String user_name;
     private String user_password;
 
+    private String user_sign;
+
+    public String getUser_sign() {
+        return user_sign;
+    }
+
+    public void setUser_sign(String user_sign) {
+        this.user_sign = user_sign;
+    }
+
     public int getUser_id() {
         return user_id;
     }

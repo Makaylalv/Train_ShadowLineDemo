@@ -22,35 +22,36 @@
             <ImageView
                 android:id="@+id/iv_dynamic_background"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/shared_background" />
+                android:layout_height="200dp"
+                android:src="@drawable/a" />
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
+                android:backgroundTint="#ffffff"
                 android:src="@drawable/add_dynamic"
                 android:id="@+id/fab_add_dynamic"
-                android:layout_marginTop="150dp"
-                android:layout_marginLeft="320dp"
+                android:background="@drawable/add_dynamic"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="300dp"
                 app:fabSize="mini"
                 android:layout_height="wrap_content"/>
+            <ImageView android:layout_width="80dp"
+                android:layout_marginTop="100dp"
+                android:id="@+id/iv_personaluserimg"
+                android:src="@drawable/head1"
+                android:layout_marginLeft="10dp"
+                android:layout_height="80dp">
+            </ImageView>
 
             <com.example.train_shadowlinedemo.view.customerview.CustomerListView
                 android:padding="20dp"
                 android:id="@+id/lv_dynamics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:divider="#ffffffff"
+                android:dividerHeight="1px"
                 android:layout_below="@id/iv_dynamic_background"
                 />
-
-
         </RelativeLayout>
-
-
-
-
-
-
-
-
 </ScrollView>
     <RelativeLayout
         android:id="@+id/rl_comment"
