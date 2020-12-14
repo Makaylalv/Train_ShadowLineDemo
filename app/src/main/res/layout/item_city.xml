@@ -23,48 +23,57 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="推荐"
+                android:textColor="@color/white"
+                android:layout_alignParentRight="true"
+                android:background="#1296db"/>
+
 
             <RelativeLayout
                 android:id="@+id/star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp">
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp">
                 <ImageView
                     android:id="@+id/star3"
                     android:layout_centerInParent="true"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/star"/>
                 <ImageView
                     android:id="@+id/star2"
                     android:layout_toLeftOf="@+id/star3"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/star"/>
                 <ImageView
                     android:id="@+id/star1"
                     android:layout_toLeftOf="@+id/star2"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/star"/>
                 <ImageView
                     android:id="@+id/star4"
                     android:layout_toRightOf="@+id/star3"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/star"/>
                 <ImageView
                     android:id="@+id/star5"
                     android:layout_toRightOf="@+id/star4"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/star"/>
 
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/romance_stance"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="@dimen/_13sdp"
                 android:layout_marginTop="@dimen/_40sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_width="match_parent"
