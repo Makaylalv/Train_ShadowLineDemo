@@ -66,7 +66,6 @@ public class FragmentCity extends androidx.fragment.app.Fragment {
                         ids.add(is);
 
                     }
-                    Log.e("拿到的ids",ids.toString());
                     initView();
                     break;
                 case 2:
@@ -137,14 +136,11 @@ public class FragmentCity extends androidx.fragment.app.Fragment {
                     Gson gson = new Gson();
                     Type type = new TypeToken<ArrayList<Place>>() {
                     }.getType();
+
                     places = gson.fromJson(str, type);
                     Message message = new Message();
                     message.what = 2;
                     handler.sendMessage(message);
-                    //打印测试
-                    for (Place i : places) {
-                        System.out.println(i.getPlaceMapImg());
-                    }
                 }
             }
         });
@@ -166,7 +162,7 @@ public class FragmentCity extends androidx.fragment.app.Fragment {
                     }
                     Gson gson=new Gson();
                     String placeJson=gson.toJson(ps);
-                    Log.e("传递的数据",placeJson);
+                    ps.clear();
                     Intent intent=new Intent();
                     intent.setClass(getContext(), PlanningRouteActivity.class);
                     intent.putExtra("places",placeJson);

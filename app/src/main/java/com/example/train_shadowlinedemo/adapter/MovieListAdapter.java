@@ -67,13 +67,10 @@ public class MovieListAdapter extends BaseAdapter {
         }else{
             viewHolder= (ViewHolder) convertView.getTag();
         }
-
         viewHolder.chinese.setText(films.get(position).getFilmName());
         viewHolder.english.setText(films.get(position).getFilmEnglishname() + "");
         String pic=films.get(position).getFilmImg();
-        Glide.with(context).load(ConfigUtil.SERVER_ADDR+pic).into(viewHolder.pic);
-        Log.e("图片地址",ConfigUtil.SERVER_ADDR+pic);
-//        viewHolder.pic.setImageBitmap(Glide);
+        Glide.with(context).load(ConfigUtil.SERVER_ADDR+pic).fitCenter().into(viewHolder.pic);
         return convertView;
     }
 

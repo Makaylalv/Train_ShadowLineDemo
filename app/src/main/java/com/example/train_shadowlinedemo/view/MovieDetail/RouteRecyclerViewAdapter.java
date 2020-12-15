@@ -76,7 +76,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
                 .error(R.drawable.glide_error)//请求失败时显示
                 .fallback(R.drawable.glide_defaultimg);//当请求URL是null时显示
         Glide.with(context)
-                .load(ConfigUtil.SERVER_ADDR+"imgs/film/filmImg/"+myRoute.getImg()+".jpg")
+                .load(ConfigUtil.SERVER_ADDR+"imgs/film/routeImg/"+myRoute.getImg()+".jpg")
                 .apply(options)//应用请求选项
                 .into(holder.imgBig);
         for(int i=1;i<=myRoutes.get(position).getStar();i++){

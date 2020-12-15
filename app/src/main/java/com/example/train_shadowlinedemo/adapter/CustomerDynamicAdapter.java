@@ -335,7 +335,7 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
         holder.btnDynamicShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showShare();
+                showShare(i);
             }
         });
         return view;
@@ -534,14 +534,14 @@ public class CustomerDynamicAdapter  extends BaseAdapter {
         });
     }
     //QQ分享功能
-    private void showShare() {
+    private void showShare(int i) {
         OnekeyShare oks = new OnekeyShare();
 // title标题，微信、QQ和QQ空间等平台使用
         oks.setTitle("影行");
 // titleUrl QQ和QQ空间跳转链接
         oks.setTitleUrl("http://baidu.com");
 // text是分享文本，所有平台都需要这个字段
-        oks.setText("分啦");
+        oks.setText(dynamics.get(i).getDynamicContent());
 // setImageUrl是网络图片的url
         oks.setImageUrl("https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3684536465,3063644397&fm=26&gp=0.jpg");
        // String []imgs={"https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3684536465,3063644397&fm=26&gp=0.jpg","https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3684536465,3063644397&fm=26&gp=0.jpg"};
