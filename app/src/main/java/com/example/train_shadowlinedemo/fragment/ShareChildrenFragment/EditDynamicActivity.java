@@ -196,18 +196,7 @@ public class EditDynamicActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         requestPermission();
-                        Matisse.from(EditDynamicActivity.this)
-                        .choose(MimeType.ofAll())
-                        .countable(true)//是否有序
-                        .maxSelectable(9)//最大图片数量
-                        .gridExpectedSize(dm.widthPixels/3)
-                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                        .thumbnailScale(0.85f)
-                        .imageEngine(new GlideEngine())
-                        .theme(R.style.Matisse_Zhihu) //主题
-                        .capture(true)
-                                .captureStrategy(new CaptureStrategy(true,"com.example.train_shadowlinedemo.SharedFragment.MyFileProvider"))
-                        .forResult(REQUEST_CODE_CHOOSE);
+
                     }
                 }
         );
@@ -275,8 +264,20 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
     private void requestPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA
-            ,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_PRECISE_PHONE_STATE}, 1);
+            ,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_PRECISE_PHONE_STATE}, 2);
         }else {
+            Matisse.from(EditDynamicActivity.this)
+                    .choose(MimeType.ofAll())
+                    .countable(true)//是否有序
+                    .maxSelectable(9)//最大图片数量
+                    .gridExpectedSize(dm.widthPixels/3)
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .thumbnailScale(0.85f)
+                    .imageEngine(new GlideEngine())
+                    .theme(R.style.Matisse_Zhihu) //主题
+                    .capture(true)
+                    .captureStrategy(new CaptureStrategy(true,"com.example.train_shadowlinedemo.SharedFragment.MyFileProvider"))
+                    .forResult(REQUEST_CODE_CHOOSE);
             Toast.makeText(this,"您已经申请了权限!",Toast.LENGTH_SHORT).show();
         }
     }
@@ -376,6 +377,20 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && grantResults[0] == 0){
             location();
+        }else if(requestCode==2){
+                Matisse.from(EditDynamicActivity.this)
+                        .choose(MimeType.ofAll())
+                        .countable(true)//是否有序
+                        .maxSelectable(9)//最大图片数量
+                        .gridExpectedSize(dm.widthPixels/3)
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                        .thumbnailScale(0.85f)
+                        .imageEngine(new GlideEngine())
+                        .theme(R.style.Matisse_Zhihu) //主题
+                        .capture(true)
+                        .captureStrategy(new CaptureStrategy(true,"com.example.train_shadowlinedemo.SharedFragment.MyFileProvider"))
+                        .forResult(REQUEST_CODE_CHOOSE);
+
         }
     }
     @Override
